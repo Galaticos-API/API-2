@@ -21,7 +21,7 @@
 - **Empresa:** Youtan
 - **Contato:** Fátima Marques Machado – [fatima.machado@youtan.com.br](mailto:fatima.machado@youtan.com.br)
 
-### A Dor do Parceiro
+### O problema principal
 
 O Plano de Desenvolvimento Individual (PDI) é uma ferramenta essencial para o crescimento dos colaboradores, resultando em maior retenção de talentos, engajamento e aprimoramento de competências. Atualmente, o departamento de RH da Youtan gerencia esses planos através de **planilhas avulsas**, o que gera dificuldades no controle, falta de histórico consolidado e dificuldade na geração de relatórios e métricas de desempenho.
 
