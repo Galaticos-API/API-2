@@ -51,13 +51,13 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ## 4. Sprints
 
-| Fase               | Previsão                | Status    |
-| -------------------- | ----------------------- | --------- |
-| Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído |
-| Sprint 1                   | 08/09/2025 - 28/09/2025 | Em progresso |
-| Sprint 2                   | 06/10/2025 - 26/10/2025 | A começar |
-| Sprint 3                   | 03/11/2025 - 23/11/2025 | A começar |
-| Feira de Soluções    | 29/05/2025              | A começar |
+| Fase                 | Previsão                | Status       |
+| -------------------- | ----------------------- | ------------ |
+| Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    |
+| Sprint #1            | 08/09/2025 - 28/09/2025 | Em progresso |
+| Sprint #2            | 06/10/2025 - 26/10/2025 | A começar    |
+| Sprint #3            | 03/11/2025 - 23/11/2025 | A começar    |
+| Feira de Soluções    | 29/05/2025              | A começar    |
 ---
 
 ## 5. Tecnologias Utilizadas
@@ -127,13 +127,13 @@ A pasta irá incluir:
 
 ## 9. Equipe
 
-|           Nome            |     Função     |                                                                            GitHub                                                                             |                                                                                               Linkedin                                                                                               |
-| :-----------------------: | :------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|           Nome            |     Função     |                                                                            GitHub                                                                             |                                                                                               Linkedin                                                                                                 |
+| :-----------------------: | :------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 |     Emmanuel Garakis      | Product Owner  |    <a href='https://github.com/Garakis'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>     | <a href='https://www.linkedin.com/in/emmanuel-basile-garakis-filho-024572266/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a> |
 |      Rafael Matesco       |  Scrum Master  |  <a href='https://github.com/RafaMatesco'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>   |         <a href='https://www.linkedin.com/in/rafael-giordano-matesco/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>         |
-|        Caio César         | Team Developer |    <a href='https://github.com/JkDeltaz'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>    |    <a href='https://www.linkedin.com/in/caio-c%C3%A9sar-santos-79976636a/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>     |
-|        Daniel Dias        | Team Developer | <a href='https://github.com/DanielDPereira'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |      <a href='https://www.linkedin.com/in/daniel-dias-pereira-40219425b/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>      |
-| Gabriel dos Santos Lasaro | Team Developer |   <a href='https://github.com/Sashxjssx'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>    |        <a href='https://www.linkedin.com/in/gabriel-lasaro-527827352/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>         |
-|     Giovanni Moretto      | Team Developer |  <a href='https://github.com/Darkghostly'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>   |    <a href='https://www.linkedin.com/in/gustavo-bueno-da-silva-797292324/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>     |
-|       Gustavo Bueno       | Team Developer |  <a href='https://github.com/Darkghostly'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>   |    <a href='https://www.linkedin.com/in/gustavo-bueno-da-silva-797292324/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>     |
-|  Gustavo Monteiro Greco   | Team Developer | <a href='https://github.com/GustavoMGreco'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>  |              <a href='https://www.linkedin.com/in/gustavomgreco/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>              |
+|        Caio César         | Team Developer |    <a href='https://github.com/JkDeltaz'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>    |    <a href='https://www.linkedin.com/in/caio-c%C3%A9sar-santos-79976636a/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>       |
+|        Daniel Dias        | Team Developer | <a href='https://github.com/DanielDPereira'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |      <a href='https://www.linkedin.com/in/daniel-dias-pereira-40219425b/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>       |
+|      Gabriel Lasaro       | Team Developer |   <a href='https://github.com/Sashxjssx'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>    |        <a href='https://www.linkedin.com/in/gaelslasaro/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>                        |
+|     Giovanni Moretto      | Team Developer |  <a href='https://github.com/Darkghostly'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>   |    <a href='https://www.linkedin.com/in/gustavo-bueno-da-silva-797292324/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>       |
+|       Gustavo Bueno       | Team Developer |  <a href='https://github.com/Darkghostly'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>   |    <a href='https://www.linkedin.com/in/gustavo-bueno-da-silva-797292324/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>       |
+|     Gustavo Monteiro      | Team Developer | <a href='https://github.com/GustavoMGreco'><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a>  |              <a href='https://www.linkedin.com/in/gustavomgreco/'><img src='https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white'></a>                                      |
