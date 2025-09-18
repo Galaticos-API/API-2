@@ -35,11 +35,8 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 | :--- | :--------- | :------------------------------------------------------------------------------------------------------------------------ | :--------- | :----- |
 | 1    | Alta       | Como **RH**, quero cadastrar e gerenciar colaboradores para associá-los aos seus respectivos PDIs.                        | 8          | 1      |
 | 2    | Alta       | Como **Gerente de Área**, quero criar um novo PDI anual para um colaborador da minha equipe, definindo metas e objetivos. | 13         | 1      |
-| 3    | Alta       | Como **RH**, quero ter um painel para visualizar todos os PDIs em andamento na empresa.                                   | 8          | 2      |
-| 4    | Alta       | Como **Gerente de Área**, quero poder fazer o upload de documentos (certificados, feedbacks) no PDI de um liderado.       | 5          | 2      |
-| 5    | Média      | Como **Gerente Geral**, quero exportar um relatório em planilha com o percentual de atingimento de metas por área.        | 13         | 3      |
-| 6    | Média      | Como **Gerente de Área**, quero visualizar o histórico de PDIs de anos anteriores de um colaborador.                      | 5          | 3      |
-| 7    | Baixa      | Como **RH**, quero poder desativar o acesso de um colaborador que foi desligado da empresa.                               | 3          | 4      |
+| ..    | ..       | .. | ..         | ..      |
+
 
 ---
 
