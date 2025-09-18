@@ -39,7 +39,7 @@ public class UsuarioGUIController {
         } else {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             Cliente cliente = new Cliente(codigo, nome);
-            usuarioDAO.adiciona(cliente);
+            usuarioDAO.adicionar(cliente);
             nomeCliente.clear(); // Limpa o campo de texto após o cadastro
         }
     }
