@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import modelo.Cliente;
+import modelo.Usuario;
 
 public class UsuarioGUIController {
 
@@ -38,8 +38,8 @@ public class UsuarioGUIController {
             System.out.println("O campo nome não pode estar vazio.");
         } else {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            Cliente cliente = new Cliente(codigo, nome);
-            usuarioDAO.adicionar(cliente);
+            Usuario usuario = new Usuario(codigo, nome);
+            usuarioDAO.adicionar(usuario);
             nomeCliente.clear(); // Limpa o campo de texto após o cadastro
         }
     }

@@ -1,7 +1,7 @@
 package dao;
 
 import factory.ConnectionFactory;
-import modelo.Cliente;
+import modelo.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,16 +12,16 @@ import java.util.List;
 
 public class UsuarioDAO {
 
-    public void adicionar(Cliente cliente) {
+    public void adicionar(Usuario usuario) {
         String sql = "INSERT INTO cliente (nome) VALUES(?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, cliente.getNome());
+            pstmt.setString(1, usuario.getNome());
             pstmt.executeUpdate();
 
-            System.out.println("Cliente " + cliente.getNome() + " cadastrado com sucesso!");
+            System.out.println("Cliente " + usuario.getNome() + " cadastrado com sucesso!");
 
         }
         catch (SQLException e) {
@@ -29,30 +29,30 @@ public class UsuarioDAO {
         }
     }
 
-    public List<Cliente> lerTodos() {
+    public List<Usuario> lerTodos() {
         String sql = "SELECT codigo, nome FROM cliente";
-        List<Cliente> clientes = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                Cliente cliente = new Cliente();
-                cliente.setNome(rs.getString("nome"));
-                cliente.setCodigo(rs.getInt("codigo"));
-                clientes.add(cliente);
+                Usuario usuario = new Usuario();
+                usuario.setNome(rs.getString("nome"));
+                usuario.setCodigo(rs.getInt("codigo"));
+                usuarios.add(usuario);
             }
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return clientes;
+        return usuarios;
     }
 
-    public Cliente buscarPorId(int codigo) {
+    public Usuario buscarPorId(int codigo) {
         String sql = "SELECT codigo, nome FROM cliente WHERE codigo = ?";
-        Cliente cliente = null;
+        Usuario usuario = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -61,9 +61,9 @@ public class UsuarioDAO {
 
             try (ResultSet rs = pstmt.executeQuery();) {
                 if (rs.next()) {
-                    cliente = new Cliente();
-                    cliente.setCodigo(rs.getInt("codigo"));
-                    cliente.setNome(rs.getString("nome"));
+                    usuario = new Usuario();
+                    usuario.setCodigo(rs.getInt("codigo"));
+                    usuario.setNome(rs.getString("nome"));
                 }
             }
 
@@ -71,17 +71,17 @@ public class UsuarioDAO {
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return cliente;
+        return usuario;
     }
 
-    public boolean atualizar(Cliente cliente) {
+    public boolean atualizar(Usuario usuario) {
         String sql = "UPDATE cliente SET nome = ? WHERE codigo = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, cliente.getNome());
-            pstmt.setInt(2, cliente.getCodigo());
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setInt(2, usuario.getCodigo());
 
             return pstmt.executeUpdate() > 0;
 
