@@ -1,13 +1,13 @@
 package modelo;
 
-public class Cliente {
+public class Usuario {
     private int codigo;
     private String nome;
 
-    public Cliente() {
+    public Usuario() {
     }
 
-    public Cliente(int codigo, String nome) {
+    public Usuario(int codigo, String nome) {
         this.codigo = codigo;
         this.nome = nome;
     }
