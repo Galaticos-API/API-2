@@ -2,57 +2,61 @@ package gui;
 
 import dao.UsuarioDAO;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import modelo.Usuario;
+import org.w3c.dom.Text;
 
 public class UsuarioGUIController {
 
     // @FXML conecta as variáveis do Java com os componentes do FXML pelo fx:id
     @FXML
-    private TextField nomeCliente;
+    private TextField emailUsuario;
     @FXML
-    private TextField codigoCliente;
-
+    private TextField nomeUsuario;
+    @FXML
+    private TextField senhaUsuario;
+    @FXML
+    private ChoiceBox<String> tipoUsuario;
     @FXML
     private Button cadastrarClienteBtn;
-
     @FXML
     private Button sairBtn;
 
-    /**
-     * Esta função é chamada quando o botão "Cadastrar" é clicado.
-     * Ela pega o texto do campo nomeCliente, exibe no console e limpa o campo.
-     *
-     * @param event O evento de clique do botão.
-     */
+    @FXML
+    public void initialize() {
+        tipoUsuario.setItems(FXCollections.observableArrayList("RH", "Gestor de Área", "Gestor Geral", "Colaborador"));
+        tipoUsuario.setValue("RH");
+    }
+
     @FXML
     void clickCadastrar(ActionEvent event) {
-        String nome = nomeCliente.getText().trim();
-        String codigoStr = codigoCliente.getText().trim();
-        int codigo = Integer.parseInt(codigoStr);
+        String nome = nomeUsuario.getText().trim();
+        String email = emailUsuario.getText().trim();
+        String senha = senhaUsuario.getText().trim();
+        String tipo_usuario = tipoUsuario.getValue();
 
-        if (nome.isEmpty() || codigoStr.isEmpty()) {
+
+        if (nome.isEmpty() || email.isEmpty() ||  senha.isEmpty()) {
             System.out.println("O campo nome não pode estar vazio.");
         } else {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            Usuario usuario = new Usuario(codigo, nome);
+            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
             usuarioDAO.adicionar(usuario);
-            nomeCliente.clear(); // Limpa o campo de texto após o cadastro
+            nomeUsuario.clear();
+            emailUsuario.clear();
+            senhaUsuario.clear();
         }
     }
 
-    /**
-     * Esta função é chamada quando o botão "Sair" é clicado.
-     * Ela fecha a aplicação de forma segura.
-     *
-     * @param event O evento de clique do botão.
-     */
     @FXML
     void clickSair(ActionEvent event) {
-        Platform.exit(); // Maneira correta de fechar uma aplicação JavaFX
+        Platform.exit();
         System.exit(0);
     }
 }
