@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -12,17 +13,26 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <Label contentDisplay="RIGHT" layoutX="177.0" layoutY="210.0" text="Código">
-                            <graphic>
-                                <TextField fx:id="codigoCliente" />
-                            </graphic>
-                        </Label>
-                  <Label contentDisplay="RIGHT" layoutX="183.0" layoutY="242.0" text="Nome">
+                  <Label fx:id="" contentDisplay="RIGHT" layoutX="178.0" layoutY="107.0" text="Nome">
                      <graphic>
-                        <TextField fx:id="nomeCliente" />
+                        <TextField fx:id="nomeUsuario" prefHeight="25.0" prefWidth="155.0" />
                      </graphic>
                   </Label>
-                        <Button fx:id="cadastrarClienteBtn" layoutX="242.0" layoutY="273.0" mnemonicParsing="false" onAction="#clickCadastrar" text="Cadastrar" />
+                        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="144.0" text="Email">
+                            <graphic>
+                                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" />
+                            </graphic>
+                        </Label>
+                  <Label contentDisplay="RIGHT" layoutX="180.0" layoutY="179.0" text="Senha">
+                     <graphic>
+                        <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" />
+                     </graphic>
+                  </Label>
+                  <Label contentDisplay="RIGHT" layoutX="180.0" layoutY="218.0" text="Tipo Usuário">
+                     <graphic>
+                        <ChoiceBox fx:id="tipoUsuario" prefWidth="150.0" />
+                     </graphic></Label>
+                        <Button fx:id="cadastrarClienteBtn" layoutX="241.0" layoutY="276.0" mnemonicParsing="false" onAction="#clickCadastrar" text="Cadastrar" />
                         <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
                     </children>
                 </AnchorPane>

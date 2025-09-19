@@ -11,14 +11,12 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int id, String nome, String email, String senha, String tipo_usuario, String status, LocalDateTime data_criacao) {
-        this.id = id;
+    public Usuario(String nome, String email, String senha, String tipo_usuario, String status) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.tipo_usuario = tipo_usuario;
         this.status = status;
-        this.data_criacao = data_criacao;
     }
 
     public int getId() {
