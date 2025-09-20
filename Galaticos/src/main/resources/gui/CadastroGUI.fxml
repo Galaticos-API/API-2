@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UsuarioGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CadastroGUIController">
     <children>
         <TitledPane animated="false" layoutX="15.0" layoutY="12.0" prefHeight="579.0" prefWidth="579.0" text="Formulário de cadastro do usuário" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
@@ -34,6 +34,7 @@
                      </graphic></Label>
                         <Button fx:id="cadastrarClienteBtn" layoutX="241.0" layoutY="276.0" mnemonicParsing="false" onAction="#clickCadastrar" text="Cadastrar" />
                         <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
+                  <Button layoutX="54.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaLogin" text="Faça Login" />
                     </children>
                 </AnchorPane>
             </content>
