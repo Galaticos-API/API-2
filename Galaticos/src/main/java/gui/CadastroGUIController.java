@@ -5,14 +5,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import modelo.Usuario;
-import org.w3c.dom.Text;
+import util.SceneManager;
 
-public class UsuarioGUIController {
+public class CadastroGUIController {
 
     // @FXML conecta as variáveis do Java com os componentes do FXML pelo fx:id
     @FXML
@@ -43,15 +43,27 @@ public class UsuarioGUIController {
 
 
         if (nome.isEmpty() || email.isEmpty() ||  senha.isEmpty()) {
-            System.out.println("O campo nome não pode estar vazio.");
-        } else {
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
-            usuarioDAO.adicionar(usuario);
-            nomeUsuario.clear();
-            emailUsuario.clear();
-            senhaUsuario.clear();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Aviso!");
+            alert.setHeaderText(null);
+            alert.setContentText("Preencha os campos!");
+            alert.showAndWait();
+            return;
         }
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
+        usuarioDAO.adicionar(usuario);
+        nomeUsuario.clear();
+        emailUsuario.clear();
+        senhaUsuario.clear();
+
+        SceneManager.mudarCena("LoginGUI", "Login");
+    }
+
+    @FXML
+    void clickMudarTelaLogin(ActionEvent event) {
+        SceneManager.mudarCena("LoginGUI", "Login");
     }
 
     @FXML
