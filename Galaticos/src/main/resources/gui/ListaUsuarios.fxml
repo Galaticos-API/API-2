@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.ListaUsuariosController" spacing="10" alignment="CENTER" prefWidth="800" prefHeight="400">
+
+    <TableView fx:id="tabelaUsuarios" prefWidth="780">
+        <columns>
+            <TableColumn fx:id="colNome" text="Nome" prefWidth="150"/>
+            <TableColumn fx:id="colEmail" text="E-mail" prefWidth="200"/>
+            <TableColumn fx:id="colSenha" text="Senha" prefWidth="150"/>
+            <TableColumn fx:id="colTipo" text="Tipo Usuário" prefWidth="150"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>
