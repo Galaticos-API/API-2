@@ -31,11 +31,17 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ## 2. Backlog do Produto
 
-| Rank | Prioridade | User Story                                                                                                                | Estimativa | Sprint |
-| :--- | :--------- | :------------------------------------------------------------------------------------------------------------------------ | :--------- | :----- |
-| 1    | Alta       | Como **RH**, quero cadastrar e gerenciar colaboradores para associá-los aos seus respectivos PDIs.                        | 8          | 1      |
-| 2    | Alta       | Como **Gerente de Área**, quero criar um novo PDI anual para um colaborador da minha equipe, definindo metas e objetivos. | 13         | 1      |
-| ..    | ..       | .. | ..         | ..      |
+| Ranking | Prioridade | User Story | Estimativa (Horas) | Sprint |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | Alta | **US-01:** Como RH, quero cadastrar, consultar, editar e inativar usuários no sistema, para gerenciar quem tem acesso à plataforma. | 35 | Sprint 1 |
+| 2 | Alta | **US-02:** Como RH, quero criar um novo PDI para um colaborador, associando-o a um ano específico, para iniciar o registro histórico dos planos. | 17 | Sprint 1 |
+| 3 | Alta | **US-03:** Como RH ou Gestor de Área, quero definir objetivos e metas dentro de um PDI existente, para detalhar o que se espera do colaborador. | 16 | Sprint 1 |
+| 4 | Média | **US-04:** Como RH ou Gestor de Área, quero avaliar as Hard Skills e Soft Skills de um colaborador dentro do seu PDI, para registrar suas competências. | A ser estimado | Sprint 2 |
+| 5 | Média | **US-05:** Como RH ou Gestor de Área, quero atualizar o status de atingimento das metas de um PDI, para acompanhar o progresso do colaborador. | A ser estimado | Sprint 2 |
+| 6 | Média | **US-06:** Como RH ou Gestor de Área, quero poder fazer o upload de documentos em um PDI específico, para centralizar as evidências de desenvolvimento. | A ser estimado | Sprint 2 |
+| 7 | Baixa | **US-07:** Como Gestor Geral, quero visualizar um painel com o cálculo de atingimento de metas coletivo, para ter uma visão macro do desenvolvimento. | A ser estimado | Sprint 3 |
+| 8 | Baixa | **US-08:** Como RH, quero poder exportar as informações de um PDI para uma planilha, para análises externas. | A ser estimado | Sprint 3 |
+| 9 | Baixa | **US-09:** Como Gestor de Área, quero ter uma visualização consolidada do progresso dos PDIs de todos os meus liderados, para gerenciar minha equipe. | A ser estimado | Sprint 3 |
 
 
 ---
@@ -75,7 +81,6 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 │ │ └── resources/
 │ └── test/
 ├── docs/
-├── database/
 ├── .gitignore
 └── README.md
 ```
@@ -86,10 +91,11 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ### Pré-requisitos
 
-- Java JDK 11 ou superior
+- Java JDK 25
 - MySQL 8.0
 - Apache Maven
 - Git
+- JavaFX 8.4
 
 ### Instalação e Execução
 
@@ -98,9 +104,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
     git clone https://github.com/Galaticos-API/API-2.git
     ```
 2.  **Configure o banco de dados:**
-
-    - Crie um banco de dados chamado `pdi_youtan`.
-    - Execute o script `database/script.sql` para criar as tabelas.
+    - Execute o script `DOCS/script.sql` para criar o banco de dados e as tabelas.
 
 3.  **Compile e execute o projeto**
 
@@ -112,7 +116,7 @@ A documentação completa do projeto pode ser encontrada na pasta `/docs` do rep
 
 - **[Acessar Pasta de Documentação](./docs/)**
 
-A pasta irá incluir:
+A pasta irá incluir (WIP):
 
 - **Checklist de DoR (Definition of Ready) e DoD (Definition of Done)**
 - **Detalhes de DoR e DoD por Sprint**
