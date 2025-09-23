@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PdiDAO {
 
-    // CREATE
+
     public void adicionar(PDI pdi) {
         String sql = "INSERT INTO pdi (funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
 

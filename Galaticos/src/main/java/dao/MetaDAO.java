@@ -9,7 +9,6 @@ import java.util.List;
 
 public class MetaDAO {
 
-    // --- Adicionar ---
     public void adicionar(Meta meta) {
         String sql = "INSERT INTO metas (objetivo_id, descricao, status, data_conclusao) VALUES (?, ?, ?, ?)";
 
@@ -40,7 +39,7 @@ public class MetaDAO {
         }
     }
 
-    // --- Buscar por ID ---
+
     public Meta buscarPorId(int id) {
         String sql = "SELECT * FROM metas WHERE id = ?";
         Meta meta = null;
