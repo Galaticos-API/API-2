@@ -1,11 +1,6 @@
-// Local do arquivo: C:\Galaticos\src\main\java\modelo\Objetivo.java
-
 package modelo;
 
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-
 
 /**
  * Classe que representa um Objetivo dentro de um PDI.
@@ -22,14 +17,8 @@ public class Objetivo {
     private float peso;
     private float pontuacao;
 
-    // --- Relacionamento (Proposto) ---
-    // Um Objetivo pode ser quebrado em várias Metas
-    private List<Meta> metas;
-
-
     // --- Construtores ---
     public Objetivo() {
-        this.metas = new ArrayList<>();
     }
 
     public Objetivo(int id, int pdiId, String descricao, Date prazo, String status, String comentarios, float peso, float pontuacao) {
@@ -41,7 +30,6 @@ public class Objetivo {
         this.comentarios = comentarios;
         this.peso = peso;
         this.pontuacao = pontuacao;
-        this.metas = new ArrayList<>();
     }
 
 
@@ -108,13 +96,5 @@ public class Objetivo {
 
     public void setPontuacao(float pontuacao) {
         this.pontuacao = pontuacao;
-    }
-
-    public List<Meta> getMetas() {
-        return metas;
-    }
-
-    public void setMetas(List<Meta> metas) {
-        this.metas = metas;
     }
 }
