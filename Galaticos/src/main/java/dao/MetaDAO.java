@@ -1,48 +1,67 @@
 package dao;
 
 import factory.ConnectionFactory;
-import modelo.Meta;
+import modelo.Objetivo;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetaDAO {
+/**
+ * Classe de Acesso a Dados (DAO) para a entidade Objetivo.
+ * Responsável por toda a comunicação com o banco de dados referente aos objetivos.
+ *
+ * IMPORTANTE: Esta classe assume que a tabela no banco de dados se chama 'objetivos'
+ * e possui as seguintes colunas: id, pdi_id, descricao, prazo, status,
+ * comentarios, peso, pontuacao.
+ */
+public class ObjetivoDAO {
 
-    public void adicionar(Meta meta) {
-        String sql = "INSERT INTO metas (objetivo_id, descricao, status, data_conclusao) VALUES (?, ?, ?, ?)";
+    /**
+     * Insere um novo objetivo no banco de dados.
+     * @param objetivo O objeto a ser salvo.
+     */
+    public void adicionar(Objetivo objetivo) {
+        String sql = "INSERT INTO objetivos (pdi_id, descricao, prazo, status, comentarios, peso, pontuacao) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, meta.getObjetivoId());
-            stmt.setString(2, meta.getDescricao());
-            stmt.setString(3, meta.getStatus());
+            stmt.setInt(1, objetivo.getPdiId());
+            stmt.setString(2, objetivo.getDescricao());
 
-            if (meta.getDataConclusao() != null) {
-                stmt.setDate(4, new java.sql.Date(meta.getDataConclusao().getTime()));
+            if (objetivo.getPrazo() != null) {
+                stmt.setDate(3, new java.sql.Date(objetivo.getPrazo().getTime()));
             } else {
-                stmt.setNull(4, Types.DATE);
+                stmt.setNull(3, Types.DATE);
             }
+
+            stmt.setString(4, objetivo.getStatus());
+            stmt.setString(5, objetivo.getComentarios());
+            stmt.setFloat(6, objetivo.getPeso());
+            stmt.setFloat(7, objetivo.getPontuacao());
 
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    meta.setId(rs.getInt(1));
+                    objetivo.setId(rs.getInt(1));
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao adicionar meta: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao adicionar objetivo no banco de dados.", e);
         }
     }
 
-
-    public Meta buscarPorId(int id) {
-        String sql = "SELECT * FROM metas WHERE id = ?";
-        Meta meta = null;
+    /**
+     * Busca um objetivo pelo seu ID.
+     * @param id O ID do objetivo a ser buscado.
+     * @return O objeto Objetivo encontrado, ou null se não existir.
+     */
+    public Objetivo buscarPorId(int id) {
+        String sql = "SELECT * FROM objetivos WHERE id = ?";
+        Objetivo objetivo = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -51,81 +70,96 @@ public class MetaDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    meta = new Meta();
-                    meta.setId(rs.getInt("id"));
-                    meta.setObjetivoId(rs.getInt("objetivo_id"));
-                    meta.setDescricao(rs.getString("descricao"));
-                    meta.setStatus(rs.getString("status"));
-                    meta.setDataConclusao(rs.getDate("data_conclusao"));
+                    objetivo = new Objetivo();
+                    objetivo.setId(rs.getInt("id"));
+                    objetivo.setPdiId(rs.getInt("pdi_id"));
+                    objetivo.setDescricao(rs.getString("descricao"));
+                    objetivo.setPrazo(rs.getDate("prazo"));
+                    objetivo.setStatus(rs.getString("status"));
+                    objetivo.setComentarios(rs.getString("comentarios"));
+                    objetivo.setPeso(rs.getFloat("peso"));
+                    objetivo.setPontuacao(rs.getFloat("pontuacao"));
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar meta: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar objetivo por ID.", e);
         }
 
-        return meta;
+        return objetivo;
     }
 
-    // --- Listar todas ---
-    public List<Meta> listarTodas() {
-        List<Meta> metas = new ArrayList<>();
-        String sql = "SELECT * FROM metas";
+    /**
+     * Lista todos os objetivos cadastrados no banco de dados.
+     * @return Uma lista de todos os objetos Objetivo.
+     */
+    public List<Objetivo> listarTodos() {
+        List<Objetivo> objetivos = new ArrayList<>();
+        String sql = "SELECT * FROM objetivos";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Meta meta = new Meta();
-                meta.setId(rs.getInt("id"));
-                meta.setObjetivoId(rs.getInt("objetivo_id"));
-                meta.setDescricao(rs.getString("descricao"));
-                meta.setStatus(rs.getString("status"));
-                meta.setDataConclusao(rs.getDate("data_conclusao"));
+                Objetivo objetivo = new Objetivo();
+                objetivo.setId(rs.getInt("id"));
+                objetivo.setPdiId(rs.getInt("pdi_id"));
+                objetivo.setDescricao(rs.getString("descricao"));
+                objetivo.setPrazo(rs.getDate("prazo"));
+                objetivo.setStatus(rs.getString("status"));
+                objetivo.setComentarios(rs.getString("comentarios"));
+                objetivo.setPeso(rs.getFloat("peso"));
+                objetivo.setPontuacao(rs.getFloat("pontuacao"));
 
-                metas.add(meta);
+                objetivos.add(objetivo);
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar metas: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar todos os objetivos.", e);
         }
 
-        return metas;
+        return objetivos;
     }
 
-    // --- Atualizar ---
-    public void atualizar(Meta meta) {
-        String sql = "UPDATE metas SET objetivo_id = ?, descricao = ?, status = ?, data_conclusao = ? WHERE id = ?";
+    /**
+     * Atualiza os dados de um objetivo existente no banco de dados.
+     * @param objetivo O objeto com os dados atualizados.
+     */
+    public void atualizar(Objetivo objetivo) {
+        String sql = "UPDATE objetivos SET pdi_id = ?, descricao = ?, prazo = ?, status = ?, comentarios = ?, peso = ?, pontuacao = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, meta.getObjetivoId());
-            stmt.setString(2, meta.getDescricao());
-            stmt.setString(3, meta.getStatus());
+            stmt.setInt(1, objetivo.getPdiId());
+            stmt.setString(2, objetivo.getDescricao());
 
-            if (meta.getDataConclusao() != null) {
-                stmt.setDate(4, new java.sql.Date(meta.getDataConclusao().getTime()));
+            if (objetivo.getPrazo() != null) {
+                stmt.setDate(3, new java.sql.Date(objetivo.getPrazo().getTime()));
             } else {
-                stmt.setNull(4, Types.DATE);
+                stmt.setNull(3, Types.DATE);
             }
 
-            stmt.setInt(5, meta.getId());
+            stmt.setString(4, objetivo.getStatus());
+            stmt.setString(5, objetivo.getComentarios());
+            stmt.setFloat(6, objetivo.getPeso());
+            stmt.setFloat(7, objetivo.getPontuacao());
+            stmt.setInt(8, objetivo.getId()); // Condição WHERE
 
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Erro ao atualizar meta: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar o objetivo.", e);
         }
     }
 
-    // --- Remover ---
+    /**
+     * Remove um objetivo do banco de dados pelo seu ID.
+     * @param id O ID do objetivo a ser removido.
+     */
     public void remover(int id) {
-        String sql = "DELETE FROM metas WHERE id = ?";
+        String sql = "DELETE FROM objetivos WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -134,8 +168,7 @@ public class MetaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Erro ao remover meta: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao remover o objetivo.", e);
         }
     }
 }
