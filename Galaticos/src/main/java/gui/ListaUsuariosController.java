@@ -34,7 +34,7 @@ public class ListaUsuariosController {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colSenha.setCellValueFactory(new PropertyValueFactory<>("senha"));
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo_usuario"));
+        colTipo.setCellValueFactory(new PropertyValueFactory<>("setor"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Cria uma lista de usuários fictícia

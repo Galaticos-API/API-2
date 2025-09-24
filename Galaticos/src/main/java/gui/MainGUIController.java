@@ -3,6 +3,8 @@ package gui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import modelo.Usuario;
 import util.SceneManager;
@@ -27,6 +29,13 @@ public class MainGUIController {
 
         logadoComo.setText("Logado como: " + this.usuarioLogado.getNome());
         funcaoUsuario.setText("Função: " + this.usuarioLogado.getTipo_usuario());
+    }
+
+    @FXML
+    void clickUsuarios(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListaUsuarios.fxml"));
+        Parent root = loader.load();
+        MainGUIController controller = loader.getController();
     }
 
     @FXML
