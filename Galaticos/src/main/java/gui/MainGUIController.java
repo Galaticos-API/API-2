@@ -10,6 +10,8 @@ import util.Session;
 
 public class MainGUIController {
 
+    private Usuario usuarioLogado;
+
     @FXML
     private Label funcaoUsuario;
     @FXML
@@ -21,8 +23,10 @@ public class MainGUIController {
     }
 
     public void setUsuario(Usuario usuario) {
-        logadoComo.setText("Logado como: " + usuario.getNome());
-        funcaoUsuario.setText("Função: " + usuario.getTipo_usuario());
+        this.usuarioLogado = usuario;
+
+        logadoComo.setText("Logado como: " + this.usuarioLogado.getNome());
+        funcaoUsuario.setText("Função: " + this.usuarioLogado.getTipo_usuario());
     }
 
     @FXML

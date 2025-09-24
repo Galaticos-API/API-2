@@ -60,7 +60,7 @@ public class LoginGUIController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Aviso!");
         alert.setHeaderText(null);
-        alert.setContentText("Usuário não encontrado no sistema.");
+        alert.setContentText("Usuário ou senha incorretos.");
         alert.showAndWait();
     }
 
