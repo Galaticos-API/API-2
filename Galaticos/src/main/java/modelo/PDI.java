@@ -14,7 +14,7 @@ public class PDI {
     // --- Atributos ---
     // Correspondem aos campos da tabela PDI no diagrama.
     private int id;
-    private int funcionarioId;
+    private int colaboradorId;
     private int ano;
     private String status;
     private Date dataCriacao;
@@ -43,9 +43,9 @@ public class PDI {
     /**
      * Construtor com todos os atributos para facilitar a criação de objetos já preenchidos.
      */
-    public PDI(int id, int funcionarioId, int ano, String status, Date dataCriacao, Date dataFechamento, float pontuacaoGeral) {
+    public PDI(int id, int colaboradorId, int ano, String status, Date dataCriacao, Date dataFechamento, float pontuacaoGeral) {
         this.id = id;
-        this.funcionarioId = funcionarioId;
+        this.colaboradorId = colaboradorId;
         this.ano = ano;
         this.status = status;
         this.dataCriacao = dataCriacao;
@@ -67,12 +67,12 @@ public class PDI {
         this.id = id;
     }
 
-    public int getFuncionarioId() {
-        return funcionarioId;
+    public int getColaboradorId() {
+        return colaboradorId;
     }
 
-    public void setFuncionarioId(int funcionarioId) {
-        this.funcionarioId = funcionarioId;
+    public void setColaboradorId(int colaboradorId) {
+        this.colaboradorId = colaboradorId;
     }
 
     public int getAno() {
