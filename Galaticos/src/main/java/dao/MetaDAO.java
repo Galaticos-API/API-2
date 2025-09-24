@@ -1,7 +1,6 @@
 package dao;
 
 import factory.ConnectionFactory;
-import modelo.Meta;
 
 import java.sql.*;
 import java.util.ArrayList;
