@@ -7,11 +7,11 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ColaboradorGUIController">
     <children>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="25.0" prefWidth="272.0">
               <children>
-            <MenuBar layoutX="-1.0" prefHeight="25.0" prefWidth="272.0">
+            <MenuBar layoutX="-1.0" prefHeight="26.0" prefWidth="600.0">
               <menus>
                 <Menu fx:id="perfilMenu" mnemonicParsing="false" text="Perfil">
                   <items>

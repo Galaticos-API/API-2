@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import modelo.Usuario;
-import org.w3c.dom.Text;
 import util.SceneManager;
 import util.Session;
 import util.StageManager;
@@ -44,11 +43,12 @@ public class LoginGUIController {
 
         for (Usuario usuario : listaUsuarios) {
             if (emailUsuario.getText().trim().equals(usuario.getEmail()) && senhaUsuario.getText().trim().equals(usuario.getSenha())) {
+                String proximaTela = pegarTela(usuario.getTipo_usuario());
                 Session.setUsuarioAtual(usuario);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainGUI.fxml"));
+                System.out.println(proximaTela);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/"+proximaTela+".fxml"));
                 Parent root = loader.load();
-                MainGUIController controller = loader.getController();
-                controller.setUsuario(Session.getUsuarioAtual());
+                passarUsuario(usuario.getTipo_usuario(), loader);
 
                 Stage stage = StageManager.getStage();
                 stage.setScene(new Scene(root));
@@ -73,5 +73,37 @@ public class LoginGUIController {
     void clickSair(ActionEvent event) {
         Platform.exit();
         System.exit(0);
+    }
+
+    // Utilidade
+    String pegarTela(String funcao) {
+        switch (funcao) {
+            case "RH":
+                return "TelaRHGUI";
+            case "Colaborador":
+                return "ColaboradorGUI";
+            case "Gestor de Area":
+                return "GestorAreaGUI";
+            case "Gestor Geral":
+                return "GestorGeralGUI";
+        }
+        return "telaColaboradorController";
+    }
+
+    void passarUsuario(String funcao, FXMLLoader loader) throws Exception {
+        switch (funcao) {
+            case "RH":
+                TelaRHController RHController = loader.getController();
+                RHController.setUsuario(Session.getUsuarioAtual());
+                break;
+            case "Colaborador":
+                ColaboradorGUIController ColaboradorController = loader.getController();
+                ColaboradorController.setUsuario(Session.getUsuarioAtual());
+                break;
+            case "Gestor de Area":
+
+            case "Gestor Geral":
+
+        }
     }
 }
