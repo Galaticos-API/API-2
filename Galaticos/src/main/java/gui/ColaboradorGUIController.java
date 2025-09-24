@@ -1,5 +1,6 @@
 package gui;
 
+import dao.UsuarioDAO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,9 @@ import modelo.Usuario;
 import util.SceneManager;
 import util.Session;
 
-public class MainGUIController {
+import java.util.List;
+
+public class ColaboradorGUIController {
 
     private Usuario usuarioLogado;
 
@@ -33,9 +36,9 @@ public class MainGUIController {
 
     @FXML
     void clickUsuarios(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListaUsuarios.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/TelaRHGUI.fxml"));
         Parent root = loader.load();
-        MainGUIController controller = loader.getController();
+        ColaboradorGUIController controller = loader.getController();
     }
 
     @FXML
