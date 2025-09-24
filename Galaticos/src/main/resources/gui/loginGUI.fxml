@@ -18,16 +18,16 @@
                                 <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" />
                             </graphic>
                         </Label>
-                  <Label contentDisplay="RIGHT" layoutX="180.0" layoutY="179.0" text="Senha">
+                  <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="178.0" text="Senha">
                      <graphic>
                         <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" />
                      </graphic>
                   </Label>
-                  <Label contentDisplay="RIGHT" layoutX="180.0" layoutY="218.0" text="Tipo Usuário">
+                  <Label contentDisplay="RIGHT" layoutX="180.0" layoutY="212.0" text="Setor">
                      <graphic>
-                        <ChoiceBox fx:id="tipoUsuario" prefWidth="150.0" />
+                        <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
                      </graphic></Label>
-                        <Button layoutX="241.0" layoutY="276.0" mnemonicParsing="false" onAction="#clickLogin" text="Login" />
+                        <Button layoutX="241.0" layoutY="262.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
                         <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
                   <Button layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
                     </children>
