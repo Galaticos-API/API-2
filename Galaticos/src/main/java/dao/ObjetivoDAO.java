@@ -9,9 +9,9 @@ import java.util.List;
 
 /**
  * Classe de Acesso a Dados (DAO) para a entidade Objetivo.
- * Responsável por toda a comunicação com o banco de dados referente aos objetivos.
+ * Responsável por toda a comunicação com o banco de dados referente aos objetivo.
  *
- * IMPORTANTE: Esta classe assume que a tabela no banco de dados se chama 'objetivos'
+ * IMPORTANTE: Esta classe assume que a tabela no banco de dados se chama 'objetivo'
  * e possui as seguintes colunas: id, pdi_id, descricao, prazo, status,
  * comentarios, peso, pontuacao.
  */
@@ -22,7 +22,7 @@ public class ObjetivoDAO {
      * @param objetivo O objeto a ser salvo.
      */
     public void adicionar(Objetivo objetivo) {
-        String sql = "INSERT INTO objetivos (pdi_id, descricao, prazo, status, comentarios, peso, pontuacao) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO objetivo (pdi_id, descricao, prazo, status, comentarios, peso, pontuacao) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -60,7 +60,7 @@ public class ObjetivoDAO {
      * @return O objeto Objetivo encontrado, ou null se não existir.
      */
     public Objetivo buscarPorId(int id) {
-        String sql = "SELECT * FROM objetivos WHERE id = ?";
+        String sql = "SELECT * FROM objetivo WHERE id = ?";
         Objetivo objetivo = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -90,12 +90,12 @@ public class ObjetivoDAO {
     }
 
     /**
-     * Lista todos os objetivos cadastrados no banco de dados.
+     * Lista todos os objetivo cadastrados no banco de dados.
      * @return Uma lista de todos os objetos Objetivo.
      */
     public List<Objetivo> listarTodos() {
-        List<Objetivo> objetivos = new ArrayList<>();
-        String sql = "SELECT * FROM objetivos";
+        List<Objetivo> objetivoList = new ArrayList<>();
+        String sql = "SELECT * FROM objetivo";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -112,14 +112,14 @@ public class ObjetivoDAO {
                 objetivo.setPeso(rs.getFloat("peso"));
                 objetivo.setPontuacao(rs.getFloat("pontuacao"));
 
-                objetivos.add(objetivo);
+                objetivoList.add(objetivo);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao listar todos os objetivos.", e);
+            throw new RuntimeException("Erro ao listar todos os objetivo.", e);
         }
 
-        return objetivos;
+        return objetivoList;
     }
 
     /**
@@ -127,7 +127,7 @@ public class ObjetivoDAO {
      * @param objetivo O objeto com os dados atualizados.
      */
     public void atualizar(Objetivo objetivo) {
-        String sql = "UPDATE objetivos SET pdi_id = ?, descricao = ?, prazo = ?, status = ?, comentarios = ?, peso = ?, pontuacao = ? WHERE id = ?";
+        String sql = "UPDATE objetivo SET pdi_id = ?, descricao = ?, prazo = ?, status = ?, comentarios = ?, peso = ?, pontuacao = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -159,7 +159,7 @@ public class ObjetivoDAO {
      * @param id O ID do objetivo a ser removido.
      */
     public void remover(int id) {
-        String sql = "DELETE FROM objetivos WHERE id = ?";
+        String sql = "DELETE FROM objetivo WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
