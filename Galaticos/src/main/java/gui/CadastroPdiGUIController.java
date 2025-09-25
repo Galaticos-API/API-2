@@ -5,11 +5,15 @@ import dao.PdiDAO;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import modelo.Objetivo;
 import modelo.PDI;
 import util.SceneManager;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -40,6 +44,11 @@ public class CadastroPdiGUIController {
     private Button cadastrarPdiBtn;
     @FXML
     private Button voltarBtn;
+
+
+    @FXML
+    private AnchorPane rootPane;
+
 
     // DAOs para interagir com o banco de dados
     private final PdiDAO pdiDAO = new PdiDAO();
@@ -144,7 +153,23 @@ public class CadastroPdiGUIController {
 
     @FXML
     void clickVoltar(ActionEvent event) {
-        // Mude "DashboardGUI" para a tela principal ou anterior do seu sistema
-        SceneManager.mudarCena("DashboardGUI", "Painel Principal");
+        try {
+            Parent telaLista = FXMLLoader.load(getClass().getResource("/gui/Menu/ListaPdiGUI.fxml"));
+
+            AnchorPane parentContainer = (AnchorPane) rootPane.getParent();
+
+            parentContainer.getChildren().setAll(telaLista);
+
+            AnchorPane.setTopAnchor(telaLista, 0.0);
+            AnchorPane.setBottomAnchor(telaLista, 0.0);
+            AnchorPane.setLeftAnchor(telaLista, 0.0);
+            AnchorPane.setRightAnchor(telaLista, 0.0);
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar a tela de lista de PDIs.");
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.err.println("Erro: O rootPane ou seu pai é nulo. Verifique o fx:id no FXML.");
+            e.printStackTrace();
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainGUIController">
     <top>
@@ -34,11 +35,14 @@
         <AnchorPane fx:id="contentArea" prefHeight="200.0" prefWidth="200.0" />
     </center>
     <bottom>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+            </padding>
             <children>
-                <Label fx:id="funcaoUsuario" layoutX="11.0" layoutY="169.0" text="Função:" />
-                <Label fx:id="logadoComo" layoutX="11.0" layoutY="143.0" text="Logado(a) como: " />
+                <Label fx:id="logadoComo" text="Logado(a) como: " />
+                <Label fx:id="funcaoUsuario" text="Função:" />
             </children>
-        </AnchorPane>
+        </HBox>
     </bottom>
 </BorderPane>
