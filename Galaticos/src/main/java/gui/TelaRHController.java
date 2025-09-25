@@ -4,7 +4,6 @@ import dao.UsuarioDAO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -37,6 +36,11 @@ public class TelaRHController {
     @FXML
     private Label logadoComo;
 
+    public Button perfilMenu;
+    public Button pdiMenu;
+    public Button dashboardMenu;
+    public Button usuariosMenu;
+
     @FXML
     public void initialize() {
         // Configura as colunas com os atributos da classe Usuario
@@ -55,7 +59,6 @@ public class TelaRHController {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
-
 
 
         tabelaUsuarios.setRowFactory(tv -> {
@@ -105,6 +108,26 @@ public class TelaRHController {
     void clickSair(ActionEvent event) {
         Platform.exit();
         System.exit(0);
+    }
+
+    @FXML
+    void clickPerfilMenu(ActionEvent event) {
+        SceneManager.mudarCena("perfilGUI", "Perfil de colaborador");
+    }
+
+    @FXML
+    void clickPdiMenu(ActionEvent event) {
+        SceneManager.mudarCena("pdiGUI", "Registro de PDI");
+    }
+
+    @FXML
+    void clickDashboardMenu(ActionEvent event) {
+        SceneManager.mudarCena("dashboardGUI", "Dashboard");
+    }
+
+    @FXML
+    void clickUsuariosMenu(ActionEvent event) {
+        SceneManager.mudarCena("ColaboradorGUI", "Registro de colaboradores");
     }
 
     public void setUsuario(Usuario usuario) {

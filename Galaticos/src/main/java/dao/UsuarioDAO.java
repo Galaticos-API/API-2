@@ -29,8 +29,7 @@ public class UsuarioDAO {
 
             System.out.println("Usuario " + usuario.getNome() + " cadastrado com sucesso!");
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -59,8 +58,7 @@ public class UsuarioDAO {
 
                 usuarios.add(usuario);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return usuarios;
@@ -92,8 +90,7 @@ public class UsuarioDAO {
                 }
             }
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return usuario;
@@ -115,8 +112,7 @@ public class UsuarioDAO {
 
             return pstmt.executeUpdate() > 0;
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -131,8 +127,7 @@ public class UsuarioDAO {
 
             return pstmt.executeUpdate() > 0;
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
