@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gui.MainGUIController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Perfil">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuPerfil" text="Abrir Perfil"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="PDI">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuPDI" text="Gerenciar PDI"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuDashboard" mnemonicParsing="false" text="Dashboard">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuDashboard" text="Visualizar Dashboard"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuUsuarios" mnemonicParsing="false" text="Usuários">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuUsuarios" text="Gerenciar Usuários"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <AnchorPane fx:id="contentArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="funcaoUsuario" layoutX="11.0" layoutY="169.0" text="Função:"/>
+                <Label fx:id="logadoComo" layoutX="11.0" layoutY="143.0" text="Logado(a) como: "/>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

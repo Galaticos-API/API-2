@@ -46,7 +46,7 @@ public class LoginGUIController {
                 String proximaTela = pegarTela(usuario.getTipo_usuario());
                 Session.setUsuarioAtual(usuario);
                 System.out.println(proximaTela);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/"+proximaTela+".fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + proximaTela + ".fxml"));
                 Parent root = loader.load();
                 passarUsuario(usuario.getTipo_usuario(), loader);
 
@@ -79,7 +79,7 @@ public class LoginGUIController {
     String pegarTela(String funcao) {
         switch (funcao) {
             case "RH":
-                return "TelaRHGUI";
+                return "MainGUI";
             case "Colaborador":
                 return "ColaboradorGUI";
             case "Gestor de Area":
@@ -93,12 +93,12 @@ public class LoginGUIController {
     void passarUsuario(String funcao, FXMLLoader loader) throws Exception {
         switch (funcao) {
             case "RH":
-                TelaRHController RHController = loader.getController();
-                RHController.setUsuario(Session.getUsuarioAtual());
+                MainGUIController mainGUIController = loader.getController();
+                mainGUIController.setUsuario(Session.getUsuarioAtual());
                 break;
             case "Colaborador":
-                ColaboradorGUIController ColaboradorController = loader.getController();
-                ColaboradorController.setUsuario(Session.getUsuarioAtual());
+                MainGUIController mainGUIController2 = loader.getController();
+                mainGUIController2.setUsuario(Session.getUsuarioAtual());
                 break;
             case "Gestor de Area":
 
