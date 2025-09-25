@@ -1,4 +1,4 @@
-package gui;
+package gui.menu;
 
 import dao.UsuarioDAO;
 import javafx.beans.binding.Bindings;
@@ -6,10 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
-import util.SceneManager;
 
+import java.beans.EventHandler;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +28,9 @@ public class UsuariosGUIController {
     @FXML
     private TableColumn<Usuario, Integer> colStatus;
 
+    @FXML
+    private Button btnAddUsuario;
+
 
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -44,6 +47,11 @@ public class UsuariosGUIController {
 
             atualizarUsuarios();
         }
+    }
+
+    @FXML
+    void clickAddUsuario(EventHandler event){
+        
     }
 
     @FXML

@@ -1,4 +1,4 @@
-package gui;
+package gui.menu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;

@@ -1,5 +1,6 @@
 package gui;
 
+import gui.menu.UsuariosGUIController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,10 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 
 import java.io.IOException;
-import java.util.Objects;
-
-import util.SceneManager;
-import util.SceneManager.*;
 
 public class MainGUIController {
 
@@ -70,7 +67,7 @@ public class MainGUIController {
 
     private void loadPage(String fxmlFile) {
         try {
-            String resourcePath = "/gui/" + fxmlFile + ".fxml";
+            String resourcePath = "/gui/menu/" + fxmlFile + ".fxml";
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));
             Node page = loader.load();
@@ -78,7 +75,7 @@ public class MainGUIController {
             if (controller instanceof UsuariosGUIController usuariosController) {
                 usuariosController.setUsuario(this.usuarioLogado);
                 usuariosController.initialize();
-            }else{
+            } else {
                 System.out.println("IF nao entrou");
             }
             // Você pode adicionar outros 'else if' para outras telas que precisem do usuário
