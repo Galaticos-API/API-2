@@ -70,6 +70,9 @@ public class CadastroPdiGUIController {
             int colaboradorId = Integer.parseInt(colaboradorIdField.getText().trim());
             int ano = Integer.parseInt(anoField.getText().trim());
             String statusPdi = statusPdiChoiceBox.getValue();
+            // Pega a data tanto para o PDI quanto para o Objetivo
+            Date prazoObj = Date.from(prazoObjetivoPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
 
             // --- Criação e Persistência do PDI ---
             PDI novoPdi = new PDI();
@@ -77,6 +80,10 @@ public class CadastroPdiGUIController {
             novoPdi.setAno(ano);
             novoPdi.setStatus(statusPdi);
             novoPdi.setPontuacaoGeral(0.0f); // Pontuação inicial
+
+            // **** ALTERAÇÃO PRINCIPAL AQUI ****
+            // Atribui a data do DatePicker à data de fechamento do PDI
+            novoPdi.setDataFechamento(prazoObj);
 
             // Salva o PDI e obtém o objeto de volta com o ID
             PDI pdiSalvo = pdiDAO.adicionar(novoPdi);
@@ -88,7 +95,6 @@ public class CadastroPdiGUIController {
 
             // --- Coleta de Dados do Objetivo ---
             String descricaoObj = descricaoObjetivoArea.getText().trim();
-            Date prazoObj = Date.from(prazoObjetivoPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             String statusObj = statusObjetivoChoiceBox.getValue();
             float pesoObj = Float.parseFloat(pesoObjetivoField.getText().trim());
             String comentariosObj = comentariosObjetivoArea.getText().trim();
@@ -97,7 +103,7 @@ public class CadastroPdiGUIController {
             Objetivo novoObjetivo = new Objetivo();
             novoObjetivo.setPdiId(pdiSalvo.getId()); // Associa o objetivo ao PDI recém-criado
             novoObjetivo.setDescricao(descricaoObj);
-            novoObjetivo.setPrazo(prazoObj);
+            novoObjetivo.setPrazo(prazoObj); // Usa a mesma data para o prazo do objetivo
             novoObjetivo.setStatus(statusObj);
             novoObjetivo.setPeso(pesoObj);
             novoObjetivo.setComentarios(comentariosObj);
@@ -112,7 +118,7 @@ public class CadastroPdiGUIController {
             // SceneManager.mudarCena("DashboardGUI", "Painel Principal");
 
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erro de Formato", "Os campos 'ID Funcionário', 'Ano' e 'Peso' devem ser números válidos.");
+            showAlert(Alert.AlertType.ERROR, "Erro de Formato", "Os campos 'ID Colaborador', 'Ano' e 'Peso' devem ser números válidos.");
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Erro Inesperado", "Ocorreu um erro ao salvar os dados: " + e.getMessage());
             e.printStackTrace();
