@@ -1,4 +1,4 @@
-package gui;
+package gui.menu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -6,7 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 import util.SceneManager;
 
-public class PerfilGUIController {
+public class PdiGUIController {
 
     private Usuario usuarioLogado;
 
