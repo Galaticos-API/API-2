@@ -5,11 +5,13 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 import util.SceneManager;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UsuariosGUIController {
 
@@ -17,6 +19,15 @@ public class UsuariosGUIController {
 
     @FXML
     private TableView<Usuario> tabelaUsuarios;
+    @FXML
+    private TableColumn<Usuario, String> colNome;
+    @FXML
+    private TableColumn<Usuario, String> colEmail;
+    @FXML
+    private TableColumn<Usuario, String> colTipo;
+    @FXML
+    private TableColumn<Usuario, Integer> colStatus;
+
 
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -26,6 +37,11 @@ public class UsuariosGUIController {
     @FXML
     public void initialize() {
         if (usuarioLogado != null) {
+            colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+            colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo_usuario"));
+            colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
             atualizarUsuarios();
         }
     }
@@ -37,7 +53,6 @@ public class UsuariosGUIController {
 
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
 
-
         tabelaUsuarios.setRowFactory(tv -> {
             TableRow<Usuario> row = new TableRow<>();
 
@@ -48,18 +63,30 @@ public class UsuariosGUIController {
 
             apagarUsuario.setOnAction(event -> {
                 Usuario selecionado = row.getItem();
-                System.out.println(selecionado);
+                //System.out.println(selecionado);
                 if (selecionado != null) {
-                    System.out.println("Apagar usuário: " + selecionado.getNome());
-                    usuarioDAO.deletar(selecionado.getId());
-                    atualizarUsuarios();
+                    //System.out.println("Apagar usuário: " + selecionado.getNome());
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmação de Exclusão");
+                    alert.setHeaderText("Você está prestes a apagar um usuário permanentemente.");
+                    alert.setContentText("Tem certeza que deseja apagar o usuário '" + selecionado.getNome() + "'?");
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        System.out.println("Usuário confirmou a exclusão de: " + selecionado.getNome());
+                        usuarioDAO.deletar(selecionado.getId());
+                        atualizarUsuarios(); // Atualiza a tabela
+                    } else {
+                        System.out.println("Exclusão cancelada pelo usuário.");
+                    }
                 }
             });
 
             editarUsuario.setOnAction(event -> {
                 Usuario selecionado = row.getItem();
                 if (selecionado != null) {
-                    System.out.println("Editar usuário: " + selecionado.getNome());
+                    //System.out.println("Editar usuário: " + selecionado.getNome());
                 }
             });
 

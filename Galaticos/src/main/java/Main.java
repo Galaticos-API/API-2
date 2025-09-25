@@ -12,10 +12,10 @@ public class Main extends Application {
 
         // Busca o arquivo a partir da raiz da pasta "resources"
         Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/loginGUI.fxml"));
-        stage.setTitle("Lista de Usuários");
 
         stage.setTitle("Sistema PDI");
         stage.setScene(new Scene(listaRoot, 579, 579));
+        stage.setResizable(false);
         stage.show();
         StageManager.setStage(stage);
     }
