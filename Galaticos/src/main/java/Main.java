@@ -8,13 +8,12 @@ import util.StageManager;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        // Busca o arquivo a partir da raiz da pasta "resources"
-        System.out.println("Rodando MAIN");
-        Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/LoginGUI.fxml"));
-        stage.setTitle("Lista de Usuários");
+        //System.out.println("Rodando MAIN");
+        Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/loginGUI.fxml"));
 
-        stage.setTitle("Cadastro Usuario");
-        stage.setScene(new Scene(listaRoot, 800, 400));
+        stage.setTitle("Sistema PDI");
+        stage.setScene(new Scene(listaRoot, 579, 579));
+        stage.setResizable(false);
         stage.show();
         StageManager.setStage(stage);
     }

@@ -2,9 +2,6 @@ package modelo;
 
 import java.util.Date;
 
-/**
- * Classe que representa um Objetivo dentro de um PDI.
- */
 public class Objetivo {
 
     // --- Atributos ---
