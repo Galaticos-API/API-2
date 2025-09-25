@@ -10,7 +10,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         // Busca o arquivo a partir da raiz da pasta "resources"
         System.out.println("Rodando MAIN");
-        Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/CadastroPdiGUI.fxml"));
+        Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/LoginGUI.fxml"));
         stage.setTitle("Lista de Usuários");
 
         stage.setTitle("Cadastro Usuario");
