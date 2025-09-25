@@ -9,22 +9,31 @@ import java.util.List;
 
 public class PdiDAO {
 
-
-    public void adicionar(PDI pdi) {
-        String sql = "INSERT INTO pdi (funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
+    /**
+     * ---- MÉTODO MODIFICADO ----
+     * Insere um novo PDI no banco de dados e retorna o objeto completo com o ID gerado.
+     * A modificação foi necessária para que, após criar um PDI, possamos obter seu ID
+     * e usá-lo para criar os objetivos associados a ele na mesma transação.
+     *
+     * @param pdi O objeto PDI a ser salvo.
+     * @return O objeto PDI salvo, incluindo o ID gerado pelo banco de dados, ou null se a inserção falhar.
+     */
+    public PDI adicionar(PDI pdi) {
+        // ALTERAÇÃO AQUI: troque 'colaborador_id' por 'colaborador_id'
+        String sql = "INSERT INTO pdi (colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.setInt(1, pdi.getFuncionarioId());
+            // ALTERAÇÃO AQUI: use o getter correto (getColaboradorId)
+            pstmt.setInt(1, pdi.getColaboradorId());
             pstmt.setInt(2, pdi.getAno());
             pstmt.setString(3, pdi.getStatus());
 
-            if (pdi.getDataCriacao() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
-            } else {
-                pstmt.setNull(4, Types.DATE);
+            if (pdi.getDataCriacao() == null) {
+                pdi.setDataCriacao(new java.util.Date());
             }
+            pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
 
             if (pdi.getDataFechamento() != null) {
                 pstmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
@@ -34,17 +43,31 @@ public class PdiDAO {
 
             pstmt.setFloat(6, pdi.getPontuacaoGeral());
 
-            pstmt.executeUpdate();
-            System.out.println("PDI cadastrado com sucesso!");
+            int affectedRows = pstmt.executeUpdate();
 
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        pdi.setId(generatedKeys.getInt(1));
+                        System.out.println("PDI cadastrado com sucesso com o ID: " + pdi.getId());
+                        return pdi;
+                    }
+                }
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao adicionar PDI no banco de dados.", e);
         }
+        return null;
     }
 
-    // READ ALL
+    // ---- MÉTODOS ORIGINAIS (SEM ALTERAÇÃO) ----
+
+    /**
+     * Lê todos os registros de PDI da tabela.
+     * @return Uma lista de todos os PDIs.
+     */
     public List<PDI> lerTodos() {
-        String sql = "SELECT id, funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi";
+        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi";
         List<PDI> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -54,7 +77,7 @@ public class PdiDAO {
             while (rs.next()) {
                 PDI pdi = new PDI();
                 pdi.setId(rs.getInt("id"));
-                pdi.setFuncionarioId(rs.getInt("funcionario_id"));
+                pdi.setColaboradorId(rs.getInt("colaborador_id"));
                 pdi.setAno(rs.getInt("ano"));
                 pdi.setStatus(rs.getString("status"));
 
@@ -74,9 +97,13 @@ public class PdiDAO {
         return lista;
     }
 
-    // READ ID
+    /**
+     * Busca um PDI específico pelo seu ID.
+     * @param id O ID do PDI a ser buscado.
+     * @return O objeto PDI encontrado, ou null se não existir.
+     */
     public PDI buscarPorId(int id) {
-        String sql = "SELECT id, funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
+        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
         PDI pdi = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -88,7 +115,7 @@ public class PdiDAO {
                 if (rs.next()) {
                     pdi = new PDI();
                     pdi.setId(rs.getInt("id"));
-                    pdi.setFuncionarioId(rs.getInt("funcionario_id"));
+                    pdi.setColaboradorId(rs.getInt("colaborador_id"));
                     pdi.setAno(rs.getInt("ano"));
                     pdi.setStatus(rs.getString("status"));
 
@@ -107,14 +134,18 @@ public class PdiDAO {
         return pdi;
     }
 
-    // UPDATE
+    /**
+     * Atualiza os dados de um PDI existente no banco de dados.
+     * @param pdi O objeto PDI com as informações atualizadas.
+     * @return true se a atualização foi bem-sucedida, false caso contrário.
+     */
     public boolean atualizar(PDI pdi) {
-        String sql = "UPDATE pdi SET funcionario_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
+        String sql = "UPDATE pdi SET colaborador_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, pdi.getFuncionarioId());
+            pstmt.setInt(1, pdi.getColaboradorId());
             pstmt.setInt(2, pdi.getAno());
             pstmt.setString(3, pdi.getStatus());
 
@@ -140,7 +171,11 @@ public class PdiDAO {
         }
     }
 
-    // DELETE
+    /**
+     * Deleta um PDI do banco de dados com base no seu ID.
+     * @param id O ID do PDI a ser deletado.
+     * @return true se a deleção foi bem-sucedida, false caso contrário.
+     */
     public boolean deletar(int id) {
         String sql = "DELETE FROM pdi WHERE id = ?";
 
