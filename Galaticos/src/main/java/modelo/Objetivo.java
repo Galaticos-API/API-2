@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Objetivo {
 
-    // --- Atributos ---
+
     private int id;
     private int pdiId; // Chave estrangeira para saber a qual PDI este objetivo pertence
     private String descricao;
@@ -14,7 +14,7 @@ public class Objetivo {
     private float peso;
     private float pontuacao;
 
-    // --- Construtores ---
+
     public Objetivo() {
     }
 
@@ -30,7 +30,7 @@ public class Objetivo {
     }
 
 
-    // --- Getters e Setters ---
+
     public int getId() {
         return id;
     }

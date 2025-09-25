@@ -14,27 +14,27 @@ public class PdiDAO {
         String sql = "INSERT INTO pdi (funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, pdi.getFuncionarioId());
-            pstmt.setInt(2, pdi.getAno());
-            pstmt.setString(3, pdi.getStatus());
+            stmt.setInt(1, pdi.getFuncionarioId());
+            stmt.setInt(2, pdi.getAno());
+            stmt.setString(3, pdi.getStatus());
 
             if (pdi.getDataCriacao() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
+                stmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
             } else {
-                pstmt.setNull(4, Types.DATE);
+                stmt.setNull(4, Types.DATE);
             }
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
+                stmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
             } else {
-                pstmt.setNull(5, Types.DATE);
+                stmt.setNull(5, Types.DATE);
             }
 
-            pstmt.setFloat(6, pdi.getPontuacaoGeral());
+            stmt.setFloat(6, pdi.getPontuacaoGeral());
 
-            pstmt.executeUpdate();
+            stmt.executeUpdate();
             System.out.println("PDI cadastrado com sucesso!");
 
         } catch (SQLException e) {
@@ -42,14 +42,13 @@ public class PdiDAO {
         }
     }
 
-    // READ ALL
     public List<PDI> lerTodos() {
         String sql = "SELECT id, funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi";
         List<PDI> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 PDI pdi = new PDI();
@@ -74,17 +73,16 @@ public class PdiDAO {
         return lista;
     }
 
-    // READ ID
     public PDI buscarPorId(int id) {
         String sql = "SELECT id, funcionario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
         PDI pdi = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, id);
+            stmt.setInt(1, id);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     pdi = new PDI();
                     pdi.setId(rs.getInt("id"));
@@ -107,48 +105,46 @@ public class PdiDAO {
         return pdi;
     }
 
-    // UPDATE
     public boolean atualizar(PDI pdi) {
         String sql = "UPDATE pdi SET funcionario_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, pdi.getFuncionarioId());
-            pstmt.setInt(2, pdi.getAno());
-            pstmt.setString(3, pdi.getStatus());
+            stmt.setInt(1, pdi.getFuncionarioId());
+            stmt.setInt(2, pdi.getAno());
+            stmt.setString(3, pdi.getStatus());
 
             if (pdi.getDataCriacao() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
+                stmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
             } else {
-                pstmt.setNull(4, Types.DATE);
+                stmt.setNull(4, Types.DATE);
             }
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
+                stmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
             } else {
-                pstmt.setNull(5, Types.DATE);
+                stmt.setNull(5, Types.DATE);
             }
 
-            pstmt.setFloat(6, pdi.getPontuacaoGeral());
-            pstmt.setInt(7, pdi.getId());
+            stmt.setFloat(6, pdi.getPontuacaoGeral());
+            stmt.setInt(7, pdi.getId());
 
-            return pstmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // DELETE
     public boolean deletar(int id) {
         String sql = "DELETE FROM pdi WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
