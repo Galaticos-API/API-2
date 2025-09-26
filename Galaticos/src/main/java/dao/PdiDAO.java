@@ -134,6 +134,42 @@ public class PdiDAO {
         return pdi;
     }
 
+
+    public List<PDI> buscarPorColaborador(int colaboradorId) {
+        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE colaborador_id =?";
+        List<PDI> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, colaboradorId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    PDI pdi = new PDI();
+                    pdi.setId(rs.getInt("id"));
+                    pdi.setColaboradorId(rs.getInt("colaborador_id"));
+                    pdi.setAno(rs.getInt("ano"));
+                    pdi.setStatus(rs.getString("status"));
+
+                    Date criacao = rs.getDate("data_criacao");
+                    if (criacao!= null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
+
+                    Date fechamento = rs.getDate("data_fechamento");
+                    if (fechamento!= null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
+
+                    pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
+
+                    lista.add(pdi);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar PDIs por colaborador.", e);
+        }
+        return lista;
+    }
+
+
     /**
      * Atualiza os dados de um PDI existente no banco de dados.
      * @param pdi O objeto PDI com as informações atualizadas.
@@ -177,16 +213,46 @@ public class PdiDAO {
      * @return true se a deleção foi bem-sucedida, false caso contrário.
      */
     public boolean deletar(int id) {
-        String sql = "DELETE FROM pdi WHERE id = ?";
+        String sqlObjetivos = "DELETE FROM objetivo WHERE pdi_id = ?";
+        String sqlPdi = "DELETE FROM pdi WHERE id = ?";
+        Connection conn = null;
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            conn = ConnectionFactory.getConnection();
+            conn.setAutoCommit(false);
 
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
+            try (PreparedStatement pstmtObjetivos = conn.prepareStatement(sqlObjetivos)) {
+                pstmtObjetivos.setInt(1, id);
+                pstmtObjetivos.executeUpdate();
+            }
+
+            try (PreparedStatement pstmtPdi = conn.prepareStatement(sqlPdi)) {
+                pstmtPdi.setInt(1, id);
+                int affectedRows = pstmtPdi.executeUpdate();
+
+                conn.commit();
+                return affectedRows > 0;
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new RuntimeException("Erro ao reverter a transação após falha na deleção.", ex);
+                }
+            }
+            throw new RuntimeException("Erro ao deletar PDI e seus objetivos.", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

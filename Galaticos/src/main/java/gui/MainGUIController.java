@@ -52,7 +52,7 @@ public class MainGUIController {
 
     @FXML
     void handleMenuPDI() {
-        loadPage("PdiGUI");
+        loadPage("ListaPdiGUI");
     }
 
     @FXML
