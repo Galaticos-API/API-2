@@ -1,29 +1,40 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Usuario {
-    private int id;
-    private String nome, email, senha, tipo_usuario, status;
-    private LocalDateTime data_criacao;
+public class Colaborador {
 
+    private Long id;
+    private String nome;
+    private String cpf;
+    private LocalDate dataNascimento;
+    private String cargo;
+    private String experiencia;
+    private String observacoes;
+    private Colaborador gerente; // Representa a coluna 'gerente_id'
+    private Usuario usuario;     // Representa a coluna 'usuario_id'
 
-    public Usuario() {
+    // Construtor padrão
+    public Colaborador() {
     }
 
-    public Usuario(String nome, String email, String senha, String tipo_usuario, String status) {
+    public Colaborador(String nome, String cpf, LocalDate dataNascimento, String cargo, String experiencia, String observacoes, Usuario usuario) {
         this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.tipo_usuario = tipo_usuario;
-        this.status = status;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.cargo = cargo;
+        this.experiencia = experiencia;
+        this.observacoes = observacoes;
+        this.usuario = usuario;
     }
 
-    public int getId() {
+    // Getters e Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,43 +46,68 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getSenha() {
-        return senha;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
-    public String getTipo_usuario() {
-        return tipo_usuario;
+    public String getCargo() {
+        return cargo;
     }
 
-    public void setTipo_usuario(String tipo_usuario) {
-        this.tipo_usuario = tipo_usuario;
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
-    public String getStatus() {
-        return status;
+    public String getExperiencia() {
+        return experiencia;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setExperiencia(String experiencia) {
+        this.experiencia = experiencia;
     }
 
-    public LocalDateTime getData_criacao() {
-        return data_criacao;
+    public String getObservacoes() {
+        return observacoes;
     }
 
-    public void setData_criacao(LocalDateTime data_criacao) {
-        this.data_criacao = data_criacao;
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public Colaborador getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Colaborador gerente) {
+        this.gerente = gerente;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Colaborador{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cargo='" + cargo + '\'' +
+                '}';
     }
 }

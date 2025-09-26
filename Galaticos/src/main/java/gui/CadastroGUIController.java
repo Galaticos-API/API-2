@@ -1,5 +1,6 @@
 package gui;
 
+import dao.ColaboradorDAO;
 import dao.UsuarioDAO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import modelo.Colaborador;
 import modelo.Usuario;
 import util.SceneManager;
 
@@ -42,7 +44,7 @@ public class CadastroGUIController {
         String tipo_usuario = tipoUsuario.getValue();
 
 
-        if (nome.isEmpty() || email.isEmpty() ||  senha.isEmpty()) {
+        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aviso!");
             alert.setHeaderText(null);
@@ -57,6 +59,10 @@ public class CadastroGUIController {
         nomeUsuario.clear();
         emailUsuario.clear();
         senhaUsuario.clear();
+
+        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+        Colaborador colaborador = new Colaborador(nome, "", null, tipo_usuario, "", "", usuario);
+        colaboradorDAO.adicionar(colaborador);
 
         SceneManager.mudarCena("LoginGUI", "Login");
     }
