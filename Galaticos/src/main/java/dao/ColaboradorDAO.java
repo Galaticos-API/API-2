@@ -1,6 +1,5 @@
 package dao;
 
-import factory.ConnectionFactory;
 import modelo.Usuario;
 import modelo.Colaborador;
 
@@ -10,19 +9,17 @@ import java.util.List;
 
 public class ColaboradorDAO {
 
-    private Connection connection;
-
-    public ColaboradorDAO() {
-        this.connection = ConnectionFactory.getConnection();
-    }
-
-    public void adicionar(Colaborador colaborador) {
+    public void adicionar(Colaborador colaborador, Connection conn) throws SQLException {
         String sql = "INSERT INTO colaborador (nome, cpf, data_nascimento, cargo, experiencia, observacoes, gerente_id, usuario_id) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, colaborador.getNome());
             stmt.setString(2, colaborador.getCpf());
-            stmt.setDate(3, java.sql.Date.valueOf(colaborador.getDataNascimento()));
+            if (colaborador.getDataNascimento() != null) {
+                stmt.setDate(3, java.sql.Date.valueOf(colaborador.getDataNascimento()));
+            } else {
+                stmt.setNull(3, java.sql.Types.DATE);
+            }
             stmt.setString(4, colaborador.getCargo());
             stmt.setString(5, colaborador.getExperiencia());
             stmt.setString(6, colaborador.getObservacoes());
@@ -36,33 +33,27 @@ public class ColaboradorDAO {
             if (colaborador.getUsuario() != null && colaborador.getUsuario().getId() != 0) {
                 stmt.setLong(8, colaborador.getUsuario().getId());
             } else {
-                throw new SQLException("O ID do usuário não pode ser nulo.");
+                throw new SQLException("A associação com o usuário é obrigatória e o ID do usuário não pode ser nulo.");
             }
 
             stmt.execute();
 
-            // Recupera o ID gerado pelo banco
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     colaborador.setId(rs.getLong(1));
                 }
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao salvar colaborador: " + e.getMessage(), e);
         }
+        System.out.println("Colaborador " + colaborador.getNome() + " preparado para inserção na transação.");
     }
 
-    /**
-     * Atualiza os dados de um colaborador existente.
-     */
-    public void atualizar(Colaborador colaborador) {
+    public void atualizar(Colaborador colaborador, Connection conn) throws SQLException {
         String sql = "UPDATE colaborador SET nome = ?, cpf = ?, data_nascimento = ?, cargo = ?, " + "experiencia = ?, observacoes = ?, gerente_id = ?, usuario_id = ? WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, colaborador.getNome());
             stmt.setString(2, colaborador.getCpf());
-            stmt.setDate(3, java.sql.Date.valueOf(colaborador.getDataNascimento()));
+            stmt.setDate(3, Date.valueOf(colaborador.getDataNascimento()));
             stmt.setString(4, colaborador.getCargo());
             stmt.setString(5, colaborador.getExperiencia());
             stmt.setString(6, colaborador.getObservacoes());
@@ -78,84 +69,74 @@ public class ColaboradorDAO {
 
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar colaborador: " + e.getMessage(), e);
         }
     }
 
-    public void excluir(Long id) {
-        String sql = "DELETE FROM colaborador WHERE id = ?";
+    public void deletar(int usuario_id, Connection conn) throws SQLException {
+        String sql = "DELETE FROM colaborador WHERE usuario_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, usuario_id);
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao excluir colaborador: " + e.getMessage(), e);
         }
     }
 
-    public Colaborador buscarPorId(Long id) {
+    public Colaborador buscarPorId(int id, Connection conn) throws SQLException {
         String sql = "SELECT * FROM colaborador WHERE id = ?";
         Colaborador colaborador = null;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     colaborador = mapearResultSetParaColaborador(rs);
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar colaborador por ID: " + e.getMessage(), e);
         }
         return colaborador;
     }
 
-    public List<Colaborador> listarTodos() {
+    public List<Colaborador> listarTodos(Connection conn) throws SQLException {
         String sql = "SELECT * FROM colaborador";
         List<Colaborador> colaboradores = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Colaborador colaborador = mapearResultSetParaColaborador(rs);
                 colaboradores.add(colaborador);
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao listar colaboradores: " + e.getMessage(), e);
         }
         return colaboradores;
     }
-
 
     private Colaborador mapearResultSetParaColaborador(ResultSet rs) throws SQLException {
         Colaborador colaborador = new Colaborador();
         colaborador.setId(rs.getLong("id"));
         colaborador.setNome(rs.getString("nome"));
         colaborador.setCpf(rs.getString("cpf"));
-        colaborador.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+        Date dataNascimentoSql = rs.getDate("data_nascimento");
+        if (dataNascimentoSql != null) {
+            colaborador.setDataNascimento(dataNascimentoSql.toLocalDate());
+        }
         colaborador.setCargo(rs.getString("cargo"));
         colaborador.setExperiencia(rs.getString("experiencia"));
         colaborador.setObservacoes(rs.getString("observacoes"));
 
-        // Para carregar o usuário, precisaríamos de um UsuarioDAO
         int usuarioId = rs.getInt("usuario_id");
         if (!rs.wasNull()) {
-            Usuario usuario = new Usuario(); // Em um caso real: new UsuarioDAO().buscarPorId(usuarioId);
+            Usuario usuario = new Usuario();
             usuario.setId(usuarioId);
             colaborador.setUsuario(usuario);
         }
 
-        // Para carregar o gerente, usaríamos o próprio DAO recursivamente
         long gerenteId = rs.getLong("gerente_id");
         if (!rs.wasNull()) {
-            Colaborador gerente = new Colaborador(); // Em um caso real: this.buscarPorId(gerenteId);
+            Colaborador gerente = new Colaborador();
             gerente.setId(gerenteId);
             colaborador.setGerente(gerente);
         }
-
         return colaborador;
     }
 }

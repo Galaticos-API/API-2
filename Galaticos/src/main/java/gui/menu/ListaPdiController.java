@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ListaPdiGUIController implements Initializable {
+public class ListaPdiController implements Initializable {
 
     @FXML
     private TextField colaboradorIdTextField;

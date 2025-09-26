@@ -11,13 +11,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import modelo.Objetivo;
 import modelo.PDI;
-import util.SceneManager;
 
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class CadastroPdiGUIController {
+public class CadastroPdiController {
 
     // --- Componentes do PDI ---
     @FXML

@@ -1,6 +1,6 @@
 package gui;
 
-import gui.menu.UsuariosGUIController;
+import gui.menu.UsuariosController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,8 +10,9 @@ import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
-public class MainGUIController {
+public class MainController {
 
     public Label logadoComo;
     public Label funcaoUsuario;
@@ -72,7 +73,7 @@ public class MainGUIController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));
             Node page = loader.load();
             Object controller = loader.getController();
-            if (controller instanceof UsuariosGUIController usuariosController) {
+            if (controller instanceof UsuariosController usuariosController) {
                 usuariosController.setUsuario(this.usuarioLogado);
                 usuariosController.initialize();
             } else {
@@ -86,6 +87,8 @@ public class MainGUIController {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Falha ao carregar a página: " + fxmlFile);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

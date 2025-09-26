@@ -1,7 +1,5 @@
-package gui;
+package gui.login;
 
-import dao.ColaboradorDAO;
-import dao.UsuarioDAO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,9 +10,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import modelo.Colaborador;
 import modelo.Usuario;
+import services.UsuarioService;
 import util.SceneManager;
+import util.Util;
 
-public class CadastroGUIController {
+public class CadastroController {
 
     // @FXML conecta as variáveis do Java com os componentes do FXML pelo fx:id
     @FXML
@@ -53,19 +53,25 @@ public class CadastroGUIController {
             return;
         }
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
-        usuarioDAO.adicionar(usuario);
-        nomeUsuario.clear();
-        emailUsuario.clear();
-        senhaUsuario.clear();
+        try {
+            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
+            Colaborador colaborador = new Colaborador(nome, "", null, tipo_usuario, "", "", null);
 
-        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-        Colaborador colaborador = new Colaborador(nome, "", null, tipo_usuario, "", "", usuario);
-        colaboradorDAO.adicionar(colaborador);
+            UsuarioService usuarioService = new UsuarioService();
+            usuarioService.cadastrarUsuarioEColaborador(usuario, colaborador);
 
-        SceneManager.mudarCena("LoginGUI", "Login");
+            Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cadastro realizado com sucesso!");
+
+            nomeUsuario.clear();
+            emailUsuario.clear();
+            senhaUsuario.clear();
+            SceneManager.mudarCena("LoginGUI", "Login");
+        } catch (RuntimeException e) {
+            // O catch continua o mesmo, pois o serviço vai lançar a exceção em caso de erro.
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
+        }
     }
+
 
     @FXML
     void clickMudarTelaLogin(ActionEvent event) {

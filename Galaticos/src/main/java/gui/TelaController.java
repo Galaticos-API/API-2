@@ -1,6 +1,7 @@
 package gui;
 
 import dao.UsuarioDAO;
+import factory.ConnectionFactory;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -12,9 +13,11 @@ import modelo.Usuario;
 import util.SceneManager;
 import util.Session;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-public class TelaRHController {
+public class TelaController {
 
     @FXML
     private TableView<Usuario> tabelaUsuarios;
@@ -42,7 +45,7 @@ public class TelaRHController {
     public Button usuariosMenu;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         // Configura as colunas com os atributos da classe Usuario
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -55,9 +58,11 @@ public class TelaRHController {
     }
 
     @FXML
-    public void atualizarUsuarios() {
+    public void atualizarUsuarios() throws SQLException {
+        Connection conn = ConnectionFactory.getConnection();
+
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
+        List<Usuario> listaUsuarios = usuarioDAO.lerTodos(conn);
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
 
 
@@ -73,11 +78,16 @@ public class TelaRHController {
                 Usuario selecionado = row.getItem();
                 System.out.println(selecionado);
                 if (selecionado != null) {
-                    System.out.println("Apagar usuário: " + selecionado.getNome());
-                    usuarioDAO.deletar(selecionado.getId());
-                    atualizarUsuarios();
+                    try {
+                        System.out.println("Apagar usuário: " + selecionado.getNome());
+                        usuarioDAO.deletar(selecionado.getId(), conn);
+                        atualizarUsuarios();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
+
 
             editarUsuario.setOnAction(event -> {
                 Usuario selecionado = row.getItem();

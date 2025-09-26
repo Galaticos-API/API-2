@@ -3,43 +3,45 @@ package dao;
 import factory.ConnectionFactory;
 import modelo.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDAO {
 
-    public void adicionar(Usuario usuario) {
+
+    public Usuario adicionar(Usuario usuario, Connection conn) throws SQLException {
+        if (emailExiste(usuario.getEmail(), conn)) {
+            throw new SQLException("O email '" + usuario.getEmail() + "' já está cadastrado. Tente outro.");
+        }
+
         String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status) VALUES(?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        // A conexão não é fechada aqui, pois é controlada externamente pela transação.
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getSenha());
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
-
             pstmt.executeUpdate();
 
-            System.out.println("Usuario " + usuario.getNome() + " cadastrado com sucesso!");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Recupera o ID gerado e o atribui ao objeto
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    usuario.setId(rs.getInt(1));
+                }
+            }
         }
+        System.out.println("Usuario " + usuario.getNome() + " preparado para inserção na transação.");
+        return usuario;
     }
 
-    public List<Usuario> lerTodos() {
+    public List<Usuario> lerTodos(Connection conn) throws SQLException {
         String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
@@ -58,22 +60,17 @@ public class UsuarioDAO {
 
                 usuarios.add(usuario);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
         return usuarios;
     }
 
-    public Usuario buscarPorId(int id) {
+    public Usuario buscarPorId(int id, Connection conn) throws SQLException {
         String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario WHERE id = ?";
         Usuario usuario = null;
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery();) {
+            try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     usuario = new Usuario();
                     usuario.setId(rs.getInt("id"));
@@ -89,46 +86,41 @@ public class UsuarioDAO {
                     }
                 }
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
         return usuario;
     }
 
-    public boolean atualizar(Usuario usuario) {
+    public boolean emailExiste(String email, Connection conn) throws SQLException {
+        String sql = "SELECT 1 FROM usuario WHERE email = ? LIMIT 1";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    public boolean atualizar(Usuario usuario, Connection conn) throws SQLException {
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ? WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getSenha());
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
-
             pstmt.setInt(6, usuario.getId());
-
             return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public boolean deletar(int id) {
+    public boolean deletar(int id, Connection conn) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-
             return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

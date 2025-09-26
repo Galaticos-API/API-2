@@ -1,6 +1,8 @@
-package gui;
+package gui.login;
 
 import dao.UsuarioDAO;
+import factory.ConnectionFactory;
+import gui.MainController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -15,9 +17,10 @@ import util.SceneManager;
 import util.Session;
 import util.StageManager;
 
+import java.sql.Connection;
 import java.util.List;
 
-public class LoginGUIController {
+public class LoginController {
 
     @FXML
     private TextField emailUsuario;
@@ -38,17 +41,20 @@ public class LoginGUIController {
 
     @FXML
     void clickLogin(ActionEvent event) throws Exception {
+        Connection conn = ConnectionFactory.getConnection();
+
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
+        List<Usuario> listaUsuarios = usuarioDAO.lerTodos(conn);
 
         for (Usuario usuario : listaUsuarios) {
             if (emailUsuario.getText().trim().equals(usuario.getEmail()) && senhaUsuario.getText().trim().equals(usuario.getSenha())) {
-                String proximaTela = pegarTela(usuario.getTipo_usuario());
+                //String proximaTela = pegarTela(usuario.getTipo_usuario());
                 Session.setUsuarioAtual(usuario);
-                System.out.println(proximaTela);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + proximaTela + ".fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + "MainGUI" + ".fxml"));
                 Parent root = loader.load();
-                passarUsuario(usuario.getTipo_usuario(), loader);
+                //passarUsuario(usuario.getTipo_usuario(), loader);
+                MainController mainController = loader.getController();
+                mainController.setUsuario(Session.getUsuarioAtual());
 
                 Stage stage = StageManager.getStage();
                 stage.setScene(new Scene(root));
@@ -93,12 +99,12 @@ public class LoginGUIController {
     void passarUsuario(String funcao, FXMLLoader loader) throws Exception {
         switch (funcao) {
             case "RH":
-                MainGUIController mainGUIController = loader.getController();
-                mainGUIController.setUsuario(Session.getUsuarioAtual());
+                MainController mainController = loader.getController();
+                mainController.setUsuario(Session.getUsuarioAtual());
                 break;
             case "Colaborador":
-                MainGUIController mainGUIController2 = loader.getController();
-                mainGUIController2.setUsuario(Session.getUsuarioAtual());
+                MainController mainController2 = loader.getController();
+                mainController2.setUsuario(Session.getUsuarioAtual());
                 break;
             case "Gestor de Area":
 

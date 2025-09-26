@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane hgap="10" vgap="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.modal.CadastroUsuarioModalController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <children>
+        <Label text="Cadastro de Novo Usuário" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+
+        <Label text="Nome:" GridPane.rowIndex="1" />
+        <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="E-mail:" GridPane.rowIndex="2" />
+        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Senha:" GridPane.rowIndex="3" />
+        <PasswordField fx:id="txtSenha" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Tipo de Usuário:" GridPane.rowIndex="4" />
+        <ComboBox fx:id="comboTipoUsuario" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <children>
+                <Button onAction="#handleSalvar" text="Salvar" style="-fx-base: #4CAF50;" textFill="white"/>
+                <Button onAction="#handleCancelar" text="Cancelar" style="-fx-base: #f44336;" textFill="white" />
+            </children>
+        </HBox>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

@@ -6,7 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 import util.SceneManager;
 
-public class DashboardGUIController {
+public class PdiController {
 
     private Usuario usuarioLogado;
 
@@ -30,11 +30,10 @@ public class DashboardGUIController {
     @FXML
     public void initialize() {
         if (usuarioLogado != null) {
-            SceneManager.mudarCena("PerfilGUI", "Perfil");
+            SceneManager.mudarCena("PdiGUI", "Perfil");
 
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario()) || "Gestor Geral".equals(usuarioLogado.getTipo_usuario());
             menuUsuarios.setVisible(podeVerUsuarios);
-            //menuUsuarios.setManaged(podeVerUsuarios); // Garante que o espaço seja removido também
         }
     }
 
