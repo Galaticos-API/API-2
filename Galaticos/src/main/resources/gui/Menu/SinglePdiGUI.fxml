@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.SinglePdiController">
+    <children>
+        <Label fx:id="labelTituloPdi" layoutX="256.0" layoutY="46.0" text="PDI">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </Label>
+        <Label fx:id="labelColaboradorId" layoutX="98.0" layoutY="117.0" text="Colaborador:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelStatus" layoutX="143.0" layoutY="146.0" text="Status:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelDataCriacao" layoutX="122.0" layoutY="175.0" text="Início em:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelDataFechamento" layoutX="102.0" layoutY="204.0" text="Término em:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelPontuacaoGeral" layoutX="112.0" layoutY="233.0" text="Pontuação:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
