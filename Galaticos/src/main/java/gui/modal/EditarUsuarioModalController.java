@@ -11,14 +11,13 @@ import javafx.stage.Stage;
 import modelo.Colaborador;
 import modelo.Usuario;
 import services.UsuarioService;
-import util.SceneManager;
 import util.Util;
 
 import java.sql.SQLException;
 // Importe sua classe de serviço ou DAO aqui
 // import service.UsuarioService;
 
-public class CadastroUsuarioModalController {
+public class EditarUsuarioModalController {
 
     @FXML
     private TextField txtNome;
@@ -34,6 +33,8 @@ public class CadastroUsuarioModalController {
 
     private Stage dialogStage;
     private boolean salvo = false;
+
+    private Usuario usuarioEditado;
 
     // Seus serviços ou DAOs
     // private UsuarioService cadastroService = new UsuarioService();
@@ -61,12 +62,15 @@ public class CadastroUsuarioModalController {
             String senha = txtSenha.getText().trim();
             String tipo_usuario = comboTipoUsuario.getValue();
             try {
-                Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
+                usuarioEditado.setNome(nome);
+                usuarioEditado.setSenha(senha);
+                usuarioEditado.setEmail(email);
+                usuarioEditado.setTipo_usuario(tipo_usuario);
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
-                usuarioDAO.adicionar(usuario);
+                usuarioDAO.atualizar(usuarioEditado);
 
-                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cadastro realizado com sucesso!");
+                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Usuário editado com sucesso!");
 
                 txtNome.clear();
                 txtEmail.clear();
@@ -130,4 +134,13 @@ public class CadastroUsuarioModalController {
             return false;
         }
     }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuarioEditado = usuario;
+
+        txtNome.setText(usuario.getNome());
+        txtEmail.setText(usuario.getEmail());
+        txtSenha.setText(usuario.getSenha());
+    }
+
 }

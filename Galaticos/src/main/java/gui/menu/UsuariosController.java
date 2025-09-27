@@ -4,6 +4,7 @@ import dao.ColaboradorDAO;
 import dao.UsuarioDAO;
 import factory.ConnectionFactory;
 import gui.modal.CadastroUsuarioModalController;
+import gui.modal.EditarUsuarioModalController;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -96,13 +97,48 @@ public class UsuariosController {
         }
     }
 
+    private void handleAbrirModalEditar(Usuario usuario) {
+        try {
+            // 1. Carrega o arquivo FXML do modal.
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/EditarUsuarioModal.fxml"));
+            Parent page = loader.load();
+
+            // 2. Cria um novo Stage (janela) para o modal.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Editar Usuário");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(btnAddUsuario.getScene().getWindow()); // Define a janela principal como "pai"
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // 3. Obtém o controller do modal e passa o Stage.
+            EditarUsuarioModalController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setUsuario(usuario);
+
+            // 4. Mostra o modal e espera até que ele seja fechado.
+            dialogStage.showAndWait();
+
+            // 5. Após o fechamento, verifica se o usuário foi salvo.
+            if (controller.isSalvo()) {
+                System.out.println("Modal fechado com sucesso, atualizando a tabela...");
+                atualizarUsuarios();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     public void atualizarUsuarios() throws SQLException {
         Connection conn = ConnectionFactory.getConnection();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos(conn);
+        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
 
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
 
@@ -145,7 +181,7 @@ public class UsuariosController {
             editarUsuario.setOnAction(event -> {
                 Usuario selecionado = row.getItem();
                 if (selecionado != null) {
-                    //System.out.println("Editar usuário: " + selecionado.getNome());
+                    handleAbrirModalEditar(selecionado);
                 }
             });
 

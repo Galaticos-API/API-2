@@ -62,7 +62,7 @@ public class TelaController {
         Connection conn = ConnectionFactory.getConnection();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos(conn);
+        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
 
 
@@ -80,7 +80,7 @@ public class TelaController {
                 if (selecionado != null) {
                     try {
                         System.out.println("Apagar usuário: " + selecionado.getNome());
-                        usuarioDAO.deletar(selecionado.getId(), conn);
+                        usuarioDAO.deletar(selecionado.getId());
                         atualizarUsuarios();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
