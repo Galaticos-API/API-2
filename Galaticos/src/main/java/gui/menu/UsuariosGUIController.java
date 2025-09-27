@@ -3,13 +3,14 @@ package gui.menu;
 import dao.UsuarioDAO;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import modelo.Usuario;
+import util.SceneManager;
 
 import java.beans.EventHandler;
-import java.util.EventListener;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,8 @@ public class UsuariosGUIController {
     }
 
     @FXML
-    void clickAddUsuario(EventHandler event){
-        
+    void clickAddUsuario(ActionEvent event){
+        SceneManager.mudarCena("AddUsuarioGUI", "Adicionar Usuário");
     }
 
     @FXML
@@ -94,7 +95,7 @@ public class UsuariosGUIController {
             editarUsuario.setOnAction(event -> {
                 Usuario selecionado = row.getItem();
                 if (selecionado != null) {
-                    //System.out.println("Editar usuário: " + selecionado.getNome());
+                    System.out.println("Editar usuário: " + selecionado.getNome());
                 }
             });
 

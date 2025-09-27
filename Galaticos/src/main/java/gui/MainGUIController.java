@@ -65,6 +65,9 @@ public class MainGUIController {
         loadPage("UsuariosGUI");
     }
 
+    @FXML
+    void handleAddUsuarios() { loadPage("AddUsuarioGUI"); }
+
     private void loadPage(String fxmlFile) {
         try {
             String resourcePath = "/gui/menu/" + fxmlFile + ".fxml";
