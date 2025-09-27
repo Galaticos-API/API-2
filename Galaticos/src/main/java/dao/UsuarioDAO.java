@@ -9,9 +9,10 @@ import java.util.List;
 
 public class UsuarioDAO {
 
+    Connection conn = ConnectionFactory.getConnection();
 
-    public Usuario adicionar(Usuario usuario, Connection conn) throws SQLException {
-        if (emailExiste(usuario.getEmail(), conn)) {
+    public Usuario adicionar(Usuario usuario) throws SQLException {
+        if (emailExiste(usuario.getEmail())) {
             throw new SQLException("O email '" + usuario.getEmail() + "' já está cadastrado. Tente outro.");
         }
 
@@ -37,7 +38,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public List<Usuario> lerTodos(Connection conn) throws SQLException {
+    public List<Usuario> lerTodos() throws SQLException {
         String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
@@ -64,7 +65,7 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    public Usuario buscarPorId(int id, Connection conn) throws SQLException {
+    public Usuario buscarPorId(int id) throws SQLException {
         String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario WHERE id = ?";
         Usuario usuario = null;
 
@@ -90,7 +91,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public boolean emailExiste(String email, Connection conn) throws SQLException {
+    public boolean emailExiste(String email) throws SQLException {
         String sql = "SELECT 1 FROM usuario WHERE email = ? LIMIT 1";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -101,7 +102,7 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean atualizar(Usuario usuario, Connection conn) throws SQLException {
+    public boolean atualizar(Usuario usuario) throws SQLException {
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -115,7 +116,7 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean deletar(int id, Connection conn) throws SQLException {
+    public boolean deletar(int id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

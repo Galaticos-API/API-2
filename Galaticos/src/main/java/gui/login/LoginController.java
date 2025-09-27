@@ -44,7 +44,7 @@ public class LoginController {
         Connection conn = ConnectionFactory.getConnection();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos(conn);
+        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
 
         for (Usuario usuario : listaUsuarios) {
             if (emailUsuario.getText().trim().equals(usuario.getEmail()) && senhaUsuario.getText().trim().equals(usuario.getSenha())) {

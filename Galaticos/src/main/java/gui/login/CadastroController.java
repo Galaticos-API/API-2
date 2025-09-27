@@ -1,5 +1,7 @@
 package gui.login;
 
+import dao.UsuarioDAO;
+import factory.ConnectionFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -13,6 +15,9 @@ import modelo.Usuario;
 import services.UsuarioService;
 import util.SceneManager;
 import util.Util;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class CadastroController {
 
@@ -55,10 +60,9 @@ public class CadastroController {
 
         try {
             Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
-            Colaborador colaborador = new Colaborador(nome, "", null, tipo_usuario, "", "", null);
 
-            UsuarioService usuarioService = new UsuarioService();
-            usuarioService.cadastrarUsuarioEColaborador(usuario, colaborador);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            usuarioDAO.adicionar(usuario);
 
             Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cadastro realizado com sucesso!");
 
@@ -66,7 +70,7 @@ public class CadastroController {
             emailUsuario.clear();
             senhaUsuario.clear();
             SceneManager.mudarCena("LoginGUI", "Login");
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | SQLException e) {
             // O catch continua o mesmo, pois o serviço vai lançar a exceção em caso de erro.
             Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
         }
