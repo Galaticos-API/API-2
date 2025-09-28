@@ -26,8 +26,8 @@ public class PdiDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             // ALTERAÇÃO AQUI: use o getter correto (getColaboradorId)
-            pstmt.setInt(1, pdi.getColaboradorId());
-            pstmt.setInt(2, pdi.getAno());
+            pstmt.setString(1, pdi.getColaboradorId());
+            pstmt.setInt(2, 0);
             pstmt.setString(3, pdi.getStatus());
 
             if (pdi.getDataCriacao() == null) {
@@ -41,14 +41,14 @@ public class PdiDAO {
                 pstmt.setNull(5, Types.DATE);
             }
 
-            pstmt.setFloat(6, pdi.getPontuacaoGeral());
+            pstmt.setFloat(6, 0);
 
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        pdi.setId(generatedKeys.getInt(1));
+                        pdi.setId(generatedKeys.getString(1));
                         System.out.println("PDI cadastrado com sucesso com o ID: " + pdi.getId());
                         return pdi;
                     }
@@ -64,6 +64,7 @@ public class PdiDAO {
 
     /**
      * Lê todos os registros de PDI da tabela.
+     *
      * @return Uma lista de todos os PDIs.
      */
     public List<PDI> lerTodos() {
@@ -76,8 +77,8 @@ public class PdiDAO {
 
             while (rs.next()) {
                 PDI pdi = new PDI();
-                pdi.setId(rs.getInt("id"));
-                pdi.setColaboradorId(rs.getInt("colaborador_id"));
+                pdi.setId(rs.getString("id"));
+                pdi.setColaboradorId(rs.getString("colaborador_id"));
                 pdi.setAno(rs.getInt("ano"));
                 pdi.setStatus(rs.getString("status"));
 
@@ -99,23 +100,24 @@ public class PdiDAO {
 
     /**
      * Busca um PDI específico pelo seu ID.
+     *
      * @param id O ID do PDI a ser buscado.
      * @return O objeto PDI encontrado, ou null se não existir.
      */
-    public PDI buscarPorId(int id) {
+    public PDI buscarPorId(String id) {
         String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
         PDI pdi = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, id);
+            pstmt.setString(1, id);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     pdi = new PDI();
-                    pdi.setId(rs.getInt("id"));
-                    pdi.setColaboradorId(rs.getInt("colaborador_id"));
+                    pdi.setId(rs.getString("id"));
+                    pdi.setColaboradorId(rs.getString("colaborador_id"));
                     pdi.setAno(rs.getInt("ano"));
                     pdi.setStatus(rs.getString("status"));
 
@@ -126,6 +128,7 @@ public class PdiDAO {
                     if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
 
                     pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
+                    return pdi;
                 }
             }
         } catch (SQLException e) {
@@ -147,16 +150,16 @@ public class PdiDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     PDI pdi = new PDI();
-                    pdi.setId(rs.getInt("id"));
-                    pdi.setColaboradorId(rs.getInt("colaborador_id"));
+                    pdi.setId(rs.getString("id"));
+                    pdi.setColaboradorId(rs.getString("colaborador_id"));
                     pdi.setAno(rs.getInt("ano"));
                     pdi.setStatus(rs.getString("status"));
 
                     Date criacao = rs.getDate("data_criacao");
-                    if (criacao!= null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
+                    if (criacao != null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
 
                     Date fechamento = rs.getDate("data_fechamento");
-                    if (fechamento!= null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
+                    if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
 
                     pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
 
@@ -172,6 +175,7 @@ public class PdiDAO {
 
     /**
      * Atualiza os dados de um PDI existente no banco de dados.
+     *
      * @param pdi O objeto PDI com as informações atualizadas.
      * @return true se a atualização foi bem-sucedida, false caso contrário.
      */
@@ -181,7 +185,7 @@ public class PdiDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, pdi.getColaboradorId());
+            pstmt.setString(1, pdi.getColaboradorId());
             pstmt.setInt(2, pdi.getAno());
             pstmt.setString(3, pdi.getStatus());
 
@@ -198,7 +202,7 @@ public class PdiDAO {
             }
 
             pstmt.setFloat(6, pdi.getPontuacaoGeral());
-            pstmt.setInt(7, pdi.getId());
+            pstmt.setString(7, pdi.getId());
 
             return pstmt.executeUpdate() > 0;
 
@@ -209,10 +213,11 @@ public class PdiDAO {
 
     /**
      * Deleta um PDI do banco de dados com base no seu ID.
+     *
      * @param id O ID do PDI a ser deletado.
      * @return true se a deleção foi bem-sucedida, false caso contrário.
      */
-    public boolean deletar(int id) {
+    public boolean deletar(String id) {
         String sqlObjetivos = "DELETE FROM objetivo WHERE pdi_id = ?";
         String sqlPdi = "DELETE FROM pdi WHERE id = ?";
         Connection conn = null;
@@ -222,12 +227,12 @@ public class PdiDAO {
             conn.setAutoCommit(false);
 
             try (PreparedStatement pstmtObjetivos = conn.prepareStatement(sqlObjetivos)) {
-                pstmtObjetivos.setInt(1, id);
+                pstmtObjetivos.setString(1, id);
                 pstmtObjetivos.executeUpdate();
             }
 
             try (PreparedStatement pstmtPdi = conn.prepareStatement(sqlPdi)) {
-                pstmtPdi.setInt(1, id);
+                pstmtPdi.setString(1, id);
                 int affectedRows = pstmtPdi.executeUpdate();
 
                 conn.commit();

@@ -1,6 +1,8 @@
 package gui.menu;
 
 import dao.PdiDAO;
+import gui.modal.CadastroPdiModalController;
+import gui.modal.EditarPDIModalController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,13 +10,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import modelo.PDI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,41 +64,6 @@ public class ListaPdiController implements Initializable {
     @FXML
     private Button cadastrarPdiButton;
 
-
-    @FXML
-    void handleCadastrarPdiAction(ActionEvent event) {
-        try {
-            String fxmlPath = "/gui/CadastroPdiGUI.fxml";
-
-            URL fxmlUrl = getClass().getResource(fxmlPath);
-
-            if (fxmlUrl == null) {
-                System.err.println("Erro Crítico: Não foi possível encontrar o arquivo FXML em: " + fxmlPath);
-                exibirAlerta("Erro de Arquivo", "Não foi possível encontrar a tela de cadastro.");
-                return;
-            }
-
-            FXMLLoader loader = new FXMLLoader(fxmlUrl);
-            Parent telaCadastro = loader.load();
-
-            AnchorPane parentContainer = (AnchorPane) rootPane.getParent();
-            parentContainer.getChildren().setAll(telaCadastro);
-
-            AnchorPane.setTopAnchor(telaCadastro, 0.0);
-            AnchorPane.setBottomAnchor(telaCadastro, 0.0);
-            AnchorPane.setLeftAnchor(telaCadastro, 0.0);
-            AnchorPane.setRightAnchor(telaCadastro, 0.0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            exibirAlerta("Erro de Navegação", "Não foi possível carregar a tela de cadastro de PDI.");
-        }
-    }
-
-    private PdiDAO pdiDAO;
-
-    private ObservableList<PDI> pdiObservableList;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // ... seu código existente para inicializar a tela ...
@@ -108,7 +79,29 @@ public class ListaPdiController implements Initializable {
         editarItem.setOnAction(event -> {
             PDI pdiSelecionado = pdiTableView.getSelectionModel().getSelectedItem();
             if (pdiSelecionado != null) {
-                System.out.println("Opção 'Editar PDI' clicada para o PDI de ID: " + pdiSelecionado.getId());
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/EditarPDIModal.fxml"));
+                    Parent page = loader.load();
+
+                    EditarPDIModalController controller = loader.getController();
+                    controller.setPDI(pdiSelecionado);
+
+                    Stage dialogStage = new Stage();
+                    dialogStage.setTitle("Editar informações do PDI");
+                    dialogStage.initModality(Modality.WINDOW_MODAL);
+                    dialogStage.initOwner(cadastrarPdiButton.getScene().getWindow()); // Define a janela principal como "pai"
+                    Scene scene = new Scene(page);
+                    dialogStage.setScene(scene);
+
+                    controller.setDialogStage(dialogStage);
+
+                    dialogStage.showAndWait();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -118,6 +111,8 @@ public class ListaPdiController implements Initializable {
                 confirmarEExcluirPDI(pdiSelecionado);
             }
         });
+
+        cadastrarPdiButton.setOnAction(event -> handleAbrirModalCadastro());
 
         contextMenu.getItems().addAll(editarItem, excluirItem);
 
@@ -134,6 +129,38 @@ public class ListaPdiController implements Initializable {
             return row;
         });
     }
+
+    @FXML
+    private void handleAbrirModalCadastro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/CadastroPdiModal.fxml"));
+            Parent page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrar novo PDI");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(cadastrarPdiButton.getScene().getWindow()); // Define a janela principal como "pai"
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            CadastroPdiModalController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            if (controller.isSalvo()) {
+                System.out.println("Modal fechado com sucesso, atualizando a tabela...");
+                carregarTodosOsPDIs();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PdiDAO pdiDAO;
+
+    private ObservableList<PDI> pdiObservableList;
 
     private void confirmarEExcluirPDI(PDI pdi) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

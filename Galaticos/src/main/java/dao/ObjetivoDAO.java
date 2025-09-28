@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Classe de Acesso a Dados (DAO) para a entidade Objetivo.
  * Responsável por toda a comunicação com o banco de dados referente aos objetivo.
- *
+ * <p>
  * IMPORTANTE: Esta classe assume que a tabela no banco de dados se chama 'objetivo'
  * e possui as seguintes colunas: id, pdi_id, descricao, prazo, status,
  * comentarios, peso, pontuacao.
@@ -19,6 +19,7 @@ public class ObjetivoDAO {
 
     /**
      * Insere um novo objetivo no banco de dados.
+     *
      * @param objetivo O objeto a ser salvo.
      */
     public void adicionar(Objetivo objetivo) {
@@ -56,6 +57,7 @@ public class ObjetivoDAO {
 
     /**
      * Busca um objetivo pelo seu ID.
+     *
      * @param id O ID do objetivo a ser buscado.
      * @return O objeto Objetivo encontrado, ou null se não existir.
      */
@@ -91,6 +93,7 @@ public class ObjetivoDAO {
 
     /**
      * Lista todos os objetivo cadastrados no banco de dados.
+     *
      * @return Uma lista de todos os objetos Objetivo.
      */
     public List<Objetivo> listarTodos() {
@@ -123,7 +126,45 @@ public class ObjetivoDAO {
     }
 
     /**
+     * Busca todos os objetivos associados a um PDI específico.
+     *
+     * @param pdiId O ID do PDI cujos objetivos devem ser encontrados.
+     * @return Uma lista de objetos Objetivo pertencentes ao PDI, ou uma lista vazia se nenhum for encontrado.
+     */
+    public List<Objetivo> buscarPorPdiId(String pdiId) {
+        List<Objetivo> objetivosDoPdi = new ArrayList<>();
+        String sql = "SELECT * FROM objetivo WHERE pdi_id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, pdiId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Objetivo objetivo = new Objetivo();
+                    objetivo.setId(rs.getInt("id"));
+                    objetivo.setPdiId(rs.getInt("pdi_id"));
+                    objetivo.setDescricao(rs.getString("descricao"));
+                    objetivo.setPrazo(rs.getDate("prazo"));
+                    objetivo.setStatus(rs.getString("status"));
+                    objetivo.setComentarios(rs.getString("comentarios"));
+                    objetivo.setPeso(rs.getFloat("peso"));
+                    objetivo.setPontuacao(rs.getFloat("pontuacao"));
+
+                    objetivosDoPdi.add(objetivo);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar objetivos por ID do PDI.", e);
+        }
+        return objetivosDoPdi;
+    }
+
+    /**
      * Atualiza os dados de um objetivo existente no banco de dados.
+     *
      * @param objetivo O objeto com os dados atualizados.
      */
     public void atualizar(Objetivo objetivo) {
@@ -156,6 +197,7 @@ public class ObjetivoDAO {
 
     /**
      * Remove um objetivo do banco de dados pelo seu ID.
+     *
      * @param id O ID do objetivo a ser removido.
      */
     public void remover(int id) {

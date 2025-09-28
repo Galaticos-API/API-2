@@ -30,8 +30,6 @@ public class PerfilGUIController {
     @FXML
     public void initialize() {
         if (usuarioLogado != null) {
-            SceneManager.mudarCena("PdiGUI", "Perfil");
-
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario()) || "Gestor Geral".equals(usuarioLogado.getTipo_usuario());
             menuUsuarios.setVisible(podeVerUsuarios);
         }

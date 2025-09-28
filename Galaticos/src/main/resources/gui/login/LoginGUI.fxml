@@ -12,12 +12,12 @@
                     <children>
                         <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="194.0" text="Email">
                             <graphic>
-                                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" />
+                                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
                             </graphic>
                         </Label>
                   <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="228.0" text="Senha">
                      <graphic>
-                        <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" />
+                        <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
                      </graphic>
                   </Label>
                   <Label contentDisplay="RIGHT" disable="true" layoutX="180.0" layoutY="374.0" opacity="0.0" text="Setor">
