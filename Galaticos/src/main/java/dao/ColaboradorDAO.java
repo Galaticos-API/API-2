@@ -39,7 +39,7 @@ public class ColaboradorDAO {
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    colaborador.setId(rs.getInt(1));
+                    colaborador.setId(rs.getString(1));
                 }
             }
         }
@@ -60,7 +60,7 @@ public class ColaboradorDAO {
             stmt.setNull(7, Types.INTEGER);
 
             stmt.setLong(8, colaborador.getUsuario().getId());
-            stmt.setLong(9, colaborador.getId());
+            stmt.setString(9, colaborador.getId());
 
             stmt.executeUpdate();
 
@@ -123,7 +123,7 @@ public class ColaboradorDAO {
 
     private Colaborador mapearResultSetParaColaborador(ResultSet rs) throws SQLException {
         Colaborador colaborador = new Colaborador();
-        colaborador.setId(rs.getInt("id"));
+        colaborador.setId(rs.getString("id"));
         colaborador.setNome(rs.getString("nome"));
         colaborador.setCpf(rs.getString("cpf"));
         Date dataNascimentoSql = rs.getDate("data_nascimento");
@@ -136,12 +136,12 @@ public class ColaboradorDAO {
 
         int usuarioId = rs.getInt("usuario_id");
         if (!rs.wasNull()) {
-            Usuario usuario = new Usuario();
-            usuario.setId(usuarioId);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuario = usuarioDAO.buscarPorId(usuarioId);
             colaborador.setUsuario(usuario);
         }
 
-        int gerenteId = rs.getInt("gerente_id");
+        String gerenteId = rs.getString("gerente_id");
         if (!rs.wasNull()) {
             Colaborador gerente = new Colaborador();
             gerente.setId(gerenteId);

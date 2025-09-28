@@ -24,7 +24,7 @@ public class SinglePdiController {
      * Carrega a PDI do banco de dados e preenche os campos da tela.
      * @param pdiId O ID da PDI a ser carregada.
      */
-    public void setPdiData(int pdiId) {
+    public void setPdiData(String pdiId) {
 
         // 1. CHAMA O DAO usando o buscarPorId
         PDI pdi = pdiDAO.buscarPorId(pdiId);

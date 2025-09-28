@@ -2,8 +2,7 @@ package gui.menu;
 
 import dao.PdiDAO;
 import gui.modal.CadastroPdiModalController;
-import gui.modal.CadastroUsuarioModalController;
-import gui.modal.SinglePDIModalController;
+import gui.modal.EditarPDIModalController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -81,8 +80,11 @@ public class ListaPdiController implements Initializable {
             PDI pdiSelecionado = pdiTableView.getSelectionModel().getSelectedItem();
             if (pdiSelecionado != null) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/SinglePDIModal.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/EditarPDIModal.fxml"));
                     Parent page = loader.load();
+
+                    EditarPDIModalController controller = loader.getController();
+                    controller.setPDI(pdiSelecionado);
 
                     Stage dialogStage = new Stage();
                     dialogStage.setTitle("Editar informações do PDI");
@@ -91,13 +93,14 @@ public class ListaPdiController implements Initializable {
                     Scene scene = new Scene(page);
                     dialogStage.setScene(scene);
 
-                    SinglePDIModalController controller = loader.getController();
                     controller.setDialogStage(dialogStage);
 
                     dialogStage.showAndWait();
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });

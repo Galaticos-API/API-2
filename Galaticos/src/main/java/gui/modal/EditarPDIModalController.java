@@ -1,22 +1,26 @@
 package gui.modal;
 
+import dao.ColaboradorDAO;
+import dao.ObjetivoDAO;
 import dao.PdiDAO;
+import dao.UsuarioDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
-import modelo.Objetivo;
-import modelo.Documento;
+import javafx.collections.FXCollections;
+
+import modelo.*;
 
 import java.net.URL;
-import java.util.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 // A classe precisa implementar Initializable para carregar dados na inicialização
-public class SinglePDIModalController implements Initializable {
+public class EditarPDIModalController implements Initializable {
 
     // Elementos da Barra de Progresso
     @FXML
@@ -40,48 +44,57 @@ public class SinglePDIModalController implements Initializable {
     @FXML
     private TableView<Objetivo> objetivoTable;
 
-    // Aba 3: Avaliação de Skills
-    //@FXML private TableView<PdiHabilidade> skillTable;
-
     // Aba 4: Documentos
     @FXML
     private TableView<Documento> documentoTable;
 
-    private String id;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         statusPdiComboBox.getItems().addAll("Em Andamento", "Concluído", "Arquivado");
-
-        loadPdiData(getId());
     }
 
-    public void setId(String id){
-        this.id = id;
+    public void setPDI(PDI pdi) throws SQLException {
+        if (pdi != null) {
+            loadPdiData(pdi);
+        }
     }
 
-    public String getId(){
-        return this.id;
-    }
-
-    private void loadPdiData(String pdiId) {
+    private void loadPdiData(PDI pdi) throws SQLException {
 
         PdiDAO pdiDAO = new PdiDAO();
+        pdi = pdiDAO.buscarPorId(pdi.getId());
 
-        float pontuacao = 0f;
-        String statusAtual = "Em Andamento";
+        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+        Colaborador colaborador = colaboradorDAO.buscarPorId(pdi.getColaboradorId());
+        Usuario usuario = colaborador.getUsuario();
+        colaboradorNomeField.setText(usuario.getNome());
+        colaboradorCargoField.setText(usuario.getTipo_usuario());
 
-        colaboradorNomeField.setText("João da Silva");
-        colaboradorCargoField.setText("Desenvolvedor Java Jr");
-        statusPdiComboBox.setValue(statusAtual);
-        // dataCriacaoPicker.setValue(pdi.getDataCriacao().toLocalDate());
+        statusPdiComboBox.setValue(pdi.getStatus());
+
+        if (pdi.getDataCriacao() != null) {
+            LocalDate dataConvertida = pdi.getDataCriacao()
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            dataCriacaoPicker.setValue(dataConvertida);
+        }
+        if (pdi.getDataFechamento() != null) {
+            LocalDate dataConvertida = pdi.getDataFechamento()
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            dataFechamentoPicker.setValue(dataConvertida);
+        }
+
+        float pontuacao = pdi.getPontuacaoGeral();
         progressBarGeral.setProgress(pontuacao);
         textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pontuacao * 100));
 
         // 3. Carregar Tabelas (simulação)
-        // objetivoTable.setItems(ObjetivoDAO.findByPdiId(pdiId));
-        // skillTable.setItems(PdiHabilidadeDAO.findByPdiId(pdiId));
-        // documentoTable.setItems(DocumentoDAO.findByPdiId(pdiId));
+        ObjetivoDAO objetivoDAO = new ObjetivoDAO();
+        objetivoTable.setItems(FXCollections.observableArrayList(objetivoDAO.buscarPorPdiId(pdi.getId())));
+        //documentoTable.setItems(DocumentoDAO.findByPdiId(pdiId));
     }
 
     @FXML
@@ -139,9 +152,11 @@ public class SinglePDIModalController implements Initializable {
 
     private Stage dialogStage;
     private boolean salvo = false;
+
     public boolean isSalvo() {
         return salvo;
     }
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }

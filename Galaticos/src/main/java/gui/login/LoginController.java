@@ -48,11 +48,9 @@ public class LoginController {
 
         for (Usuario usuario : listaUsuarios) {
             if (emailUsuario.getText().trim().equals(usuario.getEmail()) && senhaUsuario.getText().trim().equals(usuario.getSenha())) {
-                //String proximaTela = pegarTela(usuario.getTipo_usuario());
                 Session.setUsuarioAtual(usuario);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + "MainGUI" + ".fxml"));
                 Parent root = loader.load();
-                //passarUsuario(usuario.getTipo_usuario(), loader);
                 MainController mainController = loader.getController();
                 mainController.setUsuario(Session.getUsuarioAtual());
 

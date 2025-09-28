@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" prefHeight="589.0" prefWidth="589.0" spacing="15.0" style="-fx-padding: 20; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.modal.SinglePDIModalController">
+<VBox alignment="TOP_CENTER" prefHeight="589.0" prefWidth="589.0" spacing="15.0" style="-fx-padding: 20; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.modal.EditarPDIModalController">
 
     <Text style="-fx-fill: #333333;" text="Plano de Desenvolvimento Individual">
         <font>
@@ -30,7 +30,7 @@
                     </columnConstraints>
 
                     <Label text="Colaborador:" GridPane.columnIndex="0" />
-                    <TextField fx:id="colaboradorNomeField" GridPane.columnIndex="1" />
+                    <TextField fx:id="colaboradorNomeField" editable="false" GridPane.columnIndex="1" />
 
                     <Label text="Cargo:" GridPane.columnIndex="2" />
                     <TextField fx:id="colaboradorCargoField" editable="false" GridPane.columnIndex="3" />

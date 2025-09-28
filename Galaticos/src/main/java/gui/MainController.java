@@ -42,6 +42,9 @@ public class MainController {
         if (usuarioLogado != null) {
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
             menuUsuarios.setVisible(podeVerUsuarios);
+
+            //Carrega a página dos PDIs enquanto não temos uma página principal
+            loadPage("ListaPdiGUI");
         }
     }
 
