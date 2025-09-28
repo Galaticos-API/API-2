@@ -39,7 +39,7 @@ CREATE TABLE `colaborador` (
   KEY `gerente_id` (`gerente_id`),
   CONSTRAINT `colaborador_ibfk_1` FOREIGN KEY (`gerente_id`) REFERENCES `usuario` (`id`),
   CONSTRAINT `colaborador_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +48,7 @@ CREATE TABLE `colaborador` (
 
 LOCK TABLES `colaborador` WRITE;
 /*!40000 ALTER TABLE `colaborador` DISABLE KEYS */;
+INSERT INTO `colaborador` VALUES (8,'rafael','',NULL,'RH','','',NULL,14);
 /*!40000 ALTER TABLE `colaborador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +155,7 @@ CREATE TABLE `pdi` (
   PRIMARY KEY (`id`),
   KEY `colaborador_id` (`colaborador_id`),
   CONSTRAINT `pdi_ibfk_1` FOREIGN KEY (`colaborador_id`) REFERENCES `colaborador` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,6 +164,7 @@ CREATE TABLE `pdi` (
 
 LOCK TABLES `pdi` WRITE;
 /*!40000 ALTER TABLE `pdi` DISABLE KEYS */;
+INSERT INTO `pdi` VALUES (5,8,0,'Em Andamento','2025-09-27','2025-09-30',0.00),(6,8,0,'Em Andamento','2025-09-27','2025-09-30',0.00);
 /*!40000 ALTER TABLE `pdi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +213,7 @@ CREATE TABLE `usuario` (
   `status` enum('Ativo','Inativo') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,6 +222,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'rh','rh','rh','RH','2025-09-27 15:33:40','Ativo'),(14,'rafael','rafael@gmail.com','rafael','Gestor de Area','2025-09-27 15:34:07','Ativo');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -232,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-26 15:25:46
+-- Dump completed on 2025-09-28 13:56:47
