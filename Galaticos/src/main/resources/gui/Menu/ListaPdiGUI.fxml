@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
+<AnchorPane fx:id="rootPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
     <children>
         <Label layoutX="250.0" layoutY="14.0" text="Gerenciamento de PDIs">
             <font>
@@ -23,6 +23,7 @@
                 <TextField fx:id="colaboradorIdTextField" prefWidth="150.0" promptText="Digite o ID" />
                 <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#handleBuscarAction" text="Buscar" />
                 <Button fx:id="limparFiltroButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" text="Mostrar Todos" />
+            <Button fx:id="atualizarButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" text="Atualizar Tabela" />
             </children>
         </HBox>
 
@@ -40,6 +41,6 @@
             </columnResizePolicy>
         </TableView>
 
-        <Button fx:id="cadastrarPdiButton" layoutX="670.0" layoutY="465.0" mnemonicParsing="false" onAction="#handleCadastrarPdiAction" style="-fx-font-size: 14px;" text="Cadastrar PDI" />
+        <Button fx:id="cadastrarPdiButton" layoutX="670.0" layoutY="465.0" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" style="-fx-font-size: 14px;" text="Cadastrar PDI" />
     </children>
 </AnchorPane>

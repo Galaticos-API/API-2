@@ -63,13 +63,12 @@ public class UsuariosController {
         }
     }
 
+    @FXML
     private void handleAbrirModalCadastro() {
         try {
-            // 1. Carrega o arquivo FXML do modal.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/CadastroUsuarioModal.fxml"));
             Parent page = loader.load();
 
-            // 2. Cria um novo Stage (janela) para o modal.
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Registrar Novo Usuário");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -77,14 +76,11 @@ public class UsuariosController {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // 3. Obtém o controller do modal e passa o Stage.
             CadastroUsuarioModalController controller = loader.getController();
             controller.setDialogStage(dialogStage);
 
-            // 4. Mostra o modal e espera até que ele seja fechado.
             dialogStage.showAndWait();
 
-            // 5. Após o fechamento, verifica se o usuário foi salvo.
             if (controller.isSalvo()) {
                 System.out.println("Modal fechado com sucesso, atualizando a tabela...");
                 atualizarUsuarios();

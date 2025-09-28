@@ -27,7 +27,7 @@ public class PdiDAO {
 
             // ALTERAÇÃO AQUI: use o getter correto (getColaboradorId)
             pstmt.setInt(1, pdi.getColaboradorId());
-            pstmt.setInt(2, pdi.getAno());
+            pstmt.setInt(2, 0);
             pstmt.setString(3, pdi.getStatus());
 
             if (pdi.getDataCriacao() == null) {
@@ -41,7 +41,7 @@ public class PdiDAO {
                 pstmt.setNull(5, Types.DATE);
             }
 
-            pstmt.setFloat(6, pdi.getPontuacaoGeral());
+            pstmt.setFloat(6, 0);
 
             int affectedRows = pstmt.executeUpdate();
 

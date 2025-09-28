@@ -43,16 +43,11 @@ public class PDI {
     /**
      * Construtor com todos os atributos para facilitar a criação de objetos já preenchidos.
      */
-    public PDI(int id, int colaboradorId, int ano, String status, Date dataCriacao, Date dataFechamento, float pontuacaoGeral) {
-        this.id = id;
+    public PDI(int colaboradorId, String status, Date dataCriacao, Date dataFechamento) {
         this.colaboradorId = colaboradorId;
-        this.ano = ano;
         this.status = status;
         this.dataCriacao = dataCriacao;
         this.dataFechamento = dataFechamento;
-        this.pontuacaoGeral = pontuacaoGeral;
-        this.objetivos = new ArrayList<>();
-        this.documentos = new ArrayList<>();
     }
 
 

@@ -1,5 +1,6 @@
 package dao;
 
+import factory.ConnectionFactory;
 import modelo.Usuario;
 import modelo.Colaborador;
 
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColaboradorDAO {
+
+    Connection conn = ConnectionFactory.getConnection();
 
     public void adicionar(Colaborador colaborador, Connection conn) throws SQLException {
         String sql = "INSERT INTO colaborador (nome, cpf, data_nascimento, cargo, experiencia, observacoes, gerente_id, usuario_id) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -24,11 +27,7 @@ public class ColaboradorDAO {
             stmt.setString(5, colaborador.getExperiencia());
             stmt.setString(6, colaborador.getObservacoes());
 
-            if (colaborador.getGerente() != null && colaborador.getGerente().getId() != null) {
-                stmt.setLong(7, colaborador.getGerente().getId());
-            } else {
-                stmt.setNull(7, Types.INTEGER);
-            }
+            stmt.setNull(7, Types.INTEGER);
 
             if (colaborador.getUsuario() != null && colaborador.getUsuario().getId() != 0) {
                 stmt.setLong(8, colaborador.getUsuario().getId());
@@ -40,7 +39,7 @@ public class ColaboradorDAO {
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    colaborador.setId(rs.getLong(1));
+                    colaborador.setId(rs.getInt(1));
                 }
             }
         }
@@ -58,11 +57,7 @@ public class ColaboradorDAO {
             stmt.setString(5, colaborador.getExperiencia());
             stmt.setString(6, colaborador.getObservacoes());
 
-            if (colaborador.getGerente() != null && colaborador.getGerente().getId() != null) {
-                stmt.setLong(7, colaborador.getGerente().getId());
-            } else {
-                stmt.setNull(7, Types.INTEGER);
-            }
+            stmt.setNull(7, Types.INTEGER);
 
             stmt.setLong(8, colaborador.getUsuario().getId());
             stmt.setLong(9, colaborador.getId());
@@ -81,12 +76,27 @@ public class ColaboradorDAO {
         }
     }
 
-    public Colaborador buscarPorId(int id, Connection conn) throws SQLException {
+    public Colaborador buscarPorId(String id) throws SQLException {
         String sql = "SELECT * FROM colaborador WHERE id = ?";
         Colaborador colaborador = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    colaborador = mapearResultSetParaColaborador(rs);
+                }
+            }
+        }
+        return colaborador;
+    }
+
+    public Colaborador buscarPorUsuario_id(String id) throws SQLException {
+        String sql = "SELECT * FROM colaborador WHERE usuario_id = ?";
+        Colaborador colaborador = null;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     colaborador = mapearResultSetParaColaborador(rs);
@@ -113,7 +123,7 @@ public class ColaboradorDAO {
 
     private Colaborador mapearResultSetParaColaborador(ResultSet rs) throws SQLException {
         Colaborador colaborador = new Colaborador();
-        colaborador.setId(rs.getLong("id"));
+        colaborador.setId(rs.getInt("id"));
         colaborador.setNome(rs.getString("nome"));
         colaborador.setCpf(rs.getString("cpf"));
         Date dataNascimentoSql = rs.getDate("data_nascimento");
@@ -131,7 +141,7 @@ public class ColaboradorDAO {
             colaborador.setUsuario(usuario);
         }
 
-        long gerenteId = rs.getLong("gerente_id");
+        int gerenteId = rs.getInt("gerente_id");
         if (!rs.wasNull()) {
             Colaborador gerente = new Colaborador();
             gerente.setId(gerenteId);
