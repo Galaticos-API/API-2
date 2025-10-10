@@ -1,0 +1,67 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #b0b0b0;
+    -fx-border-width: 1;
+    -fx-padding: 8 10;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 15px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #4a90e2;
+    -fx-effect: dropshadow(three-pass-box, rgba(74,144,226,0.2), 5, 0, 0, 2);
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #449db4, #357ABD);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5aa0f2, #468ad1);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #357ABD, #2f5fa3);
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+#loginButton {
+    -fx-min-width: 100px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
+}
+
+#sairButton {
+    -fx-background-color: #cccccc;
+    -fx-text-fill: #333;
+}
+
+#sairButton:hover {
+    -fx-background-color: #b5b5b5;
+}
+
+#cadastroButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4a90e2;
+    -fx-underline: true;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+#cadastroButton:hover {
+    -fx-text-fill: #2f5fa3;
+}

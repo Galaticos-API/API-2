@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
+    <stylesheets>
+        <URL value="@/css/style.css" />
+    </stylesheets>
 
     <children>
-        <TitledPane animated="false" layoutX="15.0" layoutY="12.0" prefHeight="579.0" prefWidth="579.0" text="Login do Usuário" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <children>
-                        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="194.0" text="Email">
-                            <graphic>
-                                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
-                            </graphic>
-                        </Label>
-                  <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="228.0" text="Senha">
-                     <graphic>
-                        <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
-                     </graphic>
-                  </Label>
-                  <Label contentDisplay="RIGHT" disable="true" layoutX="180.0" layoutY="374.0" opacity="0.0" text="Setor">
-                     <graphic>
-                        <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
-                     </graphic></Label>
-                        <Button layoutX="241.0" layoutY="262.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
-                        <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
-                  <Button disable="true" layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
-                    </children>
-                </AnchorPane>
-            </content>
-        </TitledPane>
+
+        <ImageView fitHeight="254.0" fitWidth="406.0" layoutX="73.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@/img/youtan.png" />
+            </image>
+        </ImageView>
+
+        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="210.0" text="Email">
+            <graphic>
+                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
+            </graphic>
+        </Label>
+
+        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="244.0" text="Senha">
+            <graphic>
+                <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
+            </graphic>
+        </Label>
+
+        <Button layoutX="241.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
+
+        <Button disable="true" layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
+        <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
+
+        <Label contentDisplay="RIGHT" disable="true" layoutX="180.0" layoutY="374.0" opacity="0.0" text="Setor">
+            <graphic>
+                <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
+            </graphic>
+        </Label>
+
     </children>
 </AnchorPane>
