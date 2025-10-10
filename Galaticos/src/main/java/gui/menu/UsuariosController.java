@@ -1,6 +1,5 @@
 package gui.menu;
 
-import dao.ColaboradorDAO;
 import dao.UsuarioDAO;
 import factory.ConnectionFactory;
 import gui.modal.CadastroUsuarioModalController;
@@ -16,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Usuario;
-import services.UsuarioService;
 import util.Util;
 
 import java.io.IOException;
@@ -42,8 +40,6 @@ public class UsuariosController {
 
     @FXML
     private Button btnAddUsuario;
-
-    private UsuarioService usuarioService = new UsuarioService();
 
     public void setUsuario(Usuario usuario) throws SQLException {
         this.usuarioLogado = usuario;
@@ -133,7 +129,6 @@ public class UsuariosController {
         Connection conn = ConnectionFactory.getConnection();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
         List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
 
         tabelaUsuarios.setItems(FXCollections.observableArrayList(listaUsuarios));
@@ -157,7 +152,7 @@ public class UsuariosController {
 
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         try {
-                            usuarioService.deletarUsuarioEColaborador(selecionado.getId());
+                            usuarioDAO.deletar(selecionado.getId());
                             Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Usuário apagado com sucesso!");
                             atualizarUsuarios();
                         } catch (SQLException e) {

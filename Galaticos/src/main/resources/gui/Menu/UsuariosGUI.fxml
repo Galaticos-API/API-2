@@ -19,7 +19,7 @@
             <columns>
                 <TableColumn fx:id="colNome" prefWidth="165.59997940063477" text="Nome" />
                 <TableColumn fx:id="colEmail" prefWidth="176.80003356933594" text="E-mail" />
-                <TableColumn fx:id="colTipo" prefWidth="128.00006103515625" text="Tipo Usuário" />
+                <TableColumn fx:id="colTipo" prefWidth="128.00006103515625" text="Cargo" />
                 <TableColumn fx:id="colStatus" prefWidth="83.20001220703125" text="Status" />
             </columns>
         </TableView>

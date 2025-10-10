@@ -9,28 +9,41 @@ import java.util.List;
 
 public class UsuarioDAO {
 
-    Connection conn = ConnectionFactory.getConnection();
+    private Connection conn;
+
+    public UsuarioDAO() {
+        this.conn = ConnectionFactory.getConnection();
+    }
 
     public Usuario adicionar(Usuario usuario) throws SQLException {
         if (emailExiste(usuario.getEmail())) {
             throw new SQLException("O email '" + usuario.getEmail() + "' já está cadastrado. Tente outro.");
         }
+        if (cpfExiste(usuario.getCpf())) {
+            throw new SQLException("O CPF '" + usuario.getCpf() + "' já está cadastrado.");
+        }
 
-        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status) VALUES(?, ?, ?, ?, ?)";
+        // SQL atualizado sem o campo 'cargo'
+        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status, data_nascimento, cpf) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // A conexão não é fechada aqui, pois é controlada externamente pela transação.
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getSenha());
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
+
+            if (usuario.getData_nascimento() != null) {
+                pstmt.setDate(6, Date.valueOf(usuario.getData_nascimento()));
+            } else {
+                pstmt.setNull(6, Types.DATE);
+            }
+            pstmt.setString(8, usuario.getCpf());
             pstmt.executeUpdate();
 
-            // Recupera o ID gerado e o atribui ao objeto
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    usuario.setId(rs.getInt(1));
+                    usuario.setId(rs.getString(1));
                 }
             }
         }
@@ -39,7 +52,8 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> lerTodos() throws SQLException {
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario";
+        // SQL atualizado sem o campo 'cargo'
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, data_nascimento, cpf FROM usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -47,17 +61,22 @@ public class UsuarioDAO {
 
             while (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id"));
+                usuario.setId(rs.getString("id"));
                 usuario.setNome(rs.getString("nome"));
                 usuario.setEmail(rs.getString("email"));
                 usuario.setSenha(rs.getString("senha"));
                 usuario.setTipo_usuario(rs.getString("tipo_usuario"));
                 usuario.setStatus(rs.getString("status"));
-
                 Timestamp timestamp = rs.getTimestamp("data_criacao");
                 if (timestamp != null) {
                     usuario.setData_criacao(timestamp.toLocalDateTime());
                 }
+
+                Date dataNascimento = rs.getDate("data_nascimento");
+                if (dataNascimento != null) {
+                    usuario.setData_nascimento(dataNascimento.toLocalDate());
+                }
+                usuario.setCpf(rs.getString("cpf"));
 
                 usuarios.add(usuario);
             }
@@ -65,30 +84,60 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    public Usuario buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario WHERE id = ?";
+    public Usuario buscarPorId(String id) throws SQLException {
+        // SQL atualizado sem o campo 'cargo'
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, data_nascimento, cpf FROM usuario WHERE id = ?";
         Usuario usuario = null;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
+            pstmt.setString(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     usuario = new Usuario();
-                    usuario.setId(rs.getInt("id"));
+                    usuario.setId(rs.getString("id"));
                     usuario.setNome(rs.getString("nome"));
                     usuario.setEmail(rs.getString("email"));
                     usuario.setSenha(rs.getString("senha"));
                     usuario.setTipo_usuario(rs.getString("tipo_usuario"));
                     usuario.setStatus(rs.getString("status"));
-
                     Timestamp timestamp = rs.getTimestamp("data_criacao");
                     if (timestamp != null) {
                         usuario.setData_criacao(timestamp.toLocalDateTime());
                     }
+
+                    Date dataNascimento = rs.getDate("data_nascimento");
+                    if (dataNascimento != null) {
+                        usuario.setData_nascimento(dataNascimento.toLocalDate());
+                    }
+                    usuario.setCpf(rs.getString("cpf"));
                 }
             }
         }
         return usuario;
+    }
+
+    public boolean atualizar(Usuario usuario) throws SQLException {
+        // SQL atualizado sem o campo 'cargo'
+        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ?, data_nascimento = ?, cpf = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getEmail());
+            pstmt.setString(3, usuario.getSenha());
+            pstmt.setString(4, usuario.getTipo_usuario());
+            pstmt.setString(5, usuario.getStatus());
+
+            if (usuario.getData_nascimento() != null) {
+                pstmt.setDate(6, Date.valueOf(usuario.getData_nascimento()));
+            } else {
+                pstmt.setNull(6, Types.DATE);
+            }
+            pstmt.setString(7, usuario.getCpf());
+
+            pstmt.setString(8, usuario.getId()); // O índice foi ajustado
+
+            return pstmt.executeUpdate() > 0;
+        }
     }
 
     public boolean emailExiste(String email) throws SQLException {
@@ -102,25 +151,25 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean atualizar(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ? WHERE id = ?";
+    public boolean cpfExiste(String cpf) throws SQLException {
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return false;
+        }
+        String sql = "SELECT 1 FROM usuario WHERE cpf = ? LIMIT 1";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, usuario.getNome());
-            pstmt.setString(2, usuario.getEmail());
-            pstmt.setString(3, usuario.getSenha());
-            pstmt.setString(4, usuario.getTipo_usuario());
-            pstmt.setString(5, usuario.getStatus());
-            pstmt.setInt(6, usuario.getId());
-            return pstmt.executeUpdate() > 0;
+            pstmt.setString(1, cpf);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 
-    public boolean deletar(int id) throws SQLException {
+    public boolean deletar(String id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
+            pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         }
     }

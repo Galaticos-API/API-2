@@ -8,15 +8,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import modelo.Colaborador;
 import modelo.Usuario;
-import services.UsuarioService;
-import util.SceneManager;
 import util.Util;
 
 import java.sql.SQLException;
-// Importe sua classe de serviço ou DAO aqui
-// import service.UsuarioService;
 
 public class CadastroUsuarioModalController {
 
@@ -61,7 +56,7 @@ public class CadastroUsuarioModalController {
             String senha = txtSenha.getText().trim();
             String tipo_usuario = comboTipoUsuario.getValue();
             try {
-                Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
+                Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo", null, "", "");
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.adicionar(usuario);
@@ -77,18 +72,6 @@ public class CadastroUsuarioModalController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
-            // try {
-            //     cadastroService.cadastrarUsuarioEColaborador(novoUsuario, novoColaborador);
-            //     salvo = true;
-            //     dialogStage.close();
-            // } catch (RuntimeException e) {
-            //     Alert alert = new Alert(Alert.AlertType.ERROR);
-            //     alert.setTitle("Erro no Cadastro");
-            //     alert.setHeaderText("Não foi possível salvar o usuário.");
-            //     alert.setContentText(e.getMessage());
-            //     alert.showAndWait();
-            // }
 
             // SIMULAÇÃO DE SUCESSO PARA O EXEMPLO:
             System.out.println("Usuário salvo com sucesso (simulação).");
