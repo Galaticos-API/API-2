@@ -1,6 +1,7 @@
 package gui.modal;
 
 import dao.PdiDAO;
+import dao.UsuarioDAO; // Importe o DAO correto
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -8,16 +9,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert;
-
-import dao.ColaboradorDAO;
 import javafx.stage.Stage;
-import modelo.Colaborador;
 import modelo.PDI;
+import modelo.Usuario; // Importe o modelo correto
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -25,9 +22,9 @@ import java.util.ResourceBundle;
 public class CadastroPdiModalController implements Initializable {
 
     @FXML
-    private TextField colaboradorIdField;
+    private TextField usuarioIdField; // Renomeado
     @FXML
-    private Text colaboradorNomeText;
+    private Text usuarioNomeText; // Renomeado
     @FXML
     private DatePicker dataFechamentoField;
     @FXML
@@ -35,82 +32,78 @@ public class CadastroPdiModalController implements Initializable {
     @FXML
     private Text mensagemErro;
 
-    // Simulação do ID do colaborador buscado
-    private int idColaboradorBuscado = -1;
+    private Usuario usuarioEncontrado; // Armazena o objeto Usuario completo
+    private Stage dialogStage;
+    private boolean salvo = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Popula o ComboBox com os ENUMs permitidos para o status inicial
         statusComboBox.getItems().addAll("Em Andamento", "Arquivado");
-        // O status "Concluído" não é um status inicial válido
     }
 
     @FXML
-    private void handleBuscarColaborador() throws SQLException {
-        String inputId = colaboradorIdField.getText();
-        if (inputId.trim().isEmpty()) {
-            mensagemErro.setText("Insira o ID do colaborador.");
+    private void handleBuscarUsuario() { // Renomeado
+        String inputIdStr = usuarioIdField.getText().trim();
+        if (inputIdStr.isEmpty()) {
+            mensagemErro.setText("Insira o ID do usuário.");
             return;
         }
 
-        Colaborador colaborador = new Colaborador();
-        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-        colaborador = colaboradorDAO.buscarPorUsuario_id(inputId);
+        try {
+            String idUsuario = inputIdStr;
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            this.usuarioEncontrado = usuarioDAO.buscarPorId(idUsuario);
 
-        if (colaborador != null) {
-            try {
-                int id = Integer.parseInt(inputId);
-                idColaboradorBuscado = id;
-                colaboradorNomeText.setText("Nome: " + colaborador.getNome() + " (ID: " + idColaboradorBuscado + ")");
-                mensagemErro.setText("");
-
-            } catch (NumberFormatException e) {
-                mensagemErro.setText("ID inválido. Use apenas números.");
-                idColaboradorBuscado = -1;
+            if (this.usuarioEncontrado != null) {
+                usuarioNomeText.setText("Nome: " + this.usuarioEncontrado.getNome() + " (ID: " + this.usuarioEncontrado.getId() + ")");
+                mensagemErro.setText(""); // Limpa o erro
+            } else {
+                mensagemErro.setText("Usuário não encontrado.");
+                this.usuarioEncontrado = null;
             }
-        } else {
-            mensagemErro.setText("Colaborador não encontrado.");
+        } catch (NumberFormatException e) {
+            mensagemErro.setText("ID inválido. Use apenas números.");
+            this.usuarioEncontrado = null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     @FXML
-    private void handleCriarPdi() throws SQLException {
-        LocalDate dataFechamentoStr = dataFechamentoField.getValue();
-        Instant instant = dataFechamentoStr.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        Date dataFechamento = Date.from(instant);
-
-        Colaborador colaborador = new Colaborador();
-        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-        colaborador = colaboradorDAO.buscarPorUsuario_id(Integer.toString(idColaboradorBuscado));
-
-        String status = statusComboBox.getValue();
-
-        if (idColaboradorBuscado == -1) {
-            mensagemErro.setText("Primeiro, busque e valide um Colaborador.");
+    private void handleCriarPdi() {
+        if (usuarioEncontrado == null) {
+            mensagemErro.setText("Primeiro, busque e encontre um usuário válido.");
             return;
         }
 
-        if (status == null || status.trim().isEmpty()) {
-            mensagemErro.setText("Todos os campos obrigatórios (Ano e Status) devem ser preenchidos.");
+        if (statusComboBox.getValue() == null) {
+            mensagemErro.setText("Selecione um status para o PDI.");
             return;
         }
 
-        mensagemErro.setText(""); // Limpa erros se a validação passou
+        if (dataFechamentoField.getValue() == null) {
+            mensagemErro.setText("Selecione uma data de fechamento.");
+            return;
+        }
 
-        PDI novoPdi = new PDI(colaborador.getId(), status, new Date(), dataFechamento);
+        mensagemErro.setText(""); // Limpa erros
+
+        // Converte LocalDate para Date
+        Date dataFechamento = Date.from(dataFechamentoField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Cria o novo PDI usando o ID do usuário encontrado
+        PDI novoPdi = new PDI(usuarioEncontrado.getId(), statusComboBox.getValue(), new Date(), dataFechamento);
         PdiDAO pdiDao = new PdiDAO();
         pdiDao.adicionar(novoPdi);
 
-        showAlert(Alert.AlertType.INFORMATION, "Sucesso",
-                "PDI criado com sucesso. Agora você pode adicionar Objetivos e Documentos!");
+        showAlert(Alert.AlertType.INFORMATION, "Sucesso", "PDI criado com sucesso para o usuário: " + usuarioEncontrado.getNome());
+
+        salvo = true;
         dialogStage.close();
     }
 
     @FXML
     private void handleCancelar() {
-        // Lógica para fechar a janela de cadastro (ex: Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); stage.close();)
-        showAlert(Alert.AlertType.INFORMATION, "Ação", "Cadastro cancelado.");
         dialogStage.close();
     }
 
@@ -121,9 +114,6 @@ public class CadastroPdiModalController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private Stage dialogStage;
-    private boolean salvo = false;
 
     public boolean isSalvo() {
         return salvo;

@@ -46,8 +46,8 @@ public class ListaPdiController implements Initializable {
     @FXML
     private TableColumn<PDI, Integer> colaboradorIdColumn;
 
-    @FXML
-    private TableColumn<PDI, Integer> anoColumn;
+    //@FXML
+    //private TableColumn<PDI, Integer> anoColumn;
 
     @FXML
     private TableColumn<PDI, String> statusColumn;
@@ -99,8 +99,6 @@ public class ListaPdiController implements Initializable {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
             }
         });
@@ -185,7 +183,7 @@ public class ListaPdiController implements Initializable {
     private void configurarColunasTabela() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         colaboradorIdColumn.setCellValueFactory(new PropertyValueFactory<>("colaboradorId"));
-        anoColumn.setCellValueFactory(new PropertyValueFactory<>("ano"));
+        //anoColumn.setCellValueFactory(new PropertyValueFactory<>("ano"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         dataCriacaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataCriacao"));
         pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacaoGeral"));
