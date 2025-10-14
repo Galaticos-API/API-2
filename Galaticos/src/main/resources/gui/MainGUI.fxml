@@ -1,52 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gui.MainController">
+    <stylesheets>
+        <URL value="@../css/style.css"/>
+    </stylesheets>
+
     <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Perfil">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuPerfil" text="Abrir Perfil" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="PDI">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuPDI" text="Gerenciar PDI" />
-                    </items>
-                </Menu>
-                <Menu fx:id="menuUsuarios" mnemonicParsing="false" text="Colaboradores">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuUsuarios" text="Gerenciar Usuários" />
-                    </items>
-                </Menu>
-                <Menu fx:id="menuDashboard" mnemonicParsing="false" text="Dashboard">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuDashboard" text="Visualizar Dashboard" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </top>
-    <center>
-        <AnchorPane fx:id="contentArea" prefHeight="200.0" prefWidth="200.0" />
-    </center>
-    <bottom>
-        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-            </padding>
+        <HBox fx:id="navigationBar" alignment="CENTER" spacing="30.0" styleClass="navigation-bar"
+              BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="funcaoUsuario" text="Função:" />
-                <Label fx:id="logadoComo" text="Logado(a) como: " />
+                <Button fx:id="btnDashboard" mnemonicParsing="false" onAction="#handleMenuDashboard"
+                        styleClass="navigation-button" text="Dashboard"/>
+                <Button fx:id="btnPDI" mnemonicParsing="false" onAction="#handleMenuPDI" styleClass="navigation-button"
+                        text="PDI"/>
+                <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#handleMenuPerfil"
+                        styleClass="navigation-button" text="Perfil"/>
+                <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#handleMenuUsuarios"
+                        styleClass="navigation-button" text="Usuários"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <AnchorPane fx:id="contentArea" prefHeight="200.0" prefWidth="200.0"/>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="status-bar" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="funcaoUsuario" styleClass="status-label" text="Função:"/>
+                <Label fx:id="logadoComo" styleClass="status-label" text="Logado(a) como: "/>
             </children>
         </HBox>
     </bottom>
