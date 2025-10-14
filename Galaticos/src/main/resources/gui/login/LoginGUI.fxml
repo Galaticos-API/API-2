@@ -18,19 +18,19 @@
             </image>
         </ImageView>
 
-        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="210.0" text="Email">
+        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="240.0" text="Email">
             <graphic>
-                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
+                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh@rh" />
             </graphic>
         </Label>
 
-        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="244.0" text="Senha">
+        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="285.0" text="Senha">
             <graphic>
                 <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
             </graphic>
         </Label>
 
-        <Button layoutX="241.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
+        <Button layoutX="242.0" layoutY="343.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
 
         <Button disable="true" layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
         <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
