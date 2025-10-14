@@ -18,28 +18,22 @@
             </image>
         </ImageView>
 
-        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="240.0" text="Email">
-            <graphic>
-                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh@rh" />
-            </graphic>
-        </Label>
+        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="240.0" />
 
-        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="285.0" text="Senha">
-            <graphic>
-                <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
-            </graphic>
-        </Label>
+        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="285.0" />
 
-        <Button layoutX="242.0" layoutY="343.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
+        <Button layoutX="242.0" layoutY="343.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="ENTRAR" />
 
-        <Button disable="true" layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
-        <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
+        <Button disable="true" layoutX="37.0" layoutY="507.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="CADASTRE-SE" />
+        <Button fx:id="sairBtn" layoutX="468.0" layoutY="507.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="SAIR" />
 
         <Label contentDisplay="RIGHT" disable="true" layoutX="180.0" layoutY="374.0" opacity="0.0" text="Setor">
             <graphic>
                 <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
             </graphic>
         </Label>
+          <TextField fx:id="senhaUsuario" layoutX="165.0" layoutY="284.0" prefHeight="37.0" prefWidth="250.0" promptText="Senha" />
+          <TextField fx:id="emailUsuario" layoutX="165.0" layoutY="239.0" prefHeight="37.0" prefWidth="250.0" promptText="Email" />
 
     </children>
 </AnchorPane>
