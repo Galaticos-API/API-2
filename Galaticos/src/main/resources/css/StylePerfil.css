@@ -1,0 +1,97 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.navigation-bar {
+    -fx-background-color: #2c3e50; /* Um azul escuro/cinza, similar à imagem */
+    -fx-padding: 10 0 10 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.navigation-button {
+    /* Reseta a aparência do botão */
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
+    /* Estilo do texto */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+    /* Efeito de sublinhado (invisível por padrão) */
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-border-width: 3px; /* Apenas a borda inferior com 3px */
+    -fx-padding: 5 15 5 15; /* Espaçamento interno */
+
+    -fx-cursor: hand;
+}
+
+/* Efeito ao passar o mouse */
+.navigation-button:hover {
+    -fx-font-size: 16px;
+    -fx-background-color: rgba(255, 255, 255, 0.05); /* Leve brilho */
+}
+
+.navigation-button.active {
+    -fx-font-size: 16px;
+    -fx-border-color: #F4F2F3;
+}
+
+/* ==================================== */
+/* Barra de Status (mantém o estilo)    */
+/* ==================================== */
+.status-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda superior */
+    -fx-border-width: 1;
+    -fx-padding: 5 15 5 15;
+}
+
+.status-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #555555;
+}
+
+.button {
+    -fx-font-size: 16px;
+    -fx-background-color: linear-gradient(to bottom, #449db4, #357ABD);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.button:hover {
+    -fx-font-size: 16px;
+    -fx-background-color: linear-gradient(to bottom, #5aa0f2, #468ad1);
+}
+
+.button:pressed {
+    -fx-font-size: 16px;
+    -fx-background-color: linear-gradient(to bottom, #357ABD, #2f5fa3);
+}
+
+#voltarButton {
+    -fx-font-size: 16px;
+    -fx-background-color: #cccccc;
+    -fx-text-fill: #333;
+}
+
+#voltarButton:hover {
+    -fx-font-size: 16px;
+    -fx-background-color: #b5b5b5;
+}

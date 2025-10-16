@@ -107,7 +107,7 @@ public class MainController {
                 System.out.println("IF nao entrou");
             }
             // Você pode adicionar outros 'else if' para outras telas que precisem do usuário
-            // else if (controller instanceof PerfilGUIController) { ... }
+            // else if (controller instanceof PerfilController) { ... }
 
             contentArea.getChildren().setAll(page);
 
