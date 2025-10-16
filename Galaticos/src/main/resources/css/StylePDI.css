@@ -1,0 +1,132 @@
+/*
+ * Arquivo: StylePDI.css
+ * Revisado para corresponder às classes e estrutura do FXML fornecido.
+ */
+
+/* ======================================================================
+   CONFIGURAÇÕES GERAIS E LAYOUTS
+   ====================================================================== */
+
+/* O StackPane raiz */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-base: #f4f6f9; /* Cor de fundo principal */
+    -fx-background-color: #f4f6f9; /* Fundo da janela */
+}
+
+/* O VBox que contém todo o conteúdo */
+.content-card {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.2, 0, 2); /* Sombra suave */
+}
+
+/* Título Principal */
+.page-title {
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e; /* Azul Escuro */
+    -fx-padding: 0 0 10px 0;
+}
+
+/* Barra de Filtro (HBox) */
+.filter-bar {
+    -fx-padding: 5px 0 5px 0;
+}
+
+
+/* ======================================================================
+   CAMPOS E BOTÕES
+   ====================================================================== */
+
+/* Campo de Texto (Buscar por ID do Usuário) */
+.text-field {
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5px 10px;
+}
+.text-field:focused {
+    -fx-border-color: #3498db;
+    -fx-background-insets: 0;
+}
+
+/* Botões Primários (Buscar, Cadastrar Novo PDI) */
+.primary-button {
+    -fx-background-color: #2A8E9D; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.primary-button:hover {
+    -fx-background-color: #27ae60; /* Azul mais escuro no hover */
+}
+
+/* Botões Secundários (Mostrar Todos) */
+.secondary-button {
+    -fx-background-color: #dbe2e3; /* Cinza Claro */
+    -fx-text-fill: #2e4c6a;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.secondary-button:hover {
+    -fx-background-color: #bdc3c7;
+}
+
+/* Estilo específico para o botão de Cadastro (se quiser destacá-lo ainda mais) */
+#cadastrarPdiButton { /* Usa o fx:id="cadastrarPdiButton" como ID CSS */
+    -fx-background-color: #2A8E9D; /* Verde */
+}
+#cadastrarPdiButton:hover {
+    -fx-background-color: #27ae60;
+}
+
+
+/* ======================================================================
+   TABELA (TABLEVIEW)
+   ====================================================================== */
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4;
+}
+
+/* Cabeçalho da Tabela */
+.table-view .column-header-background {
+    -fx-background-color: #ecf0f1; /* Fundo cinza claro */
+    -fx-padding: 8px 0 8px 0;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #34495e; /* Texto azul escuro */
+    -fx-font-weight: bold;
+}
+
+/* Linhas da Tabela (Alternância de Cores) */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-cell-size: 30px;
+}
+.table-row-cell:odd {
+    -fx-background-color: #f7f9fb; /* Corrigido de volta para cinza claro (fundo escuro #030404 faria o texto sumir) */
+}
+
+/* Linha selecionada */
+.table-row-cell:selected {
+    -fx-background-color: #bbdefb; /* Azul claro para seleção */
+}
+
+/* NOVO: Garante que o texto DENTRO da célula selecionada seja preto */
+.table-row-cell:selected .text {
+    -fx-fill: black;
+}
+/* NOVA REGRA DE TEXTO para garantir que todos os textos fiquem pretos na seleção */
+.table-row-cell:selected .label {
+    -fx-text-fill: black;
+}
