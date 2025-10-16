@@ -1,97 +1,90 @@
+/* ==================================== */
+/* Estilo Principal da Página de Perfil */
+/* ==================================== */
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f5f7fa; /* Fundo mais simples para destacar o card */
 }
 
-.root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-    -fx-font-family: "Segoe UI", sans-serif;
+/* Card principal que contém o perfil */
+.profile-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    -fx-padding: 30px;
 }
 
-.label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #333333;
+/* ==================================== */
+/* Cabeçalho do Perfil (Avatar e Nome)  */
+/* ==================================== */
+.profile-picture {
+    -fx-fill: linear-gradient(to bottom right, #3498db, #2980b9);
+    -fx-stroke: #ffffff;
+    -fx-stroke-width: 4;
 }
 
-.navigation-bar {
-    -fx-background-color: #2c3e50; /* Um azul escuro/cinza, similar à imagem */
-    -fx-padding: 10 0 10 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
-}
-
-.navigation-button {
-    /* Reseta a aparência do botão */
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-
-    /* Estilo do texto */
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
+.initials-label {
+    -fx-font-size: 38px;
     -fx-font-weight: bold;
-
-    /* Efeito de sublinhado (invisível por padrão) */
-    -fx-border-color: transparent;
-    -fx-border-radius: 5px;
-    -fx-border-width: 3px; /* Apenas a borda inferior com 3px */
-    -fx-padding: 5 15 5 15; /* Espaçamento interno */
-
-    -fx-cursor: hand;
+    -fx-text-fill: white;
 }
 
-/* Efeito ao passar o mouse */
-.navigation-button:hover {
-    -fx-font-size: 16px;
-    -fx-background-color: rgba(255, 255, 255, 0.05); /* Leve brilho */
+.profile-name {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
 }
 
-.navigation-button.active {
+.profile-role {
     -fx-font-size: 16px;
-    -fx-border-color: #F4F2F3;
+    -fx-text-fill: #7f8c8d;
 }
 
 /* ==================================== */
-/* Barra de Status (mantém o estilo)    */
+/* Formulário de Edição                 */
 /* ==================================== */
-.status-bar {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda superior */
-    -fx-border-width: 1;
-    -fx-padding: 5 15 5 15;
+.form-grid {
+    /* CORRIGIDO: Adicionado o quarto valor para a sintaxe ficar correta */
+    -fx-padding: 20 0 0 0;
 }
 
-.status-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #555555;
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+    -fx-padding: 8 0 0 0; /* Alinha verticalmente com os campos de texto */
 }
 
-.button {
-    -fx-font-size: 16px;
-    -fx-background-color: linear-gradient(to bottom, #449db4, #357ABD);
+/* Estilo unificado para todos os campos de entrada */
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #bdc3c7;
+    -fx-font-size: 14px;
+    -fx-pref-height: 40px;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(52,152,219,0.2), 5, 0, 0, 1);
+}
+
+.combo-box .list-cell {
+    -fx-font-size: 14px;
+}
+
+/* ==================================== */
+/* Botões                               */
+/* ==================================== */
+.save-button {
+    -fx-background-color: #2ecc71; /* Verde para salvar */
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-padding: 10 25;
     -fx-cursor: hand;
-    -fx-padding: 8 20;
 }
 
-.button:hover {
-    -fx-font-size: 16px;
-    -fx-background-color: linear-gradient(to bottom, #5aa0f2, #468ad1);
-}
-
-.button:pressed {
-    -fx-font-size: 16px;
-    -fx-background-color: linear-gradient(to bottom, #357ABD, #2f5fa3);
-}
-
-#voltarButton {
-    -fx-font-size: 16px;
-    -fx-background-color: #cccccc;
-    -fx-text-fill: #333;
-}
-
-#voltarButton:hover {
-    -fx-font-size: 16px;
-    -fx-background-color: #b5b5b5;
+.save-button:hover {
+    -fx-background-color: #27ae60;
 }

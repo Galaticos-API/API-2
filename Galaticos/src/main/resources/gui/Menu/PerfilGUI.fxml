@@ -1,54 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.*?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilController">
     <stylesheets>
-        <URL value="@/css/StylePerfil.css" />
+        <URL value="@/css/StylePerfil.css"/>
     </stylesheets>
 
     <children>
-        <Label layoutX="226.0" layoutY="180.0" style="-fx-font-size: 32;" text="Usuário" textFill="#595959">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
+        <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="profile-card" AnchorPane.bottomAnchor="40.0"
+              AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+            <children>
+                <VBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <StackPane>
+                            <children>
+                                <Circle radius="60.0" styleClass="profile-picture"/>
+                                <Label fx:id="lblIniciais" styleClass="initials-label" text="US"/>
+                            </children>
+                        </StackPane>
+                        <Label fx:id="lblNomeUsuario" styleClass="profile-name" text="Nome do Usuário"/>
+                        <Label fx:id="lblTipoUsuario" styleClass="profile-role" text="Tipo de Usuário"/>
+                    </children>
+                </VBox>
 
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
-        </Label>
+                <Separator prefWidth="200.0"/>
 
-      <Circle layoutX="290.0" layoutY="105.0" radius="75.0" stroke="#8e8e8e" strokeType="INSIDE">
-         <fill>
-            <LinearGradient endX="0.5085227272727273" endY="1.0" startX="0.5037878995591945">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color red="0.379610151052475" green="0.7747712731361389" blue="0.9578947424888611" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color green="0.37087365984916687" blue="0.6800000071525574" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </fill></Circle>
+                <GridPane hgap="15.0" styleClass="form-grid" vgap="15.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label styleClass="form-label" text="Nome Completo:"/>
+                        <TextField fx:id="txtNome" GridPane.columnIndex="1"/>
 
-      <Button layoutX="45.0" layoutY="268.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Meu PDI" />
+                        <Label styleClass="form-label" text="E-mail:" GridPane.rowIndex="1"/>
+                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-      <Button layoutX="214.0" layoutY="268.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dashboard" />
+                        <Label styleClass="form-label" text="CPF:" GridPane.rowIndex="2"/>
+                        <TextField fx:id="txtCpf" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-      <Button layoutX="383.0" layoutY="267.0" mnemonicParsing="false"  prefHeight="50.0" prefWidth="150.0" text="Equipe" />
 
-      <Button layoutX="229.0" layoutY="500.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" style="-fx-font-size: 12;" text="VOLTAR" />
+                        <Label styleClass="form-label" text="Nova Senha:" GridPane.rowIndex="3"/>
+                        <PasswordField fx:id="txtSenha" promptText="Deixe em branco para não alterar"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    </children>
+                </GridPane>
 
+                <HBox alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar"
+                                styleClass="save-button" text="Salvar Alterações"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

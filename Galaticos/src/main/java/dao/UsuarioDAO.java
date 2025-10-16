@@ -173,4 +173,28 @@ public class UsuarioDAO {
             return pstmt.executeUpdate() > 0;
         }
     }
+
+    public Usuario autenticar(String email, String senha) {
+        String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha); // Lembre-se que em produção isso deve usar HASHING!
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setId(rs.getString("id"));
+                    usuario.setNome(rs.getString("nome"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setTipo_usuario(rs.getString("tipo_usuario"));
+                    return usuario;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao autenticar usuário.", e);
+        }
+        return null; // Retorna null se não encontrar a combinação de email e senha
+    }
 }

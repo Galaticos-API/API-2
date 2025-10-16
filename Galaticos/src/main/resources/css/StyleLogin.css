@@ -3,122 +3,62 @@
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
-.root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-    -fx-font-family: "Segoe UI", sans-serif;
+/* Novo: Estilo para o painel de login centralizado */
+.login-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);
 }
-
-.label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333;
-}
-
-.navigation-bar {
-    -fx-background-color: #2c3e50; /* Um azul escuro/cinza, similar à imagem */
-    -fx-padding: 10 0 10 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
-}
-
-.navigation-button {
-    /* Reseta a aparência do botão */
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-
-    /* Estilo do texto */
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-
-    /* Efeito de sublinhado (invisível por padrão) */
-    -fx-border-color: transparent;
-    -fx-border-radius: 5px;
-    -fx-border-width: 3px; /* Apenas a borda inferior com 3px */
-    -fx-padding: 5 15 5 15; /* Espaçamento interno */
-
-    -fx-cursor: hand;
-}
-
-/* Efeito ao passar o mouse */
-.navigation-button:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.05); /* Leve brilho */
-}
-
-.navigation-button.active {
-    -fx-border-color: #F4F2F3;
-}
-
-/* ==================================== */
-/* Barra de Status (mantém o estilo)    */
-/* ==================================== */
-.status-bar {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda superior */
-    -fx-border-width: 1;
-    -fx-padding: 5 15 5 15;
-}
-
-.status-label {
-    -fx-font-size: 12px;
-    -fx-text-fill: #555555;
-}
-
-
 
 .text-field, .password-field {
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-border-color: #b0b0b0;
-    -fx-border-width: 1;
-    -fx-padding: 8 10;
-    -fx-background-color: #ffffff;
+    -fx-padding: 12 15; /* Aumenta um pouco o padding */
     -fx-font-size: 15px;
+    -fx-pref-height: 45px;
 }
 
 .text-field:focused, .password-field:focused {
-    -fx-border-color: #4a90e2;
-    -fx-effect: dropshadow(three-pass-box, rgba(74,144,226,0.2), 5, 0, 0, 2);
+    -fx-border-color: #357ABD;
+    -fx-effect: dropshadow(three-pass-box, rgba(53,122,189,0.2), 5, 0, 0, 2);
 }
 
-.button {
-    -fx-background-color: linear-gradient(to bottom, #449db4, #357ABD);
+#loginButton {
+    -fx-background-color: #2A8E9D;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-padding: 8 20;
+    -fx-padding: 12 0; /* Padding vertical */
+    -fx-font-size: 16px;
+    -fx-pref-width: 250px; /* Largura preferida */
 }
 
-.button:hover {
-    -fx-background-color: linear-gradient(to bottom, #5aa0f2, #468ad1);
+#loginButton:hover {
+    -fx-background-color: #468ad1;
 }
 
-.button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #357ABD, #2f5fa3);
-}
-
-#loginButton {
-    -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
-}
-
-#sairButton {
+/* Novo: Estilo para o botão de sair, agora com classe */
+.sair-button {
     -fx-background-color: #cccccc;
     -fx-text-fill: #333;
-}
-
-#sairButton:hover {
-    -fx-background-color: #b5b5b5;
-}
-
-#cadastroButton {
-    -fx-background-color: transparent;
-    -fx-text-fill: #4a90e2;
-    -fx-underline: true;
-    -fx-font-size: 13px;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
 }
 
-#cadastroButton:hover {
+.sair-button:hover {
+    -fx-background-color: #b5b5b5;
+}
+
+/* Novo: Estilo para botões que parecem links */
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #357ABD;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.link-button:hover {
     -fx-text-fill: #2f5fa3;
 }

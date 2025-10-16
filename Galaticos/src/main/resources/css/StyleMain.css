@@ -1,59 +1,96 @@
+/* ==================================== */
+/* Estilos Globais para toda a Aplicação*/
+/* ==================================== */
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-    -fx-font-family: "Segoe UI", sans-serif;
-}
-
-.root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    -fx-background-color: #F0F4F5; /* Fundo mais claro e consistente */
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
 .label {
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #2F3E46;
 }
 
+/* ==================================== */
+/* Barra de Navegação Principal         */
+/* ==================================== */
 .navigation-bar {
-    -fx-background-color: #2c3e50; /* Um azul escuro/cinza, similar à imagem */
+    -fx-background-color: #2A8E9D; /* Azul escuro/cinza */
     -fx-padding: 10 0 10 0;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
 }
 
 .navigation-button {
-    /* Reseta a aparência do botão */
     -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-
-    /* Estilo do texto */
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-
-    /* Efeito de sublinhado (invisível por padrão) */
     -fx-border-color: transparent;
-    -fx-border-radius: 5px;
-    -fx-border-width: 3px; /* Apenas a borda inferior com 3px */
-    -fx-padding: 5 15 5 15; /* Espaçamento interno */
-
+    -fx-border-width: 0 0 3px 0;
+    -fx-padding: 5 15 5 15;
     -fx-cursor: hand;
 }
 
-/* Efeito ao passar o mouse */
 .navigation-button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.05); /* Leve brilho */
+    -fx-border-color: transparent transparent #B2B2B2 transparent; /* Mostra sublinhado azul */
 }
 
+/* Estilo para o botão da tela ativa */
 .navigation-button.active {
-    -fx-border-color: #F4F2F3;
+    -fx-border-color: transparent transparent #186C7B transparent; /* Mantém sublinhado */
 }
 
 /* ==================================== */
-/* Barra de Status (mantém o estilo)    */
+/* Painel de Login (do LoginGUI)        */
+/* ==================================== */
+.login-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);
+}
+
+/* ==================================== */
+/* Campos de Formulário                 */
+/* ==================================== */
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #b0b0b0;
+    -fx-padding: 12 15;
+    -fx-font-size: 15px;
+    -fx-pref-height: 45px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #357ABD;
+    -fx-effect: dropshadow(three-pass-box, rgba(53,122,189,0.2), 5, 0, 0, 2);
+}
+
+/* ==================================== */
+/* Botão Principal de Ação (Login)      */
+/* ==================================== */
+#loginButton {
+    -fx-background-color: #357ABD;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 12 0;
+    -fx-font-size: 16px;
+    -fx-pref-width: 250px;
+}
+
+#loginButton:hover {
+    -fx-background-color: #468ad1;
+}
+
+/* ==================================== */
+/* Barra de Status Inferior             */
 /* ==================================== */
 .status-bar {
     -fx-background-color: #ffffff;
-    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda superior */
+    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda sutil no topo */
     -fx-border-width: 1;
     -fx-padding: 5 15 5 15;
 }
@@ -63,62 +100,33 @@
     -fx-text-fill: #555555;
 }
 
+/* ==================================== */
+/* Estilos para Widgets de Dashboard    */
+/* ==================================== */
 
-
-.text-field, .password-field {
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #b0b0b0;
-    -fx-border-width: 1;
-    -fx-padding: 8 10;
-    -fx-background-color: #ffffff;
-    -fx-font-size: 15px;
-}
-
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #4a90e2;
-    -fx-effect: dropshadow(three-pass-box, rgba(74,144,226,0.2), 5, 0, 0, 2);
-}
-
-.button {
-    -fx-background-color: linear-gradient(to bottom, #449db4, #357ABD);
-    -fx-text-fill: white;
+.widget-title {
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-cursor: hand;
-    -fx-padding: 8 20;
+    -fx-text-fill: #34495e;
 }
 
-.button:hover {
-    -fx-background-color: linear-gradient(to bottom, #5aa0f2, #468ad1);
+.widget-value {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #357ABD;
 }
 
-.button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #357ABD, #2f5fa3);
+/* Ajustes nos gráficos para melhor visualização */
+.chart-pie-label-line {
+    -fx-stroke: #7f8c8d;
+    -fx-fill: #7f8c8d;
 }
 
-#loginButton {
-    -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
+.chart-pie-label {
+    -fx-fill: #34495e;
+    -fx-font-size: 12px;
 }
 
-#sairButton {
-    -fx-background-color: #cccccc;
-    -fx-text-fill: #333;
-}
-
-#sairButton:hover {
-    -fx-background-color: #b5b5b5;
-}
-
-#cadastroButton {
-    -fx-background-color: transparent;
-    -fx-text-fill: #4a90e2;
-    -fx-underline: true;
-    -fx-font-size: 13px;
-    -fx-cursor: hand;
-}
-
-#cadastroButton:hover {
-    -fx-text-fill: #2f5fa3;
+.chart-legend {
+   -fx-background-color:  transparent;
 }

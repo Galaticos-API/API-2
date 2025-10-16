@@ -11,8 +11,9 @@ public class Main extends Application {
         //System.out.println("Rodando MAIN");
         Parent listaRoot = FXMLLoader.load(getClass().getResource("/gui/login/LoginGUI.fxml"));
 
+        stage.setScene(new Scene(listaRoot));
         stage.setTitle("Sistema PDI");
-        stage.setScene(new Scene(listaRoot, 579, 579));
+        stage.setMaximized(true);
         stage.setResizable(false);
         stage.show();
         StageManager.setStage(stage);

@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import modelo.Usuario;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class MainController {
     private Usuario usuarioLogado;
 
     @FXML
-    private AnchorPane contentArea; // A área central que será atualizada
+    private StackPane conteudo; // A área central que será atualizada
 
     @FXML
     private Button btnPerfil;
@@ -44,24 +45,20 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // Adiciona os botões à lista para fácil gerenciamento
         navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard);
 
         if (usuarioLogado != null) {
-            // Lógica para esconder botões baseada na permissão
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
             btnUsuarios.setVisible(podeVerUsuarios);
-            btnUsuarios.setManaged(podeVerUsuarios); // Garante que o espaço seja removido
+            btnUsuarios.setManaged(podeVerUsuarios);
 
-            // Carrega a página inicial e define o botão de perfil como ativo
-            handleMenuPerfil(null);
+            handleMenuDashboard();
         }
     }
 
-    // Métodos para lidar com os cliques nos menus
     @FXML
     void handleMenuPerfil(ActionEvent event) {
-        loadPage("DashboardGUI");
+        loadPage("PerfilGUI");
         updateActiveButton(btnPerfil);
     }
 
@@ -86,10 +83,8 @@ public class MainController {
 
     private void updateActiveButton(Button activeButton) {
         for (Button button : navigationButtons) {
-            // Remove a classe 'active' de todos os botões
             button.getStyleClass().remove("active");
         }
-        // Adiciona a classe 'active' apenas ao botão que foi clicado
         activeButton.getStyleClass().add("active");
     }
 
@@ -106,10 +101,8 @@ public class MainController {
             } else {
                 System.out.println("IF nao entrou");
             }
-            // Você pode adicionar outros 'else if' para outras telas que precisem do usuário
-            // else if (controller instanceof PerfilController) { ... }
 
-            contentArea.getChildren().setAll(page);
+            conteudo.getChildren().setAll(page);
 
         } catch (IOException e) {
             e.printStackTrace();

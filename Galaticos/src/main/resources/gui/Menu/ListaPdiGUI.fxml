@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
+
     <children>
-        <Label layoutX="250.0" layoutY="14.0" text="Gerenciamento de PDIs">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
-        </Label>
-
-        <HBox alignment="CENTER_LEFT" layoutX="40.0" layoutY="60.0" spacing="10.0">
+        <VBox alignment="TOP_CENTER" maxHeight="650.0" maxWidth="900.0" spacing="20.0" styleClass="content-card">
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
             <children>
-                <Label text="Buscar por ID do Colaborador:" />
-                <TextField fx:id="colaboradorIdTextField" prefWidth="150.0" promptText="Digite o ID" />
-                <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#handleBuscarAction" text="Buscar" />
-                <Button fx:id="limparFiltroButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" text="Mostrar Todos" />
-            <Button fx:id="atualizarButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" text="Atualizar Tabela" />
+                <Label styleClass="page-title" text="Gerenciamento de Planos de Desenvolvimento" />
+
+                <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="filter-bar">
+                    <children>
+                        <Label text="Buscar por ID do Usuário:" />
+                        <TextField fx:id="usuarioIdTextField" prefWidth="150.0" promptText="Digite o ID" />
+                        <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#handleBuscarAction" styleClass="primary-button" text="Buscar" />
+                        <Button fx:id="limparFiltroButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" styleClass="secondary-button" text="Mostrar Todos" />
+                    </children>
+                </HBox>
+
+                <TableView fx:id="pdiTableView" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="75.0" text="PDI ID" />
+                        <TableColumn fx:id="colaboradorIdColumn" prefWidth="120.0" text="Colaborador" />
+                        <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Status" />
+                        <TableColumn fx:id="dataCriacaoColumn" prefWidth="180.0" text="Data de Criação" />
+                        <TableColumn fx:id="pontuacaoColumn" prefWidth="150.0" text="Pontuação" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <children>
+                        <Button fx:id="cadastrarPdiButton" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Cadastrar Novo PDI" />
+                    </children>
+                </HBox>
             </children>
-        </HBox>
-
-        <TableView fx:id="pdiTableView" layoutX="40.0" layoutY="110.0" prefHeight="340.0" prefWidth="720.0">
-            <columns>
-                <TableColumn fx:id="idColumn" prefWidth="75.0" text="PDI" />
-                <TableColumn fx:id="colaboradorIdColumn" prefWidth="120.0" text="Colaborador" />
-                <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Status" />
-                <TableColumn fx:id="dataCriacaoColumn" prefWidth="180.0" text="Data de Criação" />
-                <TableColumn fx:id="pontuacaoColumn" prefWidth="150.0" text="Pontuação Geral" />
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-
-        <Button fx:id="cadastrarPdiButton" layoutX="670.0" layoutY="465.0" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" style="-fx-font-size: 14px;" text="Cadastrar PDI" />
+        </VBox>
     </children>
-</AnchorPane>
+</StackPane>

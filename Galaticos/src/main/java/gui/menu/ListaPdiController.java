@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.PDI;
@@ -46,9 +47,6 @@ public class ListaPdiController implements Initializable {
     @FXML
     private TableColumn<PDI, Integer> colaboradorIdColumn;
 
-    //@FXML
-    //private TableColumn<PDI, Integer> anoColumn;
-
     @FXML
     private TableColumn<PDI, String> statusColumn;
 
@@ -59,7 +57,7 @@ public class ListaPdiController implements Initializable {
     private TableColumn<PDI, Float> pontuacaoColumn;
 
     @FXML
-    private AnchorPane rootPane;
+    private StackPane rootPane;
 
     @FXML
     private Button cadastrarPdiButton;
