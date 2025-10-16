@@ -1,19 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilController">
+    <stylesheets>
+        <URL value="@/css/StylePerfil.css" />
+    </stylesheets>
+
     <children>
-        <Label layoutX="360.0" layoutY="42.0" text="Perfil">
+        <Label layoutX="226.0" layoutY="180.0" style="-fx-font-size: 32;" text="Usuário" textFill="#595959">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
+
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
         </Label>
+
+      <Circle layoutX="290.0" layoutY="105.0" radius="75.0" stroke="#8e8e8e" strokeType="INSIDE">
+         <fill>
+            <LinearGradient endX="0.5085227272727273" endY="1.0" startX="0.5037878995591945">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.379610151052475" green="0.7747712731361389" blue="0.9578947424888611" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color green="0.37087365984916687" blue="0.6800000071525574" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill></Circle>
+
+      <Button layoutX="45.0" layoutY="268.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Meu PDI" />
+
+      <Button layoutX="214.0" layoutY="268.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dashboard" />
+
+      <Button layoutX="383.0" layoutY="267.0" mnemonicParsing="false"  prefHeight="50.0" prefWidth="150.0" text="Equipe" />
+
+      <Button layoutX="229.0" layoutY="500.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" style="-fx-font-size: 12;" text="VOLTAR" />
+
     </children>
 </AnchorPane>

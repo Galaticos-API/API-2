@@ -1,12 +1,14 @@
 package gui.menu;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import modelo.Usuario;
 import util.SceneManager;
 
-public class PerfilGUIController {
+
+public class PerfilController {
 
     private Usuario usuarioLogado;
 
@@ -33,6 +35,11 @@ public class PerfilGUIController {
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario()) || "Gestor Geral".equals(usuarioLogado.getTipo_usuario());
             menuUsuarios.setVisible(podeVerUsuarios);
         }
+    }
+
+    @FXML
+    void clickPdi(ActionEvent event) {
+        SceneManager.mudarCena("SinglePdiGUI", "Meu PDI");
     }
 
     // Métodos para lidar com os cliques nos menus

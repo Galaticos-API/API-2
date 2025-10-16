@@ -4,10 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
     <stylesheets>
-        <URL value="@/css/style.css" />
+        <URL value="@/css/StyleLogin.css" />
     </stylesheets>
 
     <children>
@@ -22,7 +23,10 @@
 
         <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="285.0" />
 
-        <Button layoutX="242.0" layoutY="343.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="ENTRAR" />
+        <Button layoutX="230.0" layoutY="348.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="40.0" prefWidth="120.0" style="-fx-font-size: 16;" text="ENTRAR">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
 
         <Button disable="true" layoutX="37.0" layoutY="507.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="CADASTRE-SE" />
         <Button fx:id="sairBtn" layoutX="468.0" layoutY="507.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="SAIR" />
@@ -32,8 +36,8 @@
                 <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
             </graphic>
         </Label>
-          <TextField fx:id="senhaUsuario" layoutX="165.0" layoutY="284.0" prefHeight="37.0" prefWidth="250.0" promptText="Senha" />
-          <TextField fx:id="emailUsuario" layoutX="165.0" layoutY="239.0" prefHeight="37.0" prefWidth="250.0" promptText="Email" />
+          <TextField fx:id="senhaUsuario" layoutX="165.0" layoutY="286.0" prefHeight="40.0" prefWidth="250.0" promptText="Senha" />
+          <TextField fx:id="emailUsuario" layoutX="165.0" layoutY="235.0" prefHeight="40.0" prefWidth="250.0" promptText="Email" />
 
     </children>
 </AnchorPane>

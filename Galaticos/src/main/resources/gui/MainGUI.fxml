@@ -8,7 +8,7 @@
             prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="gui.MainController">
     <stylesheets>
-        <URL value="@../css/style.css"/>
+        <URL value="@../css/StyleLogin.css"/>
     </stylesheets>
 
     <top>
