@@ -4,14 +4,21 @@ import dao.ColaboradorDAO;
 import dao.ObjetivoDAO;
 import dao.PdiDAO;
 import dao.UsuarioDAO;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader; // <-- IMPORT ADICIONADO
+import javafx.fxml.Initializable;
+import javafx.scene.Parent; // <-- IMPORT ADICIONADO
+import javafx.scene.Scene; // <-- IMPORT ADICIONADO
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import javafx.fxml.Initializable;
+import javafx.stage.Modality; // <-- IMPORT ADICIONADO
 import javafx.stage.Stage;
-import javafx.collections.FXCollections;
-
-import modelo.*;
+import modelo.Colaborador;
+import modelo.Documento;
+import modelo.Objetivo;
+import modelo.PDI;
+import modelo.Usuario;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -19,8 +26,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
-// A classe precisa implementar Initializable para carregar dados na inicialização
 public class EditarPDIModalController implements Initializable {
+
+    // Variável de instância para armazenar o PDI atual
+    private PDI pdiAtual; // <-- 1. VARIÁVEL ADICIONADA
 
     // Elementos da Barra de Progresso
     @FXML
@@ -34,7 +43,7 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TextField colaboradorCargoField;
     @FXML
-    private ComboBox<String> statusPdiComboBox; // Tipo String para o ENUM
+    private ComboBox<String> statusPdiComboBox;
     @FXML
     private DatePicker dataCriacaoPicker;
     @FXML
@@ -64,6 +73,8 @@ public class EditarPDIModalController implements Initializable {
         PdiDAO pdiDAO = new PdiDAO();
         pdi = pdiDAO.buscarPorId(pdi.getId());
 
+        this.pdiAtual = pdi; // <-- 2. ATRIBUIÇÃO DO PDI À VARIÁVEL DE INSTÂNCIA
+
         ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
         Colaborador colaborador = colaboradorDAO.buscarPorId(pdi.getColaboradorId());
         Usuario usuario = colaborador.getUsuario();
@@ -91,7 +102,6 @@ public class EditarPDIModalController implements Initializable {
         progressBarGeral.setProgress(pontuacao);
         textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pontuacao * 100));
 
-        // 3. Carregar Tabelas (simulação)
         ObjetivoDAO objetivoDAO = new ObjetivoDAO();
         objetivoTable.setItems(FXCollections.observableArrayList(objetivoDAO.buscarPorPdiId(pdi.getId())));
         //documentoTable.setItems(DocumentoDAO.findByPdiId(pdiId));
@@ -109,11 +119,6 @@ public class EditarPDIModalController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleAddObjective() {
-        // Abre uma nova janela/modal para o cadastro de um novo Objetivo (US-03)
-        showAlert(Alert.AlertType.INFORMATION, "Funcionalidade", "Abrir modal para criação de novo Objetivo.");
-    }
 
     @FXML
     private void handleCalculateGeneralScore() {
@@ -125,9 +130,34 @@ public class EditarPDIModalController implements Initializable {
     }
 
     @FXML
-    private void handleAddSkill() {
-        // Abre um modal para adicionar e avaliar uma Hard ou Soft Skill (US-04)
-        showAlert(Alert.AlertType.INFORMATION, "Funcionalidade", "Abrir modal para adicionar e avaliar Skill.");
+    private void handleAddObjective() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/CadastroObjetivoModal.fxml"));
+            Parent page = loader.load();
+
+            CadastroObjetivoModalController controller = loader.getController();
+            // <-- 3. CORRIGIDO: Usa a variável de instância pdiAtual
+            controller.setPdiId(Integer.parseInt(pdiAtual.getId()));
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Adicionar Novo Objetivo");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(objetivoTable.getScene().getWindow());
+
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            if (controller.isSalvo()) {
+                // <-- 3. CORRIGIDO: Usa a variável de instância pdiAtual
+                objetivoTable.setItems(FXCollections.observableArrayList(new ObjetivoDAO().buscarPorPdiId(pdiAtual.getId())));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
