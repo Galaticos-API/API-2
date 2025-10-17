@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent; // <-- IMPORT ADICIONADO
 import javafx.scene.Scene; // <-- IMPORT ADICIONADO
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality; // <-- IMPORT ADICIONADO
 import javafx.stage.Stage;
@@ -25,6 +26,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -55,6 +57,26 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableView<Objetivo> objetivoTable;
 
+    //Tabela Objetivo
+
+    @FXML
+    private TableColumn<Objetivo, Integer> descricaoColumn;
+
+    @FXML
+    private TableColumn<Objetivo, Date> prazoColumn;
+
+    @FXML
+    private TableColumn<Objetivo, Integer> pesoColumn;
+
+    @FXML
+    private TableColumn<Objetivo, Float> pontuacaoColumn;
+
+    @FXML
+    private TableColumn<Objetivo, String> statusColumn;
+
+    @FXML
+    private TableColumn<Objetivo, String> acoesColumn;
+
     @FXML
     private ObservableList<Objetivo> objetivoObservableList;
 
@@ -63,9 +85,14 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableView<Documento> documentoTable;
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         statusPdiComboBox.getItems().addAll("Em Andamento", "Concluído", "Arquivado");
+
+        configurarColunasTabela();
+        carregarTodosOsPDIs();
     }
 
     public void setPDI(PDI pdi) throws SQLException {
@@ -196,6 +223,15 @@ public class EditarPDIModalController implements Initializable {
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+    }
+
+    private void configurarColunasTabela() {
+        descricaoColumn.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        prazoColumn.setCellValueFactory(new PropertyValueFactory<>("prazo"));
+        pesoColumn.setCellValueFactory(new PropertyValueFactory<>("peso"));
+        pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacao"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        acoesColumn.setCellValueFactory(new PropertyValueFactory<>("acoes"));
     }
 
     private void carregarTodosOsPDIs() {
