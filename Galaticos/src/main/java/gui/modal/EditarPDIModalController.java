@@ -5,6 +5,7 @@ import dao.ObjetivoDAO;
 import dao.PdiDAO;
 import dao.UsuarioDAO;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader; // <-- IMPORT ADICIONADO
 import javafx.fxml.Initializable;
@@ -24,6 +25,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditarPDIModalController implements Initializable {
@@ -52,6 +54,10 @@ public class EditarPDIModalController implements Initializable {
     // Aba 2: Objetivos e Metas
     @FXML
     private TableView<Objetivo> objetivoTable;
+
+    @FXML
+    private ObservableList<Objetivo> objetivoObservableList;
+
 
     // Aba 4: Documentos
     @FXML
@@ -106,6 +112,7 @@ public class EditarPDIModalController implements Initializable {
         objetivoTable.setItems(FXCollections.observableArrayList(objetivoDAO.buscarPorPdiId(pdi.getId())));
         //documentoTable.setItems(DocumentoDAO.findByPdiId(pdiId));
     }
+
 
     @FXML
     private void handleSavePdiDetails() {
@@ -189,5 +196,11 @@ public class EditarPDIModalController implements Initializable {
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+    }
+
+    private void carregarTodosOsPDIs() {
+        List<Objetivo> objetivos = ObjetivoDAO.lerTodos();
+        objetivoObservableList = FXCollections.observableArrayList(objetivos);
+        objetivoTable.setItems(objetivoObservableList);
     }
 }
