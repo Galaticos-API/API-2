@@ -1,8 +1,6 @@
 package gui.modal;
 
-import dao.ColaboradorDAO;
 import dao.ObjetivoDAO;
-import dao.PdiDAO;
 import dao.UsuarioDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,12 +9,15 @@ import javafx.fxml.FXMLLoader; // <-- IMPORT ADICIONADO
 import javafx.fxml.Initializable;
 import javafx.scene.Parent; // <-- IMPORT ADICIONADO
 import javafx.scene.Scene; // <-- IMPORT ADICIONADO
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality; // <-- IMPORT ADICIONADO
 import javafx.stage.Stage;
 import modelo.Colaborador;
+import javafx.stage.Stage;
 import modelo.Documento;
 import modelo.Objetivo;
 import modelo.PDI;
@@ -36,24 +37,21 @@ public class EditarPDIModalController implements Initializable {
     private PDI pdiAtual; // <-- 1. VARIÁVEL ADICIONADA
 
     // Elementos da Barra de Progresso
+    // ... (outros @FXML)
     @FXML
     private ProgressBar progressBarGeral;
     @FXML
     private Text textPontuacaoGeral;
-
-    // Aba 1: Dados Gerais
     @FXML
-    private TextField colaboradorNomeField;
+    private TextField usuarioNomeField; // Renomeado
     @FXML
-    private TextField colaboradorCargoField;
+    private TextField usuarioCargoField; // Renomeado
     @FXML
     private ComboBox<String> statusPdiComboBox;
     @FXML
     private DatePicker dataCriacaoPicker;
     @FXML
     private DatePicker dataFechamentoPicker;
-
-    // Aba 2: Objetivos e Metas
     @FXML
     private TableView<Objetivo> objetivoTable;
 
@@ -86,6 +84,12 @@ public class EditarPDIModalController implements Initializable {
     private TableView<Documento> documentoTable;
 
 
+    @FXML
+    private TableView<Documento> documentoTable;
+
+    private PDI pdiAtual; // Armazena o PDI que está sendo editado
+    private Stage dialogStage;
+    private boolean salvo = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,9 +99,10 @@ public class EditarPDIModalController implements Initializable {
         carregarTodosOsPDIs();
     }
 
-    public void setPDI(PDI pdi) throws SQLException {
+    public void setPDI(PDI pdi) {
         if (pdi != null) {
-            loadPdiData(pdi);
+            this.pdiAtual = pdi;
+            loadPdiData(); // Carrega os dados na tela
         }
     }
 
@@ -213,9 +218,6 @@ public class EditarPDIModalController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private Stage dialogStage;
-    private boolean salvo = false;
 
     public boolean isSalvo() {
         return salvo;

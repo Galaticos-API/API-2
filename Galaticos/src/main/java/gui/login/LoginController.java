@@ -1,113 +1,98 @@
 package gui.login;
 
 import dao.UsuarioDAO;
-import factory.ConnectionFactory;
 import gui.MainController;
+// Importe os outros controllers que você usa (ColaboradorController, etc.)
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField; // Importe o PasswordField
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelo.Usuario;
-import util.SceneManager;
 import util.Session;
 import util.StageManager;
-
-import java.sql.Connection;
-import java.util.List;
 
 public class LoginController {
 
     @FXML
     private TextField emailUsuario;
     @FXML
-    private TextField senhaUsuario;
-    @FXML
-    private ChoiceBox<String> tipoUsuario;
-    @FXML
-    private Button loginBtn;
+    private PasswordField senhaUsuario;
     @FXML
     private Button sairBtn;
 
     @FXML
-    public void initialize() {
-        tipoUsuario.setItems(FXCollections.observableArrayList("RH", "Gestor de Área", "Gestor Geral", "Colaborador"));
-        tipoUsuario.setValue("RH");
-    }
-
-    @FXML
     void clickLogin(ActionEvent event) throws Exception {
-        Connection conn = ConnectionFactory.getConnection();
+        String email = emailUsuario.getText().trim();
+        String senha = senhaUsuario.getText().trim();
+
+        if (email.isEmpty() || senha.isEmpty()) {
+            mostrarAlerta("Campos Vazios", "Por favor, preencha o e-mail e a senha.");
+            return;
+        }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> listaUsuarios = usuarioDAO.lerTodos();
+        Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senha);
 
-        for (Usuario usuario : listaUsuarios) {
-            if (emailUsuario.getText().trim().equals(usuario.getEmail()) && senhaUsuario.getText().trim().equals(usuario.getSenha())) {
-                Session.setUsuarioAtual(usuario);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + "MainGUI" + ".fxml"));
-                Parent root = loader.load();
-                MainController mainController = loader.getController();
-                mainController.setUsuario(Session.getUsuarioAtual());
+        if (usuarioAutenticado != null) {
+            Session.setUsuarioAtual(usuarioAutenticado);
 
-                Stage stage = StageManager.getStage();
-                stage.setScene(new Scene(root));
-                stage.show();
+            String fxmlFile = getTelaPorTipo(usuarioAutenticado.getTipo_usuario());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
+            Parent proximoRoot = loader.load();
 
-                return;
-            }
+            passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+
+            Stage stage = StageManager.getStage();
+            stage.getScene().setRoot(proximoRoot);
+
+        } else {
+            mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
         }
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Aviso!");
-        alert.setHeaderText(null);
-        alert.setContentText("Usuário ou senha incorretos.");
-        alert.showAndWait();
+    }
+
+    private String getTelaPorTipo(String tipoUsuario) {
+        switch (tipoUsuario) {
+            case "RH":
+                return "MainGUI.fxml";
+            case "Gestor Geral":
+                return "MainGUI.fxml";
+            case "Gestor de Area":
+                return "MainGUI.fxml";
+            case "Colaborador":
+                return "ColaboradorGUI.fxml";
+            default:
+                throw new IllegalArgumentException("Tipo de usuário desconhecido: " + tipoUsuario);
+        }
+    }
+
+    private void passarUsuarioParaController(Object controller, Usuario usuario) {
+        if (controller instanceof MainController) {
+            ((MainController) controller).setUsuario(usuario);
+        }
     }
 
     @FXML
     void clickMudarTelaCadastro(ActionEvent event) {
-        SceneManager.mudarCena("CadastroGUI", "Cadastro");
+        mostrarAlerta("Info", "Funcionalidade de cadastro não implementada.");
     }
 
     @FXML
     void clickSair(ActionEvent event) {
         Platform.exit();
-        System.exit(0);
     }
 
-    // Utilidade
-    String pegarTela(String funcao) {
-        switch (funcao) {
-            case "RH":
-                return "MainGUI";
-            case "Colaborador":
-                return "ColaboradorGUI";
-            case "Gestor de Area":
-                return "GestorAreaGUI";
-            case "Gestor Geral":
-                return "GestorGeralGUI";
-        }
-        return "telaColaboradorController";
-    }
-
-    void passarUsuario(String funcao, FXMLLoader loader) throws Exception {
-        switch (funcao) {
-            case "RH":
-                MainController mainController = loader.getController();
-                mainController.setUsuario(Session.getUsuarioAtual());
-                break;
-            case "Colaborador":
-                MainController mainController2 = loader.getController();
-                mainController2.setUsuario(Session.getUsuarioAtual());
-                break;
-            case "Gestor de Area":
-
-            case "Gestor Geral":
-
-        }
+    private void mostrarAlerta(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Aviso");
+        alert.setHeaderText(titulo);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

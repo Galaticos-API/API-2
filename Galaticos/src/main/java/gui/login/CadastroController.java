@@ -10,9 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import modelo.Colaborador;
 import modelo.Usuario;
-import services.UsuarioService;
 import util.SceneManager;
 import util.Util;
 
@@ -59,7 +57,7 @@ public class CadastroController {
         }
 
         try {
-            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo");
+            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo", null, "", "");
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.adicionar(usuario);

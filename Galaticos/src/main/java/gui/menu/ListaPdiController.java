@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.PDI;
@@ -47,9 +48,6 @@ public class ListaPdiController implements Initializable {
     private TableColumn<PDI, Integer> colaboradorIdColumn;
 
     @FXML
-    private TableColumn<PDI, Integer> anoColumn;
-
-    @FXML
     private TableColumn<PDI, String> statusColumn;
 
     @FXML
@@ -59,7 +57,7 @@ public class ListaPdiController implements Initializable {
     private TableColumn<PDI, Float> pontuacaoColumn;
 
     @FXML
-    private AnchorPane rootPane;
+    private StackPane rootPane;
 
     @FXML
     private Button cadastrarPdiButton;
@@ -99,8 +97,6 @@ public class ListaPdiController implements Initializable {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
             }
         });
@@ -185,7 +181,7 @@ public class ListaPdiController implements Initializable {
     private void configurarColunasTabela() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         colaboradorIdColumn.setCellValueFactory(new PropertyValueFactory<>("colaboradorId"));
-        anoColumn.setCellValueFactory(new PropertyValueFactory<>("ano"));
+        //anoColumn.setCellValueFactory(new PropertyValueFactory<>("ano"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         dataCriacaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataCriacao"));
         pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacaoGeral"));

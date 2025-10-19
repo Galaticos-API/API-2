@@ -1,0 +1,132 @@
+/* ==================================== */
+/* Estilos Globais para toda a Aplicação*/
+/* ==================================== */
+.root {
+    -fx-background-color: #F0F4F5; /* Fundo mais claro e consistente */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2F3E46;
+}
+
+/* ==================================== */
+/* Barra de Navegação Principal         */
+/* ==================================== */
+.navigation-bar {
+    -fx-background-color: #2A8E9D; /* Azul escuro/cinza */
+    -fx-padding: 10 0 10 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.navigation-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3px 0;
+    -fx-padding: 5 15 5 15;
+    -fx-cursor: hand;
+}
+
+.navigation-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05); /* Leve brilho */
+    -fx-border-color: transparent transparent #B2B2B2 transparent; /* Mostra sublinhado azul */
+}
+
+/* Estilo para o botão da tela ativa */
+.navigation-button.active {
+    -fx-border-color: transparent transparent #186C7B transparent; /* Mantém sublinhado */
+}
+
+/* ==================================== */
+/* Painel de Login (do LoginGUI)        */
+/* ==================================== */
+.login-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);
+}
+
+/* ==================================== */
+/* Campos de Formulário                 */
+/* ==================================== */
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #b0b0b0;
+    -fx-padding: 12 15;
+    -fx-font-size: 15px;
+    -fx-pref-height: 45px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #357ABD;
+    -fx-effect: dropshadow(three-pass-box, rgba(53,122,189,0.2), 5, 0, 0, 2);
+}
+
+/* ==================================== */
+/* Botão Principal de Ação (Login)      */
+/* ==================================== */
+#loginButton {
+    -fx-background-color: #357ABD;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 12 0;
+    -fx-font-size: 16px;
+    -fx-pref-width: 250px;
+}
+
+#loginButton:hover {
+    -fx-background-color: #468ad1;
+}
+
+/* ==================================== */
+/* Barra de Status Inferior             */
+/* ==================================== */
+.status-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe4e8 transparent transparent transparent; /* Borda sutil no topo */
+    -fx-border-width: 1;
+    -fx-padding: 5 15 5 15;
+}
+
+.status-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
+}
+
+/* ==================================== */
+/* Estilos para Widgets de Dashboard    */
+/* ==================================== */
+
+.widget-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.widget-value {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #357ABD;
+}
+
+/* Ajustes nos gráficos para melhor visualização */
+.chart-pie-label-line {
+    -fx-stroke: #7f8c8d;
+    -fx-fill: #7f8c8d;
+}
+
+.chart-pie-label {
+    -fx-fill: #34495e;
+    -fx-font-size: 12px;
+}
+
+.chart-legend {
+   -fx-background-color:  transparent;
+}

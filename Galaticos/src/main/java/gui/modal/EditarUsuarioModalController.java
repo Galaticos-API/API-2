@@ -3,47 +3,43 @@ package gui.modal;
 import dao.UsuarioDAO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import modelo.Colaborador;
 import modelo.Usuario;
-import services.UsuarioService;
 import util.Util;
 
 import java.sql.SQLException;
-// Importe sua classe de serviço ou DAO aqui
-// import service.UsuarioService;
+import java.time.LocalDate;
 
 public class EditarUsuarioModalController {
 
+    // --- Campos FXML ---
     @FXML
     private TextField txtNome;
-
     @FXML
     private TextField txtEmail;
-
     @FXML
     private PasswordField txtSenha;
-
+    @FXML
+    private TextField txtCpf;
+    @FXML
+    private TextField txtTelefone;
+    @FXML
+    private DatePicker datePickerNascimento;
     @FXML
     private ComboBox<String> comboTipoUsuario;
+    @FXML
+    private ComboBox<String> comboStatus;
 
     private Stage dialogStage;
-    private boolean salvo = false;
-
     private Usuario usuarioEditado;
-
-    // Seus serviços ou DAOs
-    // private UsuarioService cadastroService = new UsuarioService();
+    private boolean salvo = false;
 
     @FXML
     private void initialize() {
-        // Preenche o ComboBox com as opções
-        comboTipoUsuario.setItems(FXCollections.observableArrayList("RH", "Gestor de Área", "Gestor Geral"));
-        comboTipoUsuario.getSelectionModel().selectFirst();
+        // Preenche os ComboBoxes com as opções
+        comboTipoUsuario.setItems(FXCollections.observableArrayList("RH", "Gestor de Área", "Gestor Geral", "Colaborador"));
+        comboStatus.setItems(FXCollections.observableArrayList("Ativo", "Inativo"));
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -54,50 +50,43 @@ public class EditarUsuarioModalController {
         return salvo;
     }
 
+    public void setUsuario(Usuario usuario) {
+        this.usuarioEditado = usuario;
+
+        txtNome.setText(usuario.getNome());
+        txtEmail.setText(usuario.getEmail());
+        txtCpf.setText(usuario.getCpf());
+        datePickerNascimento.setValue(usuario.getData_nascimento());
+        comboTipoUsuario.setValue(usuario.getTipo_usuario());
+        comboStatus.setValue(usuario.getStatus());
+    }
+
     @FXML
     private void handleSalvar() {
         if (isInputValid()) {
-            String nome = txtNome.getText().trim();
-            String email = txtEmail.getText().trim();
-            String senha = txtSenha.getText().trim();
-            String tipo_usuario = comboTipoUsuario.getValue();
             try {
-                usuarioEditado.setNome(nome);
-                usuarioEditado.setSenha(senha);
-                usuarioEditado.setEmail(email);
-                usuarioEditado.setTipo_usuario(tipo_usuario);
+                usuarioEditado.setNome(txtNome.getText().trim());
+                usuarioEditado.setEmail(txtEmail.getText().trim());
+                usuarioEditado.setCpf(txtCpf.getText().trim());
+                usuarioEditado.setData_nascimento(datePickerNascimento.getValue());
+                usuarioEditado.setTipo_usuario(comboTipoUsuario.getValue());
+                usuarioEditado.setStatus(comboStatus.getValue());
+
+                if (!txtSenha.getText().trim().isEmpty()) {
+                    usuarioEditado.setSenha(txtSenha.getText().trim());
+                }
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.atualizar(usuarioEditado);
 
-                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Usuário editado com sucesso!");
+                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Usuário atualizado com sucesso!");
 
-                txtNome.clear();
-                txtEmail.clear();
-                txtSenha.clear();
-            } catch (RuntimeException e) {
-                // O catch continua o mesmo, pois o serviço vai lançar a exceção em caso de erro.
-                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                salvo = true;
+                dialogStage.close();
+
+            } catch (RuntimeException | SQLException e) {
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro ao Atualizar", e.getMessage());
             }
-
-            // try {
-            //     cadastroService.cadastrarUsuarioEColaborador(novoUsuario, novoColaborador);
-            //     salvo = true;
-            //     dialogStage.close();
-            // } catch (RuntimeException e) {
-            //     Alert alert = new Alert(Alert.AlertType.ERROR);
-            //     alert.setTitle("Erro no Cadastro");
-            //     alert.setHeaderText("Não foi possível salvar o usuário.");
-            //     alert.setContentText(e.getMessage());
-            //     alert.showAndWait();
-            // }
-
-            // SIMULAÇÃO DE SUCESSO PARA O EXEMPLO:
-            System.out.println("Usuário salvo com sucesso (simulação).");
-            salvo = true;
-            dialogStage.close();
         }
     }
 
@@ -109,38 +98,21 @@ public class EditarUsuarioModalController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (txtNome.getText() == null || txtNome.getText().isEmpty()) {
+        if (txtNome.getText() == null || txtNome.getText().trim().isEmpty()) {
             errorMessage += "Nome inválido!\n";
         }
-        if (txtEmail.getText() == null || txtEmail.getText().isEmpty() || !txtEmail.getText().contains("@")) {
+        if (txtEmail.getText() == null || txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")) {
             errorMessage += "E-mail inválido!\n";
         }
-        if (txtSenha.getText() == null || txtSenha.getText().isEmpty()) {
-            errorMessage += "Senha inválida!\n";
+        if (txtCpf.getText() == null || txtCpf.getText().trim().isEmpty()) {
+            errorMessage += "CPF inválido!\n";
         }
 
         if (errorMessage.isEmpty()) {
             return true;
         } else {
-            // Mostra a mensagem de erro.
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Campos Inválidos");
-            alert.setHeaderText("Por favor, corrija os campos inválidos.");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
-
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Campos Inválidos", "Por favor, corrija os campos inválidos: \n" + errorMessage);
             return false;
         }
     }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuarioEditado = usuario;
-
-        txtNome.setText(usuario.getNome());
-        txtEmail.setText(usuario.getEmail());
-        txtSenha.setText(usuario.getSenha());
-    }
-
 }

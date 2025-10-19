@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `pdi_youtan` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `pdi_youtan`;
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: pdi_youtan
+-- Host: localhost    Database: pdi_youtan
 -- ------------------------------------------------------
 -- Server version	8.0.43
 
@@ -16,6 +14,31 @@ USE `pdi_youtan`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `avaliacao`
+--
+
+DROP TABLE IF EXISTS `avaliacao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `avaliacao` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Identificador único',
+  `id_objetivo` int NOT NULL COMMENT 'FK para objetivo.id',
+  `id_avaliador` int NOT NULL COMMENT 'FK para usuario.id',
+  `nota` decimal(4,2) NOT NULL COMMENT 'Nota de 0 a 10',
+  `comentario` text NOT NULL COMMENT 'Texto da avaliação',
+  `status_objetivo` varchar(50) NOT NULL COMMENT 'Ex: “Concluído”, “Abaixo do esperado”',
+  `data_avaliacao` datetime NOT NULL COMMENT 'Data da avaliação',
+  `criado_em` timestamp NOT NULL,
+  `atualizado_em` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_objetivo_idx` (`id_objetivo`),
+  KEY `id_avaliador_idx` (`id_avaliador`),
+  CONSTRAINT `id_avaliador` FOREIGN KEY (`id_avaliador`) REFERENCES `colaborador` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `id_objetivo` FOREIGN KEY (`id_objetivo`) REFERENCES `objetivo` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `colaborador`
@@ -35,22 +58,13 @@ CREATE TABLE `colaborador` (
   `gerente_id` int DEFAULT NULL,
   `usuario_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `cpf` (`cpf`),
   UNIQUE KEY `usuario_id` (`usuario_id`),
   KEY `gerente_id` (`gerente_id`),
   CONSTRAINT `colaborador_ibfk_1` FOREIGN KEY (`gerente_id`) REFERENCES `usuario` (`id`),
   CONSTRAINT `colaborador_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `colaborador`
---
-
-LOCK TABLES `colaborador` WRITE;
-/*!40000 ALTER TABLE `colaborador` DISABLE KEYS */;
-INSERT INTO `colaborador` VALUES (8,'rafael','',NULL,'RH','','',NULL,14);
-/*!40000 ALTER TABLE `colaborador` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `documento`
@@ -73,15 +87,6 @@ CREATE TABLE `documento` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `documento`
---
-
-LOCK TABLES `documento` WRITE;
-/*!40000 ALTER TABLE `documento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `documento` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `habilidade`
 --
 
@@ -96,15 +101,6 @@ CREATE TABLE `habilidade` (
   UNIQUE KEY `nome` (`nome`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `habilidade`
---
-
-LOCK TABLES `habilidade` WRITE;
-/*!40000 ALTER TABLE `habilidade` DISABLE KEYS */;
-/*!40000 ALTER TABLE `habilidade` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `objetivo`
@@ -129,15 +125,6 @@ CREATE TABLE `objetivo` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `objetivo`
---
-
-LOCK TABLES `objetivo` WRITE;
-/*!40000 ALTER TABLE `objetivo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `objetivo` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pdi`
 --
 
@@ -155,18 +142,8 @@ CREATE TABLE `pdi` (
   PRIMARY KEY (`id`),
   KEY `colaborador_id` (`colaborador_id`),
   CONSTRAINT `pdi_ibfk_1` FOREIGN KEY (`colaborador_id`) REFERENCES `colaborador` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pdi`
---
-
-LOCK TABLES `pdi` WRITE;
-/*!40000 ALTER TABLE `pdi` DISABLE KEYS */;
-INSERT INTO `pdi` VALUES (5,8,0,'Em Andamento','2025-09-27','2025-09-30',0.00),(6,8,0,'Em Andamento','2025-09-27','2025-09-30',0.00);
-/*!40000 ALTER TABLE `pdi` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pdi_habilidade`
@@ -188,15 +165,6 @@ CREATE TABLE `pdi_habilidade` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pdi_habilidade`
---
-
-LOCK TABLES `pdi_habilidade` WRITE;
-/*!40000 ALTER TABLE `pdi_habilidade` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pdi_habilidade` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `usuario`
 --
 
@@ -213,18 +181,8 @@ CREATE TABLE `usuario` (
   `status` enum('Ativo','Inativo') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'rh','rh','rh','RH','2025-09-27 15:33:40','Ativo'),(14,'rafael','rafael@gmail.com','rafael','Gestor de Area','2025-09-27 15:34:07','Ativo');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -235,4 +193,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-28 13:56:47
+-- Dump completed on 2025-10-10 19:00:42

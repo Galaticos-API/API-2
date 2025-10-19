@@ -1,0 +1,90 @@
+/* ==================================== */
+/* Estilo Principal da Página de Perfil */
+/* ==================================== */
+.root {
+    -fx-background-color: #f5f7fa; /* Fundo mais simples para destacar o card */
+}
+
+/* Card principal que contém o perfil */
+.profile-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    -fx-padding: 30px;
+}
+
+/* ==================================== */
+/* Cabeçalho do Perfil (Avatar e Nome)  */
+/* ==================================== */
+.profile-picture {
+    -fx-fill: linear-gradient(to bottom right, #3498db, #2980b9);
+    -fx-stroke: #ffffff;
+    -fx-stroke-width: 4;
+}
+
+.initials-label {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.profile-name {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.profile-role {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* ==================================== */
+/* Formulário de Edição                 */
+/* ==================================== */
+.form-grid {
+    /* CORRIGIDO: Adicionado o quarto valor para a sintaxe ficar correta */
+    -fx-padding: 20 0 0 0;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+    -fx-padding: 8 0 0 0; /* Alinha verticalmente com os campos de texto */
+}
+
+/* Estilo unificado para todos os campos de entrada */
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #bdc3c7;
+    -fx-font-size: 14px;
+    -fx-pref-height: 40px;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(52,152,219,0.2), 5, 0, 0, 1);
+}
+
+.combo-box .list-cell {
+    -fx-font-size: 14px;
+}
+
+/* ==================================== */
+/* Botões                               */
+/* ==================================== */
+.save-button {
+    -fx-background-color: #2ecc71; /* Verde para salvar */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+.save-button:hover {
+    -fx-background-color: #27ae60;
+}

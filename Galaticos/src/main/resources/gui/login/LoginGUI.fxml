@@ -1,45 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
     <stylesheets>
-        <URL value="@/css/style.css" />
-    </stylesheets>
+        <URL value="@/css/StyleLogin.css" /> </stylesheets>
 
     <children>
+        <VBox alignment="CENTER" maxHeight="500.0" maxWidth="450.0" spacing="20.0" styleClass="login-pane">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../img/youtan.png" /> </image>
+                </ImageView>
 
-        <ImageView fitHeight="254.0" fitWidth="406.0" layoutX="73.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@/img/youtan.png" />
-            </image>
-        </ImageView>
+                <TextField fx:id="emailUsuario" promptText="Email" styleClass="text-field" text="rh@rh" />
+                <PasswordField fx:id="senhaUsuario" promptText="Senha" styleClass="password-field" text="rh" />
 
-        <Label fx:id="" contentDisplay="RIGHT" layoutX="180.0" layoutY="240.0" text="Email">
-            <graphic>
-                <TextField fx:id="emailUsuario" prefHeight="25.0" prefWidth="155.0" text="rh@rh" />
-            </graphic>
-        </Label>
+                <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#clickLogin" text="Entrar" />
 
-        <Label contentDisplay="RIGHT" layoutX="176.0" layoutY="285.0" text="Senha">
-            <graphic>
-                <TextField fx:id="senhaUsuario" prefHeight="25.0" prefWidth="155.0" text="rh" />
-            </graphic>
-        </Label>
+                <Button onAction="#clickMudarTelaCadastro" styleClass="link-button" text="Não tem uma conta? CADASTRE-SE" visible="false" />
 
-        <Button layoutX="242.0" layoutY="343.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="30.0" prefWidth="96.0" text="Login" />
+            </children>
+        </VBox>
 
-        <Button disable="true" layoutX="37.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickMudarTelaCadastro" text="Faça cadastro" />
-        <Button fx:id="sairBtn" layoutX="468.0" layoutY="492.0" mnemonicParsing="false" onAction="#clickSair" prefHeight="25.0" prefWidth="67.0" text="Sair" />
-
-        <Label contentDisplay="RIGHT" disable="true" layoutX="180.0" layoutY="374.0" opacity="0.0" text="Setor">
-            <graphic>
-                <ChoiceBox fx:id="tipoUsuario" prefWidth="155.0" />
-            </graphic>
-        </Label>
+        <Button fx:id="sairBtn" mnemonicParsing="false" onAction="#clickSair" styleClass="sair-button" text="Sair" StackPane.alignment="BOTTOM_RIGHT">
+            <StackPane.margin>
+                <Insets bottom="15.0" right="15.0" />
+            </StackPane.margin>
+        </Button>
 
     </children>
-</AnchorPane>
+</StackPane>

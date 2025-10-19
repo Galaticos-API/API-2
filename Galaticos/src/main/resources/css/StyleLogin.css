@@ -1,0 +1,64 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Novo: Estilo para o painel de login centralizado */
+.login-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #b0b0b0;
+    -fx-padding: 12 15; /* Aumenta um pouco o padding */
+    -fx-font-size: 15px;
+    -fx-pref-height: 45px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #357ABD;
+    -fx-effect: dropshadow(three-pass-box, rgba(53,122,189,0.2), 5, 0, 0, 2);
+}
+
+#loginButton {
+    -fx-background-color: #2A8E9D;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 12 0; /* Padding vertical */
+    -fx-font-size: 16px;
+    -fx-pref-width: 250px; /* Largura preferida */
+}
+
+#loginButton:hover {
+    -fx-background-color: #468ad1;
+}
+
+/* Novo: Estilo para o botão de sair, agora com classe */
+.sair-button {
+    -fx-background-color: #cccccc;
+    -fx-text-fill: #333;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.sair-button:hover {
+    -fx-background-color: #b5b5b5;
+}
+
+/* Novo: Estilo para botões que parecem links */
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #357ABD;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.link-button:hover {
+    -fx-text-fill: #2f5fa3;
+}
