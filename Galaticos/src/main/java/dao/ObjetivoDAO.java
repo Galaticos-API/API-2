@@ -96,7 +96,7 @@ public class ObjetivoDAO {
      *
      * @return Uma lista de todos os objetos Objetivo.
      */
-    public List<Objetivo> listarTodos() {
+    public static List<Objetivo> lerTodos() {
         List<Objetivo> objetivoList = new ArrayList<>();
         String sql = "SELECT * FROM objetivo";
 
