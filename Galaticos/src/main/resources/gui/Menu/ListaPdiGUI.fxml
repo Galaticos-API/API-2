@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController" stylesheets="@/css/StylePDI.css">
 
     <children>
         <VBox alignment="TOP_CENTER" maxHeight="650.0" maxWidth="900.0" spacing="20.0" styleClass="content-card">
