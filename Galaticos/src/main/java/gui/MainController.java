@@ -1,5 +1,6 @@
 package gui;
 
+import gui.menu.ListaPdiController;
 import gui.menu.UsuariosController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,9 +49,10 @@ public class MainController {
         navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard);
 
         if (usuarioLogado != null) {
+            //validação do layout para tipo de usuário
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
-            btnUsuarios.setVisible(podeVerUsuarios);
             btnUsuarios.setManaged(podeVerUsuarios);
+            btnDashboard.setManaged(podeVerUsuarios);
 
             handleMenuDashboard();
         }
@@ -98,8 +100,9 @@ public class MainController {
             if (controller instanceof UsuariosController usuariosController) {
                 usuariosController.setUsuario(this.usuarioLogado);
                 usuariosController.initialize();
-            } else {
-                System.out.println("IF nao entrou");
+            } else if (controller instanceof ListaPdiController listaPdiController) {
+                listaPdiController.setUsuario(this.usuarioLogado);
+                listaPdiController.initialize();
             }
 
             conteudo.getChildren().setAll(page);

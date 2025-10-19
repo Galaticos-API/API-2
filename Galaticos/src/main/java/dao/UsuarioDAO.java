@@ -24,7 +24,7 @@ public class UsuarioDAO {
         }
 
         // SQL atualizado sem o campo 'cargo'
-        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status, data_nascimento, cpf) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status, data_nascimento, cpf) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario.getNome());
@@ -38,7 +38,7 @@ public class UsuarioDAO {
             } else {
                 pstmt.setNull(6, Types.DATE);
             }
-            pstmt.setString(8, usuario.getCpf());
+            pstmt.setString(7, usuario.getCpf());
             pstmt.executeUpdate();
 
             try (ResultSet rs = pstmt.getGeneratedKeys()) {

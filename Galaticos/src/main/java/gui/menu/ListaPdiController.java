@@ -18,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.PDI;
+import modelo.Usuario;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ListaPdiController implements Initializable {
+public class ListaPdiController {
 
     @FXML
     private TextField colaboradorIdTextField;
@@ -62,8 +63,13 @@ public class ListaPdiController implements Initializable {
     @FXML
     private Button cadastrarPdiButton;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    private Usuario usuarioLogado;
+
+    public void setUsuario(Usuario usuario) {
+        this.usuarioLogado = usuario;
+    }
+
+    public void initialize() {
         // ... seu código existente para inicializar a tela ...
         this.pdiDAO = new PdiDAO();
         configurarColunasTabela();
