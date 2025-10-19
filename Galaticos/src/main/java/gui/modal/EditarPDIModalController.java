@@ -23,13 +23,32 @@ import modelo.Objetivo;
 import modelo.PDI;
 import modelo.Usuario;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import dao.DocumentoDAO;
+
+import javafx.util.Callback;
+import javafx.event.ActionEvent;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Button;
+import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 public class EditarPDIModalController implements Initializable {
 
@@ -83,6 +102,11 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableView<Documento> documentoTable;
 
+    @FXML private TableColumn<Documento, String> docNomeArquivoCol;
+    @FXML private TableColumn<Documento, String> docTipoCol;
+    @FXML private TableColumn<Documento, Date> docDataUploadCol;
+    @FXML private TableColumn<Documento, Void> docAcoesCol;
+
 
     private Stage dialogStage;
     private boolean salvo = false;
@@ -93,6 +117,9 @@ public class EditarPDIModalController implements Initializable {
 
         configurarColunasTabela();
         carregarTodosOsPDIs();
+
+        configurarColunasDocumentos();
+        carregarDocumentos();
     }
 
     public void setPDI(PDI pdi) {
@@ -202,8 +229,162 @@ public class EditarPDIModalController implements Initializable {
 
     @FXML
     private void handleUploadDocument() {
-        // Lógica para abrir FileChooser e processar upload (US-06)
-        showAlert(Alert.AlertType.INFORMATION, "Funcionalidade", "Abrir seletor de arquivos para Upload de Documento.");
+        if (pdiAtual == null) {
+            showAlert(Alert.AlertType.WARNING, "Atenção", "Nenhum PDI selecionado.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Documento para Upload");
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Documentos PDF", "*.pdf"),
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        Stage stage = (Stage) documentoTable.getScene().getWindow();
+        File arquivoSelecionado = fileChooser.showOpenDialog(stage);
+
+        if (arquivoSelecionado != null) {
+            try {
+                Path pastaUploads = Paths.get("documentos_pdi");
+                if (!Files.exists(pastaUploads)) {
+                    Files.createDirectories(pastaUploads);
+                }
+
+                String nomeUnico = System.currentTimeMillis() + "_" + arquivoSelecionado.getName();
+                Path caminhoDestino = pastaUploads.resolve(nomeUnico);
+
+                Files.copy(arquivoSelecionado.toPath(), caminhoDestino, StandardCopyOption.REPLACE_EXISTING);
+
+                Documento novoDocumento = new Documento();
+                novoDocumento.setPdi_id(Integer.parseInt(pdiAtual.getId())); // Associa ao PDI atual
+                novoDocumento.setNome(arquivoSelecionado.getName()); // Nome original do arquivo
+                novoDocumento.setCaminhoArquivo(caminhoDestino.toString()); // Caminho onde foi salvo
+                novoDocumento.setDataUpload(new Date()); // Data atual
+
+                String nomeOriginal = arquivoSelecionado.getName();
+                int lastDot = nomeOriginal.lastIndexOf('.');
+                if (lastDot > 0) {
+                    novoDocumento.setTipo(nomeOriginal.substring(lastDot + 1));
+                } else {
+                    novoDocumento.setTipo("desconhecido");
+                }
+
+                DocumentoDAO documentoDAO = new DocumentoDAO();
+                documentoDAO.adicionar(novoDocumento);
+
+                carregarDocumentos();
+
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Upload do arquivo '" + arquivoSelecionado.getName() + "' realizado com sucesso!");
+
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro de Arquivo", "Não foi possível salvar o arquivo: " + e.getMessage());
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro Interno", "ID do PDI inválido.");
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro de Banco de Dados", "Não foi possível salvar o documento no banco: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Seleção de arquivo cancelada.");
+        }
+    }
+
+    private void carregarDocumentos() {
+        if (pdiAtual == null) return;
+
+        try {
+            DocumentoDAO documentoDAO = new DocumentoDAO();
+            List<Documento> documentos = documentoDAO.buscarPorPdiId(pdiAtual.getId());
+            documentoTable.setItems(FXCollections.observableArrayList(documentos));
+        } catch (RuntimeException e) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar os documentos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void configurarColunasDocumentos() {
+        docNomeArquivoCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        docTipoCol.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        docDataUploadCol.setCellValueFactory(new PropertyValueFactory<>("dataUpload"));
+
+        docDataUploadCol.setCellFactory(column -> {
+            TableCell<Documento, Date> cell = new TableCell<Documento, Date>() {
+                private java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(format.format(item));
+                    }
+                }
+            };
+            return cell;
+        });
+
+        Callback<TableColumn<Documento, Void>, TableCell<Documento, Void>> cellFactory = new Callback<TableColumn<Documento, Void>, TableCell<Documento, Void>>() {
+            @Override
+            public TableCell<Documento, Void> call(final TableColumn<Documento, Void> param) {
+                final TableCell<Documento, Void> cell = new TableCell<Documento, Void>() {
+
+                    private final Button btnExcluir = new Button("Excluir");
+
+                    {
+                        btnExcluir.setOnAction((ActionEvent event) -> {
+                            Documento doc = getTableView().getItems().get(getIndex());
+                            confirmarEExcluirDocumento(doc);
+                        });
+                        btnExcluir.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btnExcluir);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        docAcoesCol.setCellFactory(cellFactory);
+
+    }
+
+    private void confirmarEExcluirDocumento(Documento doc) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar Exclusão");
+        alert.setHeaderText("Excluir Documento: " + doc.getNome());
+        alert.setContentText("Você tem certeza que deseja excluir este documento? Esta ação não pode ser desfeita.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                DocumentoDAO dao = new DocumentoDAO();
+                dao.remover(doc.getId());
+
+                Files.deleteIfExists(Paths.get(doc.getCaminhoArquivo()));
+
+                documentoTable.getItems().remove(doc);
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Documento excluído com sucesso.");
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", "Erro ao excluir o arquivo físico: " + e.getMessage());
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", "Erro ao excluir o documento do banco: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

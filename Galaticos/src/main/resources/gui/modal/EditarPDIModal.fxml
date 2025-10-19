@@ -85,10 +85,10 @@
                     <Text style="-fx-font-weight: bold;" text="Documentos registrados" />
                     <TableView fx:id="documentoTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn prefWidth="300.0" text="Nome do Arquivo" />
-                            <TableColumn prefWidth="80.0" text="Tipo" />
-                            <TableColumn prefWidth="150.0" text="Data Upload" />
-                            <TableColumn prefWidth="100.0" text="Ações" />
+                            <TableColumn fx:id="docNomeArquivoCol" prefWidth="300.0" text="Nome do Arquivo" />
+                            <TableColumn fx:id="docTipoCol" prefWidth="80.0" text="Tipo" />
+                            <TableColumn fx:id="docDataUploadCol" prefWidth="150.0" text="Data Upload" />
+                            <TableColumn fx:id="docAcoesCol" prefWidth="100.0" text="Ações"/>
                         </columns>
                     </TableView>
                     <HBox alignment="BOTTOM_RIGHT" spacing="10.0">

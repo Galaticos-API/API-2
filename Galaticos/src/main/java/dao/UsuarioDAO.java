@@ -86,7 +86,7 @@ public class UsuarioDAO {
 
     public Usuario buscarPorId(String id) throws SQLException {
         // SQL atualizado sem o campo 'cargo'
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, data_nascimento, cpf FROM usuario WHERE id = ?";
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario WHERE id = ?";
         Usuario usuario = null;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -105,11 +105,11 @@ public class UsuarioDAO {
                         usuario.setData_criacao(timestamp.toLocalDateTime());
                     }
 
-                    Date dataNascimento = rs.getDate("data_nascimento");
-                    if (dataNascimento != null) {
-                        usuario.setData_nascimento(dataNascimento.toLocalDate());
-                    }
-                    usuario.setCpf(rs.getString("cpf"));
+//                    Date dataNascimento = rs.getDate("data_nascimento");
+//                    if (dataNascimento != null) {
+//                        usuario.setData_nascimento(dataNascimento.toLocalDate());
+//                    }
+//                    usuario.setCpf(rs.getString("cpf"));
                 }
             }
         }
