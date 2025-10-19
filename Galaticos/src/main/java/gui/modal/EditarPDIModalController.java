@@ -1,6 +1,7 @@
 package gui.modal;
 
 import dao.ObjetivoDAO;
+import dao.PdiDAO;
 import dao.UsuarioDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality; // <-- IMPORT ADICIONADO
 import javafx.stage.Stage;
-import modelo.Colaborador;
 import javafx.stage.Stage;
 import modelo.Documento;
 import modelo.Objetivo;
@@ -84,10 +84,6 @@ public class EditarPDIModalController implements Initializable {
     private TableView<Documento> documentoTable;
 
 
-    @FXML
-    private TableView<Documento> documentoTable;
-
-    private PDI pdiAtual; // Armazena o PDI que está sendo editado
     private Stage dialogStage;
     private boolean salvo = false;
 
@@ -106,45 +102,44 @@ public class EditarPDIModalController implements Initializable {
         }
     }
 
-    private void loadPdiData(PDI pdi) throws SQLException {
+    private void loadPdiData() {
+        if (pdiAtual == null) return;
 
-        PdiDAO pdiDAO = new PdiDAO();
-        pdi = pdiDAO.buscarPorId(pdi.getId());
+        try {
+            // 1. Buscar dados do Usuário
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            // Assumindo que pdi.getColaboradorId() agora retorna o ID do usuário
+            Usuario usuario = usuarioDAO.buscarPorId(pdiAtual.getColaboradorId());
 
-        this.pdiAtual = pdi; // <-- 2. ATRIBUIÇÃO DO PDI À VARIÁVEL DE INSTÂNCIA
+            if (usuario != null) {
+                usuarioNomeField.setText(usuario.getNome());
+                usuarioCargoField.setText(usuario.getTipo_usuario());
+            }
 
-        ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-        Colaborador colaborador = colaboradorDAO.buscarPorId(pdi.getColaboradorId());
-        Usuario usuario = colaborador.getUsuario();
-        colaboradorNomeField.setText(usuario.getNome());
-        colaboradorCargoField.setText(usuario.getTipo_usuario());
+            // 2. Preencher dados do PDI
+            statusPdiComboBox.setValue(pdiAtual.getStatus());
 
-        statusPdiComboBox.setValue(pdi.getStatus());
+            if (pdiAtual.getDataCriacao() != null) {
+                dataCriacaoPicker.setValue(pdiAtual.getDataCriacao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            }
+            if (pdiAtual.getDataFechamento() != null) {
+                dataFechamentoPicker.setValue(pdiAtual.getDataFechamento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            }
 
-        if (pdi.getDataCriacao() != null) {
-            LocalDate dataConvertida = pdi.getDataCriacao()
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            dataCriacaoPicker.setValue(dataConvertida);
+            float pontuacao = pdiAtual.getPontuacaoGeral();
+            progressBarGeral.setProgress(pontuacao);
+            textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pontuacao * 100));
+
+            ObjetivoDAO objetivoDAO = new ObjetivoDAO();
+            objetivoTable.setItems(FXCollections.observableArrayList(objetivoDAO.buscarPorPdiId(pdiAtual.getId())));
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar os dados do PDI.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        if (pdi.getDataFechamento() != null) {
-            LocalDate dataConvertida = pdi.getDataFechamento()
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            dataFechamentoPicker.setValue(dataConvertida);
-        }
-
-        float pontuacao = pdi.getPontuacaoGeral();
-        progressBarGeral.setProgress(pontuacao);
-        textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pontuacao * 100));
-
-        ObjetivoDAO objetivoDAO = new ObjetivoDAO();
-        objetivoTable.setItems(FXCollections.observableArrayList(objetivoDAO.buscarPorPdiId(pdi.getId())));
-        //documentoTable.setItems(DocumentoDAO.findByPdiId(pdiId));
     }
-
 
     @FXML
     private void handleSavePdiDetails() {
