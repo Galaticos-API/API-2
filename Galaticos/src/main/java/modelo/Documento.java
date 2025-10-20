@@ -12,6 +12,7 @@ public class Documento {
 
     // --- Atributos ---
     private int id;
+    private int pdi_id;
     private String nome;
     private String tipo; // Ex: "PDF", "Certificado", "Feedback"
     private String caminhoArquivo; // Ou um byte[] para armazenar o arquivo no banco
@@ -22,8 +23,9 @@ public class Documento {
         // Construtor vazio
     }
 
-    public Documento(int id, String nome, String tipo, String caminhoArquivo, Date dataUpload) {
+    public Documento(int id, int pdi_id, String nome, String tipo, String caminhoArquivo, Date dataUpload) {
         this.id = id;
+        this.pdi_id = pdi_id;
         this.nome = nome;
         this.tipo = tipo;
         this.caminhoArquivo = caminhoArquivo;
@@ -37,6 +39,14 @@ public class Documento {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getPdi_id() {
+        return pdi_id;
+    }
+
+    public void setPdi_id(int pdi_id) {
+        this.pdi_id = pdi_id;
     }
 
     public String getNome() {

@@ -19,6 +19,14 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+
+// soluçao temporaria
+import factory.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class CadastroPdiModalController implements Initializable {
 
     @FXML
@@ -88,18 +96,72 @@ public class CadastroPdiModalController implements Initializable {
 
         mensagemErro.setText(""); // Limpa erros
 
-        // Converte LocalDate para Date
+
+        // SOLUÇAO TEMPORARIA
+
+        String colaboradorIdParaPdi = null; // Variável para guardar o ID do colaborador
+
+        // --- Bloco Adicionado para buscar o ID do Colaborador ---
+        String sqlBuscaColaborador = "SELECT id FROM colaborador WHERE usuario_id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sqlBuscaColaborador)) {
+
+            pstmt.setInt(1, Integer.parseInt(usuarioEncontrado.getId())); // Usa o ID do usuário encontrado
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    colaboradorIdParaPdi = rs.getString("id"); // Pega o ID do colaborador
+                } else {
+                    // Se não encontrar um colaborador associado ao usuário
+                    mensagemErro.setText("Erro: O usuário encontrado (ID: " + usuarioEncontrado.getId() + ") não está associado a um perfil de colaborador no banco.");
+                    return; // Impede a criação do PDI
+                }
+            }
+        } catch (SQLException e) {
+            mensagemErro.setText("Erro ao buscar o colaborador associado: " + e.getMessage());
+            e.printStackTrace();
+            return; // Impede a criação do PDI
+        } catch (NumberFormatException e) {
+            mensagemErro.setText("Erro: ID do usuário inválido ("+ usuarioEncontrado.getId() +").");
+            e.printStackTrace();
+            return;
+        }
+        // --- Fim do Bloco Adicionado ---
+
+        // Continua com a criação do PDI, mas usando o ID do colaborador encontrado
         Date dataFechamento = Date.from(dataFechamentoField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        // Cria o novo PDI usando o ID do usuário encontrado
-        PDI novoPdi = new PDI(usuarioEncontrado.getId(), statusComboBox.getValue(), new Date(), dataFechamento);
+        // Usa o colaboradorIdParaPdi (que é o ID do colaborador) ao criar o PDI
+        PDI novoPdi = new PDI(colaboradorIdParaPdi, statusComboBox.getValue(), new Date(), dataFechamento); // <-- ID CORRETO USADO AQUI
         PdiDAO pdiDao = new PdiDAO();
-        pdiDao.adicionar(novoPdi);
 
-        showAlert(Alert.AlertType.INFORMATION, "Sucesso", "PDI criado com sucesso para o usuário: " + usuarioEncontrado.getNome());
+        try {
+            PDI pdiCriado = pdiDao.adicionar(novoPdi);
+            if (pdiCriado != null) {
+                // Você pode mostrar o nome do usuário aqui, já que o nome do colaborador não foi carregado
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "PDI criado com sucesso para o usuário: " + usuarioEncontrado.getNome());
+                salvo = true;
+                dialogStage.close();
+            } else {
+                mensagemErro.setText("Falha ao salvar o PDI no banco de dados.");
+            }
+        } catch (RuntimeException e) {
+            mensagemErro.setText("Erro ao criar PDI: " + e.getMessage());
+            e.printStackTrace();
+        }
 
-        salvo = true;
-        dialogStage.close();
+
+//        // Converte LocalDate para Date
+//        Date dataFechamento = Date.from(dataFechamentoField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//
+//        // Cria o novo PDI usando o ID do usuário encontrado
+//        PDI novoPdi = new PDI(usuarioEncontrado.getId(), statusComboBox.getValue(), new Date(), dataFechamento);
+//        PdiDAO pdiDao = new PdiDAO();
+//        pdiDao.adicionar(novoPdi);
+//
+//        showAlert(Alert.AlertType.INFORMATION, "Sucesso", "PDI criado com sucesso para o usuário: " + usuarioEncontrado.getNome());
+//
+//        salvo = true;
+//        dialogStage.close();
     }
 
     @FXML
