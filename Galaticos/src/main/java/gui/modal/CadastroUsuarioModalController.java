@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Util;
 
 import java.sql.SQLException;
@@ -53,10 +54,14 @@ public class CadastroUsuarioModalController {
         if (isInputValid()) {
             String nome = txtNome.getText().trim();
             String email = txtEmail.getText().trim();
-            String senha = txtSenha.getText().trim();
+            String senhaPlana = txtSenha.getText().trim(); // <-- Variável renomeada
             String tipo_usuario = comboTipoUsuario.getValue();
             try {
-                Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo", null, "", "");
+                // --- ALTERAÇÃO AQUI ---
+                // Criptografa a senha antes de criar o objeto Usuario
+                String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
+                Usuario usuario = new Usuario(nome, email, senhaCriptografada, tipo_usuario, "Ativo", null, "", "");
+                // --- FIM DA ALTERAÇÃO ---
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.adicionar(usuario);
@@ -66,17 +71,25 @@ public class CadastroUsuarioModalController {
                 txtNome.clear();
                 txtEmail.clear();
                 txtSenha.clear();
-            } catch (RuntimeException e) {
+
+                // --- ALTERAÇÃO AQUI ---
+                // Movido o fechamento da janela para dentro do try
+                salvo = true;
+                dialogStage.close();
+                // --- FIM DA ALTERAÇÃO ---
+
+            } catch (RuntimeException | SQLException e) {
                 // O catch continua o mesmo, pois o serviço vai lançar a exceção em caso de erro.
                 Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                // Adicionado catch para erros de criptografia
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Segurança", "Não foi possível processar a senha: " + e.getMessage());
             }
 
             // SIMULAÇÃO DE SUCESSO PARA O EXEMPLO:
-            System.out.println("Usuário salvo com sucesso (simulação).");
-            salvo = true;
-            dialogStage.close();
+            // System.out.println("Usuário salvo com sucesso (simulação).");
+            // salvo = true;
+            // dialogStage.close();
         }
     }
 
