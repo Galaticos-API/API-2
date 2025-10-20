@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Util;
 
 import java.sql.SQLException;
@@ -72,9 +73,13 @@ public class EditarUsuarioModalController {
                 usuarioEditado.setTipo_usuario(comboTipoUsuario.getValue());
                 usuarioEditado.setStatus(comboStatus.getValue());
 
+                // --- ALTERAÇÃO AQUI ---
                 if (!txtSenha.getText().trim().isEmpty()) {
-                    usuarioEditado.setSenha(txtSenha.getText().trim());
+                    String senhaPlana = txtSenha.getText().trim();
+                    String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
+                    usuarioEditado.setSenha(senhaCriptografada);
                 }
+                // --- FIM DA ALTERAÇÃO ---
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.atualizar(usuarioEditado);
@@ -86,6 +91,9 @@ public class EditarUsuarioModalController {
 
             } catch (RuntimeException | SQLException e) {
                 Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro ao Atualizar", e.getMessage());
+            } catch (Exception e) {
+                // Adicionado catch para erros de criptografia
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Segurança", "Não foi possível processar a senha: " + e.getMessage());
             }
         }
     }

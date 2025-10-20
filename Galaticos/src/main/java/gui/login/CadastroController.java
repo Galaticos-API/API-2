@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.SceneManager;
 import util.Util;
 
@@ -43,11 +44,11 @@ public class CadastroController {
     void clickCadastrar(ActionEvent event) {
         String nome = nomeUsuario.getText().trim();
         String email = emailUsuario.getText().trim();
-        String senha = senhaUsuario.getText().trim();
+        String senhaPlana = senhaUsuario.getText().trim(); // <-- Variável renomeada
         String tipo_usuario = tipoUsuario.getValue();
 
 
-        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+        if (nome.isEmpty() || email.isEmpty() || senhaPlana.isEmpty()) { // <-- Variável renomeada
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aviso!");
             alert.setHeaderText(null);
@@ -57,7 +58,11 @@ public class CadastroController {
         }
 
         try {
-            Usuario usuario = new Usuario(nome, email, senha, tipo_usuario, "Ativo", null, "", "");
+            // --- ALTERAÇÃO AQUI ---
+            // Criptografa a senha antes de criar o objeto Usuario
+            String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
+            Usuario usuario = new Usuario(nome, email, senhaCriptografada, tipo_usuario, "Ativo", null, "", "");
+            // --- FIM DA ALTERAÇÃO ---
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.adicionar(usuario);
@@ -68,9 +73,13 @@ public class CadastroController {
             emailUsuario.clear();
             senhaUsuario.clear();
             SceneManager.mudarCena("LoginGUI", "Login");
+
         } catch (RuntimeException | SQLException e) {
             // O catch continua o mesmo, pois o serviço vai lançar a exceção em caso de erro.
             Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
+        } catch (Exception e) {
+            // Adicionado catch para erros de criptografia
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Segurança", "Não foi possível processar a senha: " + e.getMessage());
         }
     }
 

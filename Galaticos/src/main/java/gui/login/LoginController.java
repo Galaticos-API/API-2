@@ -15,8 +15,10 @@ import javafx.scene.control.PasswordField; // Importe o PasswordField
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Session;
 import util.StageManager;
+import util.Util; // <-- IMPORT ADICIONADO
 
 public class LoginController {
 
@@ -30,31 +32,43 @@ public class LoginController {
     @FXML
     void clickLogin(ActionEvent event) throws Exception {
         String email = emailUsuario.getText().trim();
-        String senha = senhaUsuario.getText().trim();
+        String senhaPlana = senhaUsuario.getText().trim(); // <-- Variável renomeada
 
-        if (email.isEmpty() || senha.isEmpty()) {
+        if (email.isEmpty() || senhaPlana.isEmpty()) { // <-- Variável renomeada
             mostrarAlerta("Campos Vazios", "Por favor, preencha o e-mail e a senha.");
             return;
         }
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senha);
+        // --- ALTERAÇÃO AQUI ---
+        try {
+            // Criptografa a senha digitada para comparar com a do banco
+            String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
 
-        if (usuarioAutenticado != null) {
-            Session.setUsuarioAtual(usuarioAutenticado);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            // Autentica usando a senha criptografada
+            Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senhaCriptografada);
 
-            String fxmlFile = getTelaPorTipo(usuarioAutenticado.getTipo_usuario());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
-            Parent proximoRoot = loader.load();
+            if (usuarioAutenticado != null) {
+                Session.setUsuarioAtual(usuarioAutenticado);
 
-            passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+                String fxmlFile = getTelaPorTipo(usuarioAutenticado.getTipo_usuario());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
+                Parent proximoRoot = loader.load();
 
-            Stage stage = StageManager.getStage();
-            stage.getScene().setRoot(proximoRoot);
+                passarUsuarioParaController(loader.getController(), usuarioAutenticado);
 
-        } else {
-            mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
+                Stage stage = StageManager.getStage();
+                stage.getScene().setRoot(proximoRoot);
+
+            } else {
+                mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
+            }
+        } catch (Exception e) {
+            // Captura erros (ex: falha na criptografia ou no banco)
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Login", "Ocorreu um erro: " + e.getMessage());
+            e.printStackTrace();
         }
+        // --- FIM DA ALTERAÇÃO ---
     }
 
     private String getTelaPorTipo(String tipoUsuario) {
