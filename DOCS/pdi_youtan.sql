@@ -33,11 +33,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */
 ;
 
-CREATE DATABASE pdi_youtan;
-USE pdi_youtan;
-
-
-DROP TABLE IF EXISTS `colaborador`;
 --
 -- Table structure for table `avaliacao`
 --
@@ -227,6 +222,26 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+use pdi_youtan;
+
+select * from usuario;
+
+
+INSERT INTO usuario (
+  nome,
+  email,
+  senha,
+  tipo_usuario,
+  status
+) VALUES (
+  'RH',
+  'rh@rh',
+  'tlOTLtJmZ+W5xkhPDmvtAA==',
+  'RH',
+  'Ativo'
+);
+
 
 /*!40101 SET character_set_client = @saved_cs_client */
 ;
