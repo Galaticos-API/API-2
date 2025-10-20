@@ -17,7 +17,7 @@
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="filter-bar">
                     <children>
-                        <Label text="Buscar por ID do Usuário:" />
+                        <Label text="ID do colaborador:" />
                         <TextField fx:id="usuarioIdTextField" prefWidth="150.0" promptText="Digite o ID" />
                         <Button fx:id="buscarButton" mnemonicParsing="false" onAction="#handleBuscarAction" styleClass="primary-button" text="Buscar" />
                         <Button fx:id="limparFiltroButton" mnemonicParsing="false" onAction="#handleLimparFiltroAction" styleClass="secondary-button" text="Mostrar Todos" />
@@ -27,7 +27,7 @@
                 <TableView fx:id="pdiTableView" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="idColumn" prefWidth="75.0" text="PDI ID" />
-                        <TableColumn fx:id="colaboradorIdColumn" prefWidth="120.0" text="Colaborador" />
+                        <TableColumn fx:id="colaboradorColumn" prefWidth="120.0" text="Colaborador" />
                         <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Status" />
                         <TableColumn fx:id="dataCriacaoColumn" prefWidth="180.0" text="Data de Criação" />
                         <TableColumn fx:id="pontuacaoColumn" prefWidth="150.0" text="Pontuação" />

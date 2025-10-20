@@ -30,10 +30,10 @@
                     </columnConstraints>
 
                     <Label text="Colaborador:" GridPane.columnIndex="0" />
-                    <TextField fx:id="colaboradorNomeField" editable="false" GridPane.columnIndex="1" />
+                    <TextField fx:id="usuarioNomeField" editable="false" GridPane.columnIndex="1" />
 
                     <Label text="Cargo:" GridPane.columnIndex="2" />
-                    <TextField fx:id="colaboradorCargoField" editable="false" GridPane.columnIndex="3" />
+                    <TextField fx:id="usuarioCargoField" editable="false" GridPane.columnIndex="3" />
 
                     <Label text="Status:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <ComboBox fx:id="statusPdiComboBox" promptText="Selecione o Status" GridPane.columnIndex="3" GridPane.rowIndex="1" />

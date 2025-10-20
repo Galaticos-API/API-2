@@ -34,20 +34,14 @@
         <Label text="Senha (deixe em branco para não alterar):" GridPane.rowIndex="3" />
         <PasswordField fx:id="txtSenha" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label text="CPF:" GridPane.rowIndex="4" />
-        <TextField fx:id="txtCpf" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label text="Cargo" GridPane.rowIndex="4" />
+        <ComboBox fx:id="comboTipoUsuario" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label text="Data de Nascimento:" GridPane.rowIndex="6" />
-        <DatePicker fx:id="datePickerNascimento" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
-        <Label text="Cargo" GridPane.rowIndex="8" />
-        <ComboBox fx:id="comboTipoUsuario" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-
-        <Label text="Status:" GridPane.rowIndex="9" />
-        <ComboBox fx:id="comboStatus" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+        <Label text="Status:" GridPane.rowIndex="5" />
+        <ComboBox fx:id="comboStatus" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
 
-        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <children>
                 <Button onAction="#handleCancelar" text="Cancelar" />
                 <Button onAction="#handleSalvar" style="-fx-base: #4CAF50;" text="Salvar Alterações" textFill="white" />

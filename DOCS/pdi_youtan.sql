@@ -33,6 +33,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */
 ;
 
+CREATE DATABASE pdi_youtan;
+USE pdi_youtan;
+
+
+DROP TABLE IF EXISTS `colaborador`;
 --
 -- Table structure for table `avaliacao`
 --

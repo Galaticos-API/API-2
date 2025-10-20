@@ -1,8 +1,10 @@
 package gui.menu;
 
 import dao.PdiDAO;
+import dao.UsuarioDAO;
 import gui.modal.CadastroPdiModalController;
 import gui.modal.EditarPDIModalController;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,12 +20,18 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.PDI;
+import modelo.Usuario;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -45,7 +53,7 @@ public class ListaPdiController implements Initializable {
     private TableColumn<PDI, Integer> idColumn;
 
     @FXML
-    private TableColumn<PDI, Integer> colaboradorIdColumn;
+    private TableColumn<PDI, Integer> colaboradorColumn;
 
     @FXML
     private TableColumn<PDI, String> statusColumn;
@@ -62,10 +70,22 @@ public class ListaPdiController implements Initializable {
     @FXML
     private Button cadastrarPdiButton;
 
+
+    private PdiDAO pdiDAO;
+    private UsuarioDAO usuarioDAO;
+
+    // --- 3. CRIAR O MAPA DE NOMES ---
+    private Map<Integer, String> mapaNomesUsuarios;
+
+    private ObservableList<PDI> pdiObservableList;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // ... seu código existente para inicializar a tela ...
         this.pdiDAO = new PdiDAO();
+        this.usuarioDAO = new UsuarioDAO();
+        this.mapaNomesUsuarios = new HashMap<>(); // Inicializa o mapa
+
         configurarColunasTabela();
         carregarTodosOsPDIs();
 
@@ -154,10 +174,6 @@ public class ListaPdiController implements Initializable {
         }
     }
 
-    private PdiDAO pdiDAO;
-
-    private ObservableList<PDI> pdiObservableList;
-
     private void confirmarEExcluirPDI(PDI pdi) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar Exclusão");
@@ -178,12 +194,27 @@ public class ListaPdiController implements Initializable {
         }
     }
 
+    private final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private void configurarColunasTabela() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colaboradorIdColumn.setCellValueFactory(new PropertyValueFactory<>("colaboradorId"));
-        //anoColumn.setCellValueFactory(new PropertyValueFactory<>("ano"));
+        colaboradorColumn.setCellValueFactory(new PropertyValueFactory<>("nomeColaborador"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         dataCriacaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataCriacao"));
+        dataCriacaoColumn.setCellFactory(coluna -> new TableCell<PDI, Date>() {
+            @Override
+            protected void updateItem(Date item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    LocalDate dataFormatada = item.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    setText(FORMATADOR_DATA.format(dataFormatada));
+                }
+            }
+        });
         pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacaoGeral"));
     }
 

@@ -26,6 +26,7 @@ public class PDI {
     // A anotação 1..* no diagrama significa "um ou mais".
     private List<Objetivo> objetivos;
     private List<Documento> documentos;
+    private String nomeColaborador;
 
 
     // --- Construtores ---
@@ -124,5 +125,13 @@ public class PDI {
 
     public void setDocumentos(List<Documento> documentos) {
         this.documentos = documentos;
+    }
+
+    public String getNomeColaborador() {
+        return nomeColaborador;
+    }
+
+    public void setNomeColaborador(String nomeColaborador) {
+        this.nomeColaborador = nomeColaborador;
     }
 }

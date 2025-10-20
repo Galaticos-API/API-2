@@ -21,12 +21,6 @@ public class EditarUsuarioModalController {
     @FXML
     private PasswordField txtSenha;
     @FXML
-    private TextField txtCpf;
-    @FXML
-    private TextField txtTelefone;
-    @FXML
-    private DatePicker datePickerNascimento;
-    @FXML
     private ComboBox<String> comboTipoUsuario;
     @FXML
     private ComboBox<String> comboStatus;
@@ -55,8 +49,6 @@ public class EditarUsuarioModalController {
 
         txtNome.setText(usuario.getNome());
         txtEmail.setText(usuario.getEmail());
-        txtCpf.setText(usuario.getCpf());
-        datePickerNascimento.setValue(usuario.getData_nascimento());
         comboTipoUsuario.setValue(usuario.getTipo_usuario());
         comboStatus.setValue(usuario.getStatus());
     }
@@ -67,8 +59,6 @@ public class EditarUsuarioModalController {
             try {
                 usuarioEditado.setNome(txtNome.getText().trim());
                 usuarioEditado.setEmail(txtEmail.getText().trim());
-                usuarioEditado.setCpf(txtCpf.getText().trim());
-                usuarioEditado.setData_nascimento(datePickerNascimento.getValue());
                 usuarioEditado.setTipo_usuario(comboTipoUsuario.getValue());
                 usuarioEditado.setStatus(comboStatus.getValue());
 
@@ -103,9 +93,6 @@ public class EditarUsuarioModalController {
         }
         if (txtEmail.getText() == null || txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")) {
             errorMessage += "E-mail inválido!\n";
-        }
-        if (txtCpf.getText() == null || txtCpf.getText().trim().isEmpty()) {
-            errorMessage += "CPF inválido!\n";
         }
 
         if (errorMessage.isEmpty()) {

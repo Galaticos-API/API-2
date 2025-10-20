@@ -9,15 +9,6 @@ import java.util.List;
 
 public class PdiDAO {
 
-    /**
-     * ---- MÉTODO MODIFICADO ----
-     * Insere um novo PDI no banco de dados e retorna o objeto completo com o ID gerado.
-     * A modificação foi necessária para que, após criar um PDI, possamos obter seu ID
-     * e usá-lo para criar os objetivos associados a ele na mesma transação.
-     *
-     * @param pdi O objeto PDI a ser salvo.
-     * @return O objeto PDI salvo, incluindo o ID gerado pelo banco de dados, ou null se a inserção falhar.
-     */
     public PDI adicionar(PDI pdi) {
         // ALTERAÇÃO AQUI: troque 'colaborador_id' por 'colaborador_id'
         String sql = "INSERT INTO pdi (colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
@@ -68,7 +59,9 @@ public class PdiDAO {
      * @return Uma lista de todos os PDIs.
      */
     public List<PDI> lerTodos() {
-        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi";
+        String sql = "SELECT pdi.*, usuario.nome AS nome_colaborador " +
+                "FROM pdi " +
+                "JOIN usuario ON pdi.colaborador_id = usuario.id";
         List<PDI> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -79,7 +72,6 @@ public class PdiDAO {
                 PDI pdi = new PDI();
                 pdi.setId(rs.getString("id"));
                 pdi.setColaboradorId(rs.getString("colaborador_id"));
-                pdi.setAno(rs.getInt("ano"));
                 pdi.setStatus(rs.getString("status"));
 
                 Date criacao = rs.getDate("data_criacao");
@@ -89,6 +81,8 @@ public class PdiDAO {
                 if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
 
                 pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
+
+                pdi.setNomeColaborador(rs.getString("nome_colaborador"));
 
                 lista.add(pdi);
             }
