@@ -33,6 +33,10 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */
 ;
 
+
+CREATE DATABASE pdi_youtan;
+USE pdi_youtan;
+
 --
 -- Table structure for table `avaliacao`
 --
@@ -57,7 +61,7 @@ CREATE TABLE `avaliacao` (
   PRIMARY KEY (`id`),
   KEY `id_objetivo_idx` (`id_objetivo`),
   KEY `id_avaliador_idx` (`id_avaliador`),
-  CONSTRAINT `id_avaliador` FOREIGN KEY (`id_avaliador`) REFERENCES `colaborador` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `id_avaliador` FOREIGN KEY (`id_avaliador`) REFERENCES `usuario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `id_objetivo` FOREIGN KEY (`id_objetivo`) REFERENCES `objetivo` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -156,15 +160,14 @@ DROP TABLE IF EXISTS `pdi`;
 
 CREATE TABLE `pdi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `colaborador_id` int NOT NULL,
-  `ano` int NOT NULL,
+  `usuario_id` int NOT NULL,
   `status` enum('Em Andamento', 'Concluído', 'Arquivado') NOT NULL,
   `data_criacao` date NOT NULL,
   `data_fechamento` date DEFAULT NULL,
   `pontuacao_geral` decimal(5, 2) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `colaborador_id` (`colaborador_id`),
-  CONSTRAINT `pdi_ibfk_1` FOREIGN KEY (`colaborador_id`) REFERENCES `colaborador` (`id`)
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `pdi_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -223,25 +226,27 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
-use pdi_youtan;
-
-select * from usuario;
-
-
-INSERT INTO usuario (
-  nome,
-  email,
-  senha,
-  tipo_usuario,
-  status
-) VALUES (
-  'RH',
-  'rh@rh',
-  'tlOTLtJmZ+W5xkhPDmvtAA==',
-  'RH',
-  'Ativo'
-);
-
+INSERT INTO
+  usuario (
+    nome,
+    email,
+    senha,
+    tipo_usuario,
+    status
+  )
+VALUES
+  (
+    'RH',
+    'rh@rh',
+    'tlOTLtJmZ+W5xkhPDmvtAA==',
+    'RH',
+    'Ativo'
+  );
+  
+  select
+  *
+from
+  usuario;
 
 /*!40101 SET character_set_client = @saved_cs_client */
 ;

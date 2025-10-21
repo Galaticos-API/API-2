@@ -24,29 +24,20 @@ public class CriptografiaUtil {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
-    // --- CUIDADO DE SEGURANÇA ---
-    // A chave DEVE ter 32 bytes (256 bits)
-    // CORREÇÃO: Adicionado "*" ao final para completar 32 bytes.
     private static final String SECRET_KEY_STRING = "EstaEhUmaChaveSecretaDe32Bytes!*";
-    // O IV (Vetor de Inicialização) DEVE ter 16 bytes para AES
     private static final String IV_STRING = "UmVetorDe16Bytes";
-    // --- FIM DO CUIDADO ---
 
     private static SecretKeySpec secretKey;
     private static IvParameterSpec iv;
 
-    // Bloco estático para inicializar a chave e o IV a partir das strings
     static {
         try {
-            // Garante que a chave tenha 32 bytes
             byte[] keyBytes = SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8);
             if (keyBytes.length != 32) {
-                // Esta exceção não deve mais ocorrer
                 throw new IllegalArgumentException("A chave secreta não tem 32 bytes! Tamanho: " + keyBytes.length);
             }
             secretKey = new SecretKeySpec(keyBytes, ALGORITHM);
 
-            // Garante que o IV tenha 16 bytes
             byte[] ivBytes = IV_STRING.getBytes(StandardCharsets.UTF_8);
             if (ivBytes.length != 16) {
                 throw new IllegalArgumentException("O IV não tem 16 bytes! Tamanho: " + ivBytes.length);

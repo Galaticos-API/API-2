@@ -1,6 +1,7 @@
 package dao;
 
 import factory.ConnectionFactory;
+import modelo.ObjetivoComPDI;
 import modelo.PDI;
 
 import java.sql.*;
@@ -10,13 +11,17 @@ import java.util.List;
 public class PdiDAO {
 
     public PDI adicionar(PDI pdi) {
-        // ALTERAÇÃO AQUI: troque 'colaborador_id' por 'colaborador_id'
-        String sql = "INSERT INTO pdi (colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
+        // ALTERAÇÃO AQUI: troque 'usuario_id' por 'usuario_id'
+
+        if (this.buscarPorColaborador(pdi.getColaboradorId()) != null) {
+            return null;
+        }
+
+        String sql = "INSERT INTO pdi (usuario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            // ALTERAÇÃO AQUI: use o getter correto (getColaboradorId)
+            System.out.println("ID do usuario cadastrado:" + pdi.getColaboradorId());
             pstmt.setString(1, pdi.getColaboradorId());
             pstmt.setInt(2, 0);
             pstmt.setString(3, pdi.getStatus());
@@ -61,7 +66,7 @@ public class PdiDAO {
     public List<PDI> lerTodos() {
         String sql = "SELECT pdi.*, usuario.nome AS nome_colaborador " +
                 "FROM pdi " +
-                "JOIN usuario ON pdi.colaborador_id = usuario.id";
+                "JOIN usuario ON pdi.usuario_id = usuario.id";
         List<PDI> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -71,7 +76,7 @@ public class PdiDAO {
             while (rs.next()) {
                 PDI pdi = new PDI();
                 pdi.setId(rs.getString("id"));
-                pdi.setColaboradorId(rs.getString("colaborador_id"));
+                pdi.setColaboradorId(rs.getString("usuario_id"));
                 pdi.setStatus(rs.getString("status"));
 
                 Date criacao = rs.getDate("data_criacao");
@@ -99,7 +104,7 @@ public class PdiDAO {
      * @return O objeto PDI encontrado, ou null se não existir.
      */
     public PDI buscarPorId(String id) {
-        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
+        String sql = "SELECT id, usuario_id, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE id = ?";
         PDI pdi = null;
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -111,8 +116,7 @@ public class PdiDAO {
                 if (rs.next()) {
                     pdi = new PDI();
                     pdi.setId(rs.getString("id"));
-                    pdi.setColaboradorId(rs.getString("colaborador_id"));
-                    pdi.setAno(rs.getInt("ano"));
+                    pdi.setColaboradorId(rs.getString("usuario_id"));
                     pdi.setStatus(rs.getString("status"));
 
                     Date criacao = rs.getDate("data_criacao");
@@ -132,21 +136,20 @@ public class PdiDAO {
     }
 
 
-    public List<PDI> buscarPorColaborador(int colaboradorId) {
-        String sql = "SELECT id, colaborador_id, ano, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE colaborador_id =?";
+    public PDI buscarPorColaborador(String colaboradorId) {
+        String sql = "SELECT id, usuario_id, status, data_criacao, data_fechamento, pontuacao_geral FROM pdi WHERE usuario_id =?";
         List<PDI> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, colaboradorId);
+            pstmt.setString(1, colaboradorId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     PDI pdi = new PDI();
                     pdi.setId(rs.getString("id"));
-                    pdi.setColaboradorId(rs.getString("colaborador_id"));
-                    pdi.setAno(rs.getInt("ano"));
+                    pdi.setColaboradorId(rs.getString("usuario_id"));
                     pdi.setStatus(rs.getString("status"));
 
                     Date criacao = rs.getDate("data_criacao");
@@ -157,13 +160,13 @@ public class PdiDAO {
 
                     pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
 
-                    lista.add(pdi);
+                    return pdi;
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar PDIs por colaborador.", e);
         }
-        return lista;
+        return null;
     }
 
 
@@ -174,29 +177,28 @@ public class PdiDAO {
      * @return true se a atualização foi bem-sucedida, false caso contrário.
      */
     public boolean atualizar(PDI pdi) {
-        String sql = "UPDATE pdi SET colaborador_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
+        String sql = "UPDATE pdi SET usuario_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, pdi.getColaboradorId());
-            pstmt.setInt(2, pdi.getAno());
-            pstmt.setString(3, pdi.getStatus());
+            pstmt.setString(2, pdi.getStatus());
 
             if (pdi.getDataCriacao() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
+                pstmt.setDate(3, new java.sql.Date(pdi.getDataCriacao().getTime()));
+            } else {
+                pstmt.setNull(3, Types.DATE);
+            }
+
+            if (pdi.getDataFechamento() != null) {
+                pstmt.setDate(4, new java.sql.Date(pdi.getDataFechamento().getTime()));
             } else {
                 pstmt.setNull(4, Types.DATE);
             }
 
-            if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
-            } else {
-                pstmt.setNull(5, Types.DATE);
-            }
-
-            pstmt.setFloat(6, pdi.getPontuacaoGeral());
-            pstmt.setString(7, pdi.getId());
+            pstmt.setFloat(5, pdi.getPontuacaoGeral());
+            pstmt.setString(6, pdi.getId());
 
             return pstmt.executeUpdate() > 0;
 
@@ -254,4 +256,5 @@ public class PdiDAO {
             }
         }
     }
+
 }

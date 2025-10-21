@@ -15,7 +15,6 @@ public class PDI {
     // Correspondem aos campos da tabela PDI no diagrama.
     private String id;
     private String colaboradorId;
-    private int ano;
     private String status;
     private Date dataCriacao;
     private Date dataFechamento;
@@ -69,14 +68,6 @@ public class PDI {
 
     public void setColaboradorId(String colaboradorId) {
         this.colaboradorId = colaboradorId;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
     }
 
     public String getStatus() {

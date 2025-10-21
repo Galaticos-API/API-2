@@ -1,43 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
     <stylesheets>
-        <URL value="@../css/StyleMain.css"/>
+        <URL value="@../css/StyleMain.css" />
     </stylesheets>
 
     <top>
-        <HBox fx:id="navigationBar" alignment="CENTER" spacing="30.0" styleClass="navigation-bar"
-              BorderPane.alignment="CENTER">
+        <HBox fx:id="navigationBar" alignment="CENTER" spacing="30.0" styleClass="navigation-bar" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btnDashboard" mnemonicParsing="false" onAction="#handleMenuDashboard"
-                        styleClass="navigation-button" text="Dashboard"/>
-                <Button fx:id="btnPDI" mnemonicParsing="false" onAction="#handleMenuPDI" styleClass="navigation-button"
-                        text="PDI"/>
-                <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#handleMenuPerfil"
-                        styleClass="navigation-button" text="Perfil"/>
-                <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#handleMenuUsuarios"
-                        styleClass="navigation-button" text="Usuários"/>
+                <Button fx:id="btnPDI" mnemonicParsing="false" onAction="#handleMenuPDI" styleClass="navigation-button" text="PDI" />
+                <Button fx:id="btnObjetivos" mnemonicParsing="false" onAction="#handleMenuObjetivos" styleClass="navigation-button" text="Objetivos" />
+                <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#handleMenuPerfil" styleClass="navigation-button" text="Perfil" />
+                <Button fx:id="btnDashboard" mnemonicParsing="false" onAction="#handleMenuDashboard" styleClass="navigation-button" text="Dashboard RH" />
+                <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#handleMenuUsuarios" styleClass="navigation-button" text="Usuários" />
             </children>
         </HBox>
     </top>
 
     <center>
-        <StackPane fx:id="conteudo" BorderPane.alignment="CENTER"/>
+        <StackPane fx:id="conteudo" BorderPane.alignment="CENTER" />
     </center>
 
     <bottom>
         <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="status-bar" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="funcaoUsuario" styleClass="status-label" text="Função:"/>
-                <Label fx:id="logadoComo" styleClass="status-label" text="Logado(a) como: "/>
+                <Label fx:id="funcaoUsuario" styleClass="status-label" text="Função:" />
+                <Label fx:id="logadoComo" styleClass="status-label" text="Logado(a) como: " />
             </children>
         </HBox>
     </bottom>

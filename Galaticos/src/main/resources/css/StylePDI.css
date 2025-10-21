@@ -87,46 +87,70 @@
 }
 
 
-/* ======================================================================
-   TABELA (TABLEVIEW)
-   ====================================================================== */
-
-.table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: #bdc3c7;
+/* ==================================== */
+/* Estilos para os Cards de PDI         */
+/* ==================================== */
+.pdi-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+    -fx-background-radius: 12;
+    -fx-border-color: #dfe4e8;
+    -fx-border-radius: 12;
     -fx-border-width: 1px;
-    -fx-border-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
 }
 
-/* Cabeçalho da Tabela */
-.table-view .column-header-background {
-    -fx-background-color: #ecf0f1; /* Fundo cinza claro */
-    -fx-padding: 8px 0 8px 0;
+.clickable-card:hover {
+    -fx-cursor: hand;
+    -fx-border-color: #357ABD; /* Destaque azul ao passar o mouse */
+    -fx-effect: dropshadow(gaussian, rgba(53,122,189,0.3), 10, 0, 0, 2);
 }
-.table-view .column-header .label {
-    -fx-text-fill: #34495e; /* Texto azul escuro */
+
+.pdi-card-title {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
 }
 
-/* Linhas da Tabela (Alternância de Cores) */
-.table-row-cell {
-    -fx-background-color: white;
-    -fx-cell-size: 30px;
-}
-.table-row-cell:odd {
-    -fx-background-color: #f7f9fb; /* Corrigido de volta para cinza claro (fundo escuro #030404 faria o texto sumir) */
+.pdi-card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
 }
 
-/* Linha selecionada */
-.table-row-cell:selected {
-    -fx-background-color: #bbdefb; /* Azul claro para seleção */
+.pdi-card-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
 }
 
-/* NOVO: Garante que o texto DENTRO da célula selecionada seja preto */
-.table-row-cell:selected .text {
-    -fx-fill: black;
+/* --- Estilos de Status (Badges) --- */
+.pdi-card-status {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 4px 8px;
+    -fx-max-width: 120; /* Impede que o badge ocupe a largura toda */
 }
-/* NOVA REGRA DE TEXTO para garantir que todos os textos fiquem pretos na seleção */
-.table-row-cell:selected .label {
-    -fx-text-fill: black;
+
+.status-andamento {
+    -fx-background-color: #e6f7ff; /* Fundo azul claro */
+    -fx-text-fill: #096dd9;
+    -fx-border-color: #91d5ff;
+}
+
+.status-concluido {
+    -fx-background-color: #f6ffed; /* Fundo verde claro */
+    -fx-text-fill: #389e0d;
+    -fx-border-color: #b7eb8f;
+}
+
+.status-arquivado {
+    -fx-background-color: #fafafa; /* Fundo cinza claro */
+    -fx-text-fill: #8c8c8c;
+    -fx-border-color: #d9d9d9;
+}
+
+.pdi-card-progress-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
+    -fx-padding: 0 0 0 5px; /* Pequeno espaço à esquerda do texto */
 }

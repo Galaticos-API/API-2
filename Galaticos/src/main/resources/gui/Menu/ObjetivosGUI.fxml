@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ObjetivosController">
+    <stylesheets>
+        <URL value="@/css/StyleObjetivos.css" /> </stylesheets>
 
-</AnchorPane>
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="content-card" StackPane.alignment="CENTER">
+            <StackPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </StackPane.margin>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <children>
+                <Label fx:id="lblTituloPDI" styleClass="page-title" text="Objetivos do PDI" />
+
+                <HBox fx:id="kanbanBoard" spacing="20.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Não Iniciado" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaNaoIniciado" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Em Progresso" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaEmProgresso" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Concluído" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaConcluido" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

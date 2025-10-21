@@ -1,0 +1,79 @@
+/* ==================================== */
+/* Estilos para o Quadro Kanban         */
+/* ==================================== */
+
+.kanban-column {
+    -fx-background-color: #f0f2f5; /* Fundo cinza claro para as colunas */
+    -fx-padding: 10px;
+    -fx-background-radius: 8px;
+    -fx-min-width: 250px; /* Largura mínima para cada coluna */
+}
+
+.kanban-column-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+    -fx-padding: 0 0 10px 5px; /* Espaçamento abaixo do título */
+    -fx-border-color: transparent transparent #d1d8e0 transparent; /* Linha sutil abaixo */
+    -fx-border-width: 2px;
+}
+
+/* Remove fundo e bordas do ScrollPane dentro da coluna */
+.kanban-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.kanban-scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+/* Área onde os cards ficam dentro do ScrollPane */
+.kanban-content-area {
+     -fx-padding: 10px 0 0 0; /* Espaço acima do primeiro card */
+}
+
+/* ==================================== */
+/* Estilos para os Cards de Objetivo    */
+/* ==================================== */
+
+.objetivo-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 15px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dfe4e8;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 5, 0, 0, 1);
+    -fx-cursor: hand; /* Indica que é clicável */
+}
+
+.objetivo-card:hover {
+    -fx-border-color: #357ABD;
+    -fx-effect: dropshadow(gaussian, rgba(53,122,189,0.1), 8, 0, 0, 2);
+}
+
+.objetivo-card-descricao {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: normal;
+}
+
+.objetivo-card-prazo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d; /* Cinza mais claro */
+}
+
+/* ==================================== */
+/* Placeholder para Colunas Kanban Vazias */
+/* ==================================== */
+
+.kanban-empty-placeholder {
+    -fx-font-size: 14px;
+    -fx-text-fill: #95a5a6; /* Cinza claro */
+    -fx-padding: 30px 10px; /* Adiciona espaço vertical */
+    -fx-alignment: center; /* Centraliza o texto */
+    -fx-font-style: italic;
+    -fx-text-alignment: center; /* Centraliza texto que quebra linha */
+    -fx-wrap-text: true; /* Permite quebrar linha se necessário */
+}
