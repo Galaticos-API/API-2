@@ -109,7 +109,6 @@ public class UsuarioDAO {
             pstmt.setString(5, usuario.getStatus());
 
             pstmt.setString(6, usuario.getId()); // O índice foi ajustado
-
             return pstmt.executeUpdate() > 0;
         }
     }
