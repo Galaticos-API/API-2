@@ -28,6 +28,12 @@ public class PerfilController {
 
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
+//        System.out.println(usuarioLogado.getNome());
+//        System.out.println(usuarioLogado.getEmail());
+//        System.out.println(usuarioLogado.getCpf());
+//        System.out.println(usuarioLogado.getStatus());
+//        System.out.println(usuarioLogado.getSenha());
+        System.out.println();
         popularDados();
     }
 
@@ -42,11 +48,13 @@ public class PerfilController {
         txtEmail.setText(usuarioLogado.getEmail());
         txtCpf.setText(usuarioLogado.getCpf());
     }
+    private boolean isEmpty(TextField field) {
+        return field.getText() == null || field.getText().trim().isEmpty();
+    }
 
     @FXML
     private void handleSalvar() {
-        // Validação de entrada
-        if (txtNome.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty()) {
+        if (isEmpty(txtNome) || isEmpty(txtEmail)) {
             Util.mostrarAlerta(Alert.AlertType.WARNING, "Campos Obrigatórios", "Nome e E-mail não podem estar vazios.");
             return;
         }
@@ -55,11 +63,14 @@ public class PerfilController {
             // Atualiza o objeto com os dados do formulário
             usuarioLogado.setNome(txtNome.getText().trim());
             usuarioLogado.setEmail(txtEmail.getText().trim());
-            usuarioLogado.setCpf(txtCpf.getText().trim());
+            if (!isEmpty(txtCpf)) {
+                usuarioLogado.setCpf(txtCpf.getText().trim());
+            }
 
             // --- ALTERAÇÃO AQUI ---
             // Só atualiza a senha se o campo não estiver vazio
-            if (!txtSenha.getText().isEmpty()) {
+            if (!isEmpty(txtSenha)) {
+                System.out.println("CAMPO SENHA NÃO TÁ VAZIO");
                 String senhaPlana = txtSenha.getText();
                 String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
                 usuarioLogado.setSenha(senhaCriptografada);
@@ -69,6 +80,7 @@ public class PerfilController {
             // Persiste as alterações no banco de dados
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.atualizar(usuarioLogado);
+            System.out.println("teste teste testiano");
 
             // Atualiza a UI e mostra feedback
             popularDados();

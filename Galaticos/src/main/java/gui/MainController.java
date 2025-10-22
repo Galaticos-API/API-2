@@ -18,6 +18,8 @@ import modelo.PDI;
 import modelo.Usuario;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -111,15 +113,12 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));
             Node page = loader.load();
             Object controller = loader.getController();
-            if (controller instanceof UsuariosController usuariosController) {
-                usuariosController.setUsuario(this.usuarioLogado);
-                usuariosController.initialize();
-            } else if (controller instanceof ObjetivosController objetivosController) {
-                objetivosController.setUsuarioLogado(usuarioLogado);
-            } else if (controller instanceof ListaPdiController listaPdiController) {
-                listaPdiController.setUsuarioLogado(usuarioLogado);
-            } else if (controller instanceof MeuPdiController meuPdiController) {
-                meuPdiController.setUsuarioLogado(usuarioLogado);
+
+            try {
+                Method setUsuarioMethod = controller.getClass().getMethod("setUsuario", Usuario.class);
+                setUsuarioMethod.invoke(controller, this.usuarioLogado);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+                // Controller não tem setUsuario — tudo bem, só não faz nada
             }
 
             conteudo.getChildren().setAll(page);
@@ -127,8 +126,6 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Falha ao carregar a página: " + fxmlFile);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
