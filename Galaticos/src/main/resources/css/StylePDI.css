@@ -199,4 +199,82 @@
     -fx-padding: 0 0 0 5px;
 }
 
-/* (Os estilos de .status-andamento, .status-concluido, .status-arquivado permanecem os mesmos) */
+.pdi-card-progress-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
+    -fx-padding: 0 0 0 5px; /* Pequeno espaço à esquerda do texto */
+}
+/* ======================================================================
+   MODAL - REGISTRAR NOVO PDI
+   ====================================================================== */
+
+.modal-container {
+    -fx-background-color: white;
+    -fx-padding: 25px;
+    -fx-border-color: #dfe4e8;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.modal-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 20px 0;
+}
+
+.modal-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+}
+
+.modal-field {
+    -fx-pref-width: 260px;
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6px 10px;
+}
+
+.modal-field:focused {
+    -fx-border-color: #2A8E9D;
+    -fx-effect: dropshadow(gaussian, rgba(42,142,157,0.3), 6, 0, 0, 0);
+    -fx-background-color: white;
+}
+
+/* Botões do Modal */
+.modal-button {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+/* Botão "Criar PDI" */
+.modal-button-create {
+    -fx-background-color: #2A8E9D;
+    -fx-text-fill: white;
+}
+.modal-button-create:hover {
+    -fx-background-color: #27ae60;
+}
+
+/* Botão "Cancelar" */
+.modal-button-cancel {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: #2c3e50;
+}
+.modal-button-cancel:hover {
+    -fx-background-color: #d0d7db;
+}
+
+/* Alinhamento do rodapé de botões */
+.modal-footer {
+    -fx-alignment: center-right;
+    -fx-spacing: 10;
+    -fx-padding: 20 0 0 0;
+}
