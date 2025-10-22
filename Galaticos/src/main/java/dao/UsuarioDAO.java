@@ -147,6 +147,8 @@ public class UsuarioDAO {
                     usuario.setId(rs.getString("id"));
                     usuario.setNome(rs.getString("nome"));
                     usuario.setEmail(rs.getString("email"));
+                    usuario.setSenha(rs.getString("senha"));
+                    usuario.setStatus(rs.getString("status"));
                     usuario.setTipo_usuario(rs.getString("tipo_usuario"));
                     return usuario;
                 }

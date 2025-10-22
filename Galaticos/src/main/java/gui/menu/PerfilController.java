@@ -28,11 +28,11 @@ public class PerfilController {
 
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
-        System.out.println(usuarioLogado.getNome());
-        System.out.println(usuarioLogado.getEmail());
-        System.out.println(usuarioLogado.getCpf());
-        System.out.println(usuarioLogado.getStatus());
-        System.out.println(usuarioLogado.getSenha());
+//        System.out.println(usuarioLogado.getNome());
+//        System.out.println(usuarioLogado.getEmail());
+//        System.out.println(usuarioLogado.getCpf());
+//        System.out.println(usuarioLogado.getStatus());
+//        System.out.println(usuarioLogado.getSenha());
         System.out.println();
         popularDados();
     }
