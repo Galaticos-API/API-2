@@ -34,26 +34,26 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.stage.FileChooser;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
 import dao.DocumentoDAO;
 
 import javafx.util.Callback;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.Button;
+
 import java.util.Optional;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
 
 public class EditarPDIModalController implements Initializable {
-
-    // Variável de instância para armazenar o PDI atual
-    private PDI pdiAtual; // <-- 1. VARIÁVEL ADICIONADA
 
     // Elementos da Barra de Progresso
     // ... (outros @FXML)
@@ -92,9 +92,6 @@ public class EditarPDIModalController implements Initializable {
     private TableColumn<Objetivo, String> statusColumn;
 
     @FXML
-    private TableColumn<Objetivo, String> acoesColumn;
-
-    @FXML
     private ObservableList<Objetivo> objetivoObservableList;
 
 
@@ -102,11 +99,17 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableView<Documento> documentoTable;
 
-    @FXML private TableColumn<Documento, String> docNomeArquivoCol;
-    @FXML private TableColumn<Documento, String> docTipoCol;
-    @FXML private TableColumn<Documento, Date> docDataUploadCol;
-    @FXML private TableColumn<Documento, Void> docAcoesCol;
+    @FXML
+    private TableColumn<Documento, String> docNomeArquivoCol;
+    @FXML
+    private TableColumn<Documento, String> docTipoCol;
+    @FXML
+    private TableColumn<Documento, Date> docDataUploadCol;
+    @FXML
+    private TableColumn<Documento, Void> docAcoesCol;
 
+    private PDI pdiAtual;
+    private PdiDAO pdiDAO = new PdiDAO();
 
     private Stage dialogStage;
     private boolean salvo = false;
@@ -170,13 +173,42 @@ public class EditarPDIModalController implements Initializable {
 
     @FXML
     private void handleSavePdiDetails() {
-        String status = statusPdiComboBox.getValue();
+        String novoStatus = statusPdiComboBox.getValue();
+        LocalDate novaDataCriacaoLocal = dataCriacaoPicker.getValue();
+        LocalDate novaDataFechamentoLocal = dataFechamentoPicker.getValue();
 
-        if (status != null && !status.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Dados gerais do PDI atualizados!");
-            salvo = true;
-        } else {
+        if (novoStatus == null || novoStatus.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Atenção", "Selecione o Status do PDI.");
+            return;
+        }
+        if (novaDataCriacaoLocal == null) {
+            showAlert(Alert.AlertType.WARNING, "Atenção", "A Data de Início é obrigatória.");
+            return;
+        }
+        if (novaDataFechamentoLocal == null) {
+            showAlert(Alert.AlertType.WARNING, "Atenção", "A Data de Fechamento é obrigatória.");
+            return;
+        }
+
+        try {
+            Date novaDataCriacao = Date.from(novaDataCriacaoLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date novaDataFechamento = Date.from(novaDataFechamentoLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            pdiAtual.setStatus(novoStatus);
+            pdiAtual.setDataCriacao(novaDataCriacao);
+            pdiAtual.setDataFechamento(novaDataFechamento);
+            boolean sucesso = pdiDAO.atualizar(pdiAtual);
+
+            if (sucesso) {
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Dados gerais do PDI atualizados com sucesso!");
+                salvo = true;
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível atualizar o PDI no banco de dados.");
+            }
+
+        } catch (RuntimeException e) {
+            showAlert(Alert.AlertType.ERROR, "Erro", "Ocorreu um erro ao salvar: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -318,7 +350,7 @@ public class EditarPDIModalController implements Initializable {
                 @Override
                 protected void updateItem(Date item, boolean empty) {
                     super.updateItem(item, empty);
-                    if(empty || item == null) {
+                    if (empty || item == null) {
                         setText(null);
                     } else {
                         setText(format.format(item));
@@ -409,7 +441,6 @@ public class EditarPDIModalController implements Initializable {
         pesoColumn.setCellValueFactory(new PropertyValueFactory<>("peso"));
         pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacao"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        acoesColumn.setCellValueFactory(new PropertyValueFactory<>("acoes"));
     }
 
     private void carregarTodosOsPDIs() {

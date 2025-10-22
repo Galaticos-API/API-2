@@ -2,7 +2,7 @@ package gui.login;
 
 import dao.UsuarioDAO;
 import gui.MainController;
-// Importe os outros controllers que você usa (ColaboradorController, etc.)
+import gui.modal.CadastroUsuarioModalController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,23 +11,46 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField; // Importe o PasswordField
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Usuario;
-import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
+import util.CriptografiaUtil;
 import util.Session;
 import util.StageManager;
-import util.Util; // <-- IMPORT ADICIONADO
+import util.Util;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginController {
 
+    public StackPane rootPane;
     @FXML
     private TextField emailUsuario;
     @FXML
     private PasswordField senhaUsuario;
     @FXML
     private Button sairBtn;
+
+
+    @FXML
+    public void initialize() {
+
+        rootPane.setFocusTraversable(true);
+        rootPane.requestFocus();
+
+        rootPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.HOME) {
+                handleAbrirModalCadastro();
+                event.consume();
+            }
+        });
+    }
 
     @FXML
     void clickLogin(ActionEvent event) throws Exception {
@@ -45,13 +68,12 @@ public class LoginController {
             String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            // Autentica usando a senha criptografada
             Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senhaCriptografada);
 
             if (usuarioAutenticado != null) {
                 Session.setUsuarioAtual(usuarioAutenticado);
 
-                String fxmlFile = getTelaPorTipo(usuarioAutenticado.getTipo_usuario());
+                String fxmlFile = "MainGUI.fxml";
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
                 Parent proximoRoot = loader.load();
 
@@ -69,21 +91,6 @@ public class LoginController {
             e.printStackTrace();
         }
         // --- FIM DA ALTERAÇÃO ---
-    }
-
-    private String getTelaPorTipo(String tipoUsuario) {
-        switch (tipoUsuario) {
-            case "RH":
-                return "MainGUI.fxml";
-            case "Gestor Geral":
-                return "MainGUI.fxml";
-            case "Gestor de Area":
-                return "MainGUI.fxml";
-            case "Colaborador":
-                return "ColaboradorGUI.fxml";
-            default:
-                throw new IllegalArgumentException("Tipo de usuário desconhecido: " + tipoUsuario);
-        }
     }
 
     private void passarUsuarioParaController(Object controller, Usuario usuario) {
@@ -108,5 +115,33 @@ public class LoginController {
         alert.setHeaderText(titulo);
         alert.setContentText(mensagem);
         alert.showAndWait();
+    }
+
+
+    @FXML
+    private void handleAbrirModalCadastro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/CadastroUsuarioModal.fxml"));
+            Parent page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrar Novo Usuário");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(rootPane.getScene().getWindow()); // Define a janela principal como "pai"
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            CadastroUsuarioModalController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            if (controller.isSalvo()) {
+                System.out.println("Modal fechado com sucesso");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

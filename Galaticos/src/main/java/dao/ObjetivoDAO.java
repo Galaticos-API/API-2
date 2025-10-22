@@ -2,6 +2,7 @@ package dao;
 
 import factory.ConnectionFactory;
 import modelo.Objetivo;
+import modelo.ObjetivoComPDI;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -212,5 +213,45 @@ public class ObjetivoDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao remover o objetivo.", e);
         }
+    }
+
+    public List<ObjetivoComPDI> listarTodosComPDI() {
+        List<ObjetivoComPDI> listaCompleta = new ArrayList<>();
+        // Query com JOINs para buscar dados das 3 tabelas
+        String sql = "SELECT o.*, p.id as pdi_original_id, p.usuario_id, u.nome as nome_usuario " +
+                "FROM objetivo o " +
+                "JOIN pdi p ON o.pdi_id = p.id " +
+                "JOIN usuario u ON p.usuario_id = u.id";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                ObjetivoComPDI obj = new ObjetivoComPDI();
+
+                // Popula os campos herdados de Objetivo
+                obj.setId(rs.getInt("o.id"));
+                obj.setPdiId(rs.getInt("o.pdi_id")); // ID do PDI ao qual o objetivo pertence diretamente
+                obj.setDescricao(rs.getString("o.descricao"));
+                obj.setPrazo(rs.getDate("o.prazo")); // Retorna java.sql.Date
+                obj.setStatus(rs.getString("o.status"));
+                obj.setComentarios(rs.getString("o.comentarios"));
+                obj.setPeso(rs.getFloat("o.peso"));
+                obj.setPontuacao(rs.getFloat("o.pontuacao"));
+
+                // Popula os campos específicos de ObjetivoComPDI
+                obj.setPdiIdOriginal(rs.getInt("pdi_original_id")); // ID do PDI vindo da tabela PDI
+                obj.setUsuarioId(rs.getInt("p.usuario_id"));
+                obj.setNomeUsuario(rs.getString("nome_usuario"));
+
+                listaCompleta.add(obj);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar todos os objetivos com informações do PDI.", e);
+        }
+
+        return listaCompleta;
     }
 }
