@@ -63,6 +63,7 @@ public class UsuarioDAO {
                     usuario.setData_criacao(timestamp.toLocalDateTime());
                 }
 
+                System.out.println(usuario);
 
                 usuarios.add(usuario);
             }

@@ -5,29 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c895df76-9050-4f34-af53-ff5b82262bc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/gui/menu/MeuPdiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/gui/menu/ObjetivosController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/modelo/ObjetivoComPDI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/StyleObjetivos.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/gui/Menu/MeuPdiGUI.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/gui/Menu/ObjetivosGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/pdi_youtan.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../DOCS/pdi_youtan.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ObjetivoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ObjetivoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/PdiDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/PdiDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/factory/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/factory/ConnectionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/login/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/ListaPdiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/ListaPdiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/CadastroUsuarioModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/CadastroUsuarioModalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelo/PDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelo/PDI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/CriptografiaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/CriptografiaUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UsuarioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/UsuariosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/UsuariosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modelo/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelo/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/css/StyleListaUsuario.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/css/StyleListaUsuario.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/css/StylePDI.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/css/StylePDI.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/gui/MainGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/MainGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/Menu/ListaPdiGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/Menu/ListaPdiGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/login/LoginGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/login/LoginGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/modal/EditarPDIModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/EditarPDIModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/Menu/UsuariosGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/Menu/UsuariosGUI.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,18 +54,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.galaticos [javafx:run].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "R:/FATEC/sem2/API-2/Galaticos"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.galaticos [javafx:run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;S4--(RH,-gestor-geral,-gestor-de-área)&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;R:/FATEC/sem2/API-2/Galaticos&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="galaticos [javafx:run]" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>

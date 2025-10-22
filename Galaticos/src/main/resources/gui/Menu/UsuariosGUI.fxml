@@ -12,7 +12,8 @@
 
 <StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.UsuariosController">
     <stylesheets>
-        <URL value="@/css/StyleListaUsuario.css" /> </stylesheets>
+        <URL value="@/css/StyleListaUsuario.css" />
+    </stylesheets>
 
     <children>
         <VBox alignment="TOP_CENTER" maxHeight="650.0" maxWidth="900.0" spacing="20.0" styleClass="content-card">
@@ -20,7 +21,7 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
             <children>
-                <Label text="Gerenciamento de Usuários" fx:id="tituloPagina" />
+                <Label fx:id="tituloPagina" styleClass="page-title" text="Gerenciamento de Usuários" />
 
                 <TableView fx:id="tabelaUsuarios" VBox.vgrow="ALWAYS">
                     <columns>
