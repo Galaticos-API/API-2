@@ -4,6 +4,7 @@ import dao.UsuarioDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Util; // Sua classe utilitária para mostrar alertas
 
 public class PerfilController {
@@ -56,10 +57,14 @@ public class PerfilController {
             usuarioLogado.setEmail(txtEmail.getText().trim());
             usuarioLogado.setCpf(txtCpf.getText().trim());
 
+            // --- ALTERAÇÃO AQUI ---
             // Só atualiza a senha se o campo não estiver vazio
             if (!txtSenha.getText().isEmpty()) {
-                usuarioLogado.setSenha(txtSenha.getText());
+                String senhaPlana = txtSenha.getText();
+                String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
+                usuarioLogado.setSenha(senhaCriptografada);
             }
+            // --- FIM DA ALTERAÇÃO ---
 
             // Persiste as alterações no banco de dados
             UsuarioDAO usuarioDAO = new UsuarioDAO();

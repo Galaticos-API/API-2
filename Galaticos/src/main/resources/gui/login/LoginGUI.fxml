@@ -6,7 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
+<StackPane fx:id="rootPane" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
     <stylesheets>
         <URL value="@/css/StyleLogin.css" /> </stylesheets>
 
@@ -22,7 +22,7 @@
                 </ImageView>
 
                 <TextField fx:id="emailUsuario" promptText="Email" styleClass="text-field" text="rh@rh" />
-                <PasswordField fx:id="senhaUsuario" promptText="Senha" styleClass="password-field" text="rh" />
+                <PasswordField fx:id="senhaUsuario" promptText="Senha" styleClass="password-field" text="rh1234" />
 
                 <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#clickLogin" text="Entrar" />
 

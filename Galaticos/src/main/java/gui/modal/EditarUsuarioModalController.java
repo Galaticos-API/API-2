@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Util;
 
 import java.sql.SQLException;
@@ -20,12 +21,6 @@ public class EditarUsuarioModalController {
     private TextField txtEmail;
     @FXML
     private PasswordField txtSenha;
-    @FXML
-    private TextField txtCpf;
-    @FXML
-    private TextField txtTelefone;
-    @FXML
-    private DatePicker datePickerNascimento;
     @FXML
     private ComboBox<String> comboTipoUsuario;
     @FXML
@@ -55,8 +50,6 @@ public class EditarUsuarioModalController {
 
         txtNome.setText(usuario.getNome());
         txtEmail.setText(usuario.getEmail());
-        txtCpf.setText(usuario.getCpf());
-        datePickerNascimento.setValue(usuario.getData_nascimento());
         comboTipoUsuario.setValue(usuario.getTipo_usuario());
         comboStatus.setValue(usuario.getStatus());
     }
@@ -67,14 +60,16 @@ public class EditarUsuarioModalController {
             try {
                 usuarioEditado.setNome(txtNome.getText().trim());
                 usuarioEditado.setEmail(txtEmail.getText().trim());
-                usuarioEditado.setCpf(txtCpf.getText().trim());
-                usuarioEditado.setData_nascimento(datePickerNascimento.getValue());
                 usuarioEditado.setTipo_usuario(comboTipoUsuario.getValue());
                 usuarioEditado.setStatus(comboStatus.getValue());
 
+                // --- ALTERAÇÃO AQUI ---
                 if (!txtSenha.getText().trim().isEmpty()) {
-                    usuarioEditado.setSenha(txtSenha.getText().trim());
+                    String senhaPlana = txtSenha.getText().trim();
+                    String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
+                    usuarioEditado.setSenha(senhaCriptografada);
                 }
+                // --- FIM DA ALTERAÇÃO ---
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.atualizar(usuarioEditado);
@@ -86,6 +81,9 @@ public class EditarUsuarioModalController {
 
             } catch (RuntimeException | SQLException e) {
                 Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro ao Atualizar", e.getMessage());
+            } catch (Exception e) {
+                // Adicionado catch para erros de criptografia
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Segurança", "Não foi possível processar a senha: " + e.getMessage());
             }
         }
     }
@@ -103,9 +101,6 @@ public class EditarUsuarioModalController {
         }
         if (txtEmail.getText() == null || txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")) {
             errorMessage += "E-mail inválido!\n";
-        }
-        if (txtCpf.getText() == null || txtCpf.getText().trim().isEmpty()) {
-            errorMessage += "CPF inválido!\n";
         }
 
         if (errorMessage.isEmpty()) {

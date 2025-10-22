@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.MeuPdiController">
+    <stylesheets>
+        <URL value="@/css/StyleMain.css" /> </stylesheets>
+
+    <children>
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="900.0" spacing="15.0" styleClass="content-card" StackPane.alignment="CENTER">
+            <StackPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </StackPane.margin>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <children>
+                <Label styleClass="page-title" text="Meu Plano de Desenvolvimento Individual" />
+
+                <Label fx:id="lblMensagemSemPdi" managed="false" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic;" text="Você ainda não possui um PDI cadastrado." visible="false" />
+
+                <VBox fx:id="pdiContentBox" spacing="15.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="progress-box">
+                            <Label style="-fx-font-weight: bold;" text="Progresso Geral do PDI:" />
+                            <ProgressBar fx:id="progressBarGeral" prefWidth="Infinity" progress="0.0" />
+                            <Text fx:id="textPontuacaoGeral" style="-fx-font-size: 14;" text="0.0% Concluído" />
+                        </VBox>
+
+                        <TabPane fx:id="tabPanePDI" prefHeight="400.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                            <tabs>
+                                <Tab text="Dados Gerais">
+                                    <content>
+                                        <GridPane hgap="10.0" style="-fx-padding: 20;" vgap="10.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints percentWidth="20.0" />
+                                                <ColumnConstraints percentWidth="30.0" />
+                                                <ColumnConstraints percentWidth="20.0" />
+                                                <ColumnConstraints percentWidth="30.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                            </rowConstraints>
+
+                                            <Label text="Colaborador:" />
+                                            <TextField fx:id="usuarioNomeField" editable="false" GridPane.columnIndex="1" />
+
+                                            <Label text="Cargo:" GridPane.columnIndex="2" />
+                                            <TextField fx:id="usuarioCargoField" editable="false" GridPane.columnIndex="3" />
+
+                                            <Label text="Data Início:" GridPane.rowIndex="1" />
+                                            <DatePicker fx:id="dataCriacaoPicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                            <Label text="Status:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                            <TextField fx:id="statusPdiField" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                            <Label text="Fechamento:" GridPane.rowIndex="2" />
+                                            <DatePicker fx:id="dataFechamentoPicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                            <Button fx:id="btnAbrirEdicao" onAction="#handleAbrirEdicao" styleClass="secondary-button" text="Editar PDI" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.halignment="RIGHT" />
+                                        </GridPane>
+                                    </content>
+                                </Tab>
+
+                                <Tab text="Meus Objetivos">
+                                    <content>
+                                        <VBox spacing="10.0" style="-fx-padding: 20;">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold;" text="Acompanhe seus objetivos:" />
+                                                <TableView fx:id="objetivoTable" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="descricaoColumn" prefWidth="300.0" text="Descrição" />
+                                                        <TableColumn fx:id="prazoColumn" prefWidth="100.0" text="Prazo" />
+                                                        <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Status" />
+                                                        <TableColumn fx:id="acoesColumn" prefWidth="100.0" text="Ações" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <HBox alignment="CENTER_RIGHT">
+                                                    <Button fx:id="btnAdicionarObjetivo" onAction="#handleAdicionarObjetivo" styleClass="primary-button" text="Adicionar Objetivo" />
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </content>
+                                </Tab>
+
+                                <Tab text="Meus Documentos">
+                                    <content>
+                                        <VBox spacing="10.0" style="-fx-padding: 20;">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold;" text="Documentos Anexados:" />
+                                                <TableView fx:id="documentoTable" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="docNomeArquivoCol" prefWidth="300.0" text="Nome do Arquivo" />
+                                                        <TableColumn fx:id="docTipoCol" prefWidth="100.0" text="Tipo" />
+                                                        <TableColumn fx:id="docDataUploadCol" prefWidth="150.0" text="Data Upload" />
+                                                        <TableColumn fx:id="docAcoesCol" prefWidth="100.0" text="Ações"/>
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <HBox alignment="CENTER_RIGHT">
+                                                    <Button fx:id="btnUploadDocumento" onAction="#handleUploadDocumento" styleClass="primary-button" text="Fazer Upload" />
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

@@ -19,12 +19,9 @@ public class UsuarioDAO {
         if (emailExiste(usuario.getEmail())) {
             throw new SQLException("O email '" + usuario.getEmail() + "' já está cadastrado. Tente outro.");
         }
-        if (cpfExiste(usuario.getCpf())) {
-            throw new SQLException("O CPF '" + usuario.getCpf() + "' já está cadastrado.");
-        }
 
         // SQL atualizado sem o campo 'cargo'
-        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status, data_nascimento, cpf) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status) VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario.getNome());
@@ -33,12 +30,6 @@ public class UsuarioDAO {
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
 
-            if (usuario.getData_nascimento() != null) {
-                pstmt.setDate(6, Date.valueOf(usuario.getData_nascimento()));
-            } else {
-                pstmt.setNull(6, Types.DATE);
-            }
-            pstmt.setString(7, usuario.getCpf());
             pstmt.executeUpdate();
 
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -53,7 +44,7 @@ public class UsuarioDAO {
 
     public List<Usuario> lerTodos() throws SQLException {
         // SQL atualizado sem o campo 'cargo'
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, data_nascimento, cpf FROM usuario";
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -72,11 +63,6 @@ public class UsuarioDAO {
                     usuario.setData_criacao(timestamp.toLocalDateTime());
                 }
 
-                Date dataNascimento = rs.getDate("data_nascimento");
-                if (dataNascimento != null) {
-                    usuario.setData_nascimento(dataNascimento.toLocalDate());
-                }
-                usuario.setCpf(rs.getString("cpf"));
 
                 usuarios.add(usuario);
             }
@@ -86,7 +72,7 @@ public class UsuarioDAO {
 
     public Usuario buscarPorId(String id) throws SQLException {
         // SQL atualizado sem o campo 'cargo'
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, data_nascimento, cpf FROM usuario WHERE id = ?";
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario WHERE id = ?";
         Usuario usuario = null;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -105,11 +91,6 @@ public class UsuarioDAO {
                         usuario.setData_criacao(timestamp.toLocalDateTime());
                     }
 
-                    Date dataNascimento = rs.getDate("data_nascimento");
-                    if (dataNascimento != null) {
-                        usuario.setData_nascimento(dataNascimento.toLocalDate());
-                    }
-                    usuario.setCpf(rs.getString("cpf"));
                 }
             }
         }
@@ -118,7 +99,7 @@ public class UsuarioDAO {
 
     public boolean atualizar(Usuario usuario) throws SQLException {
         // SQL atualizado sem o campo 'cargo'
-        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ?, data_nascimento = ?, cpf = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, usuario.getNome());
@@ -127,14 +108,7 @@ public class UsuarioDAO {
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
 
-            if (usuario.getData_nascimento() != null) {
-                pstmt.setDate(6, Date.valueOf(usuario.getData_nascimento()));
-            } else {
-                pstmt.setNull(6, Types.DATE);
-            }
-            pstmt.setString(7, usuario.getCpf());
-
-            pstmt.setString(8, usuario.getId()); // O índice foi ajustado
+            pstmt.setString(6, usuario.getId()); // O índice foi ajustado
 
             return pstmt.executeUpdate() > 0;
         }
@@ -145,20 +119,6 @@ public class UsuarioDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
-
-    public boolean cpfExiste(String cpf) throws SQLException {
-        if (cpf == null || cpf.trim().isEmpty()) {
-            return false;
-        }
-        String sql = "SELECT 1 FROM usuario WHERE cpf = ? LIMIT 1";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, cpf);
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next();
             }

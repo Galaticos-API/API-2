@@ -1,6 +1,9 @@
 package gui;
 
+import dao.PdiDAO;
 import gui.menu.ListaPdiController;
+import gui.menu.MeuPdiController;
+import gui.menu.ObjetivosController;
 import gui.menu.UsuariosController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import modelo.PDI;
 import modelo.Usuario;
 
 import java.io.IOException;
@@ -27,6 +31,8 @@ public class MainController {
     @FXML
     private StackPane conteudo; // A área central que será atualizada
 
+    @FXML
+    public Button btnObjetivos;
     @FXML
     private Button btnPerfil;
     @FXML
@@ -46,7 +52,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard);
+        navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard, btnObjetivos);
 
         if (usuarioLogado != null) {
             //validação do layout para tipo de usuário
@@ -60,27 +66,35 @@ public class MainController {
 
     @FXML
     void handleMenuPerfil(ActionEvent event) {
-        loadPage("PerfilGUI");
-        updateActiveButton(btnPerfil);
+        loadPage("PerfilGUI", btnPerfil);
     }
 
     @FXML
     void handleMenuPDI() {
-        loadPage("ListaPdiGUI");
-        updateActiveButton(btnPDI);
+        if (usuarioLogado == null) return;
+        boolean isRh = "RH".equals(usuarioLogado.getTipo_usuario());
+
+        if (isRh) {
+            loadPage("ListaPdiGUI", btnPDI);
+        } else {
+            loadPage("MeuPdiGUI", btnPDI);
+        }
+
     }
 
     @FXML
     void handleMenuDashboard() {
-        loadPage("DashboardGUI");
-        updateActiveButton(btnDashboard);
+        loadPage("DashboardGUI", btnDashboard);
     }
-
 
     @FXML
     void handleMenuUsuarios() {
-        loadPage("UsuariosGUI");
-        updateActiveButton(btnUsuarios);
+        loadPage("UsuariosGUI", btnUsuarios);
+    }
+
+    @FXML
+    void handleMenuObjetivos() {
+        loadPage("ObjetivosGUI", btnObjetivos);
     }
 
     private void updateActiveButton(Button activeButton) {
@@ -90,7 +104,8 @@ public class MainController {
         activeButton.getStyleClass().add("active");
     }
 
-    private void loadPage(String fxmlFile) {
+    private void loadPage(String fxmlFile, Button btnClicado) {
+        updateActiveButton(btnClicado);
         try {
             String resourcePath = "/gui/menu/" + fxmlFile + ".fxml";
 
@@ -100,9 +115,12 @@ public class MainController {
             if (controller instanceof UsuariosController usuariosController) {
                 usuariosController.setUsuario(this.usuarioLogado);
                 usuariosController.initialize();
+            } else if (controller instanceof ObjetivosController objetivosController) {
+                objetivosController.setUsuarioLogado(usuarioLogado);
             } else if (controller instanceof ListaPdiController listaPdiController) {
-                listaPdiController.setUsuario(this.usuarioLogado);
-                listaPdiController.initialize();
+                listaPdiController.setUsuarioLogado(usuarioLogado);
+            } else if (controller instanceof MeuPdiController meuPdiController) {
+                meuPdiController.setUsuarioLogado(usuarioLogado);
             }
 
             conteudo.getChildren().setAll(page);
@@ -114,6 +132,5 @@ public class MainController {
             throw new RuntimeException(e);
         }
     }
-
 
 }

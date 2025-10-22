@@ -2,7 +2,7 @@ package gui.login;
 
 import dao.UsuarioDAO;
 import gui.MainController;
-// Importe os outros controllers que você usa (ColaboradorController, etc.)
+import gui.modal.CadastroUsuarioModalController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,15 +11,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField; // Importe o PasswordField
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.CriptografiaUtil;
 import util.Session;
 import util.StageManager;
+import util.Util;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginController {
 
+    public StackPane rootPane;
     @FXML
     private TextField emailUsuario;
     @FXML
@@ -27,49 +37,60 @@ public class LoginController {
     @FXML
     private Button sairBtn;
 
+
+    @FXML
+    public void initialize() {
+
+        rootPane.setFocusTraversable(true);
+        rootPane.requestFocus();
+
+        rootPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.HOME) {
+                handleAbrirModalCadastro();
+                event.consume();
+            }
+        });
+    }
+
     @FXML
     void clickLogin(ActionEvent event) throws Exception {
         String email = emailUsuario.getText().trim();
-        String senha = senhaUsuario.getText().trim();
+        String senhaPlana = senhaUsuario.getText().trim(); // <-- Variável renomeada
 
-        if (email.isEmpty() || senha.isEmpty()) {
+        if (email.isEmpty() || senhaPlana.isEmpty()) { // <-- Variável renomeada
             mostrarAlerta("Campos Vazios", "Por favor, preencha o e-mail e a senha.");
             return;
         }
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senha);
+        // --- ALTERAÇÃO AQUI ---
+        try {
+            // Criptografa a senha digitada para comparar com a do banco
+            String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
 
-        if (usuarioAutenticado != null) {
-            Session.setUsuarioAtual(usuarioAutenticado);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senhaCriptografada);
 
-            String fxmlFile = getTelaPorTipo(usuarioAutenticado.getTipo_usuario());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
-            Parent proximoRoot = loader.load();
+            if (usuarioAutenticado != null) {
+                Session.setUsuarioAtual(usuarioAutenticado);
 
-            passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+                String fxmlFile = "MainGUI.fxml";
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
+                Parent proximoRoot = loader.load();
 
-            Stage stage = StageManager.getStage();
-            stage.getScene().setRoot(proximoRoot);
+                passarUsuarioParaController(loader.getController(), usuarioAutenticado);
 
-        } else {
-            mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
+                Stage stage = StageManager.getStage();
+                stage.getScene().setRoot(proximoRoot);
+
+            } else {
+                mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
+            }
+        } catch (Exception e) {
+            // Captura erros (ex: falha na criptografia ou no banco)
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Login", "Ocorreu um erro: " + e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    private String getTelaPorTipo(String tipoUsuario) {
-        switch (tipoUsuario) {
-            case "RH":
-                return "MainGUI.fxml";
-            case "Gestor Geral":
-                return "MainGUI.fxml";
-            case "Gestor de Area":
-                return "MainGUI.fxml";
-            case "Colaborador":
-                return "ColaboradorGUI.fxml";
-            default:
-                throw new IllegalArgumentException("Tipo de usuário desconhecido: " + tipoUsuario);
-        }
+        // --- FIM DA ALTERAÇÃO ---
     }
 
     private void passarUsuarioParaController(Object controller, Usuario usuario) {
@@ -94,5 +115,33 @@ public class LoginController {
         alert.setHeaderText(titulo);
         alert.setContentText(mensagem);
         alert.showAndWait();
+    }
+
+
+    @FXML
+    private void handleAbrirModalCadastro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/CadastroUsuarioModal.fxml"));
+            Parent page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrar Novo Usuário");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(rootPane.getScene().getWindow()); // Define a janela principal como "pai"
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            CadastroUsuarioModalController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            if (controller.isSalvo()) {
+                System.out.println("Modal fechado com sucesso");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

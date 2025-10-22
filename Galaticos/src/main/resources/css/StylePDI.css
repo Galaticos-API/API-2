@@ -1,0 +1,156 @@
+/*
+ * Arquivo: StylePDI.css
+ * Revisado para corresponder às classes e estrutura do FXML fornecido.
+ */
+
+/* ======================================================================
+   CONFIGURAÇÕES GERAIS E LAYOUTS
+   ====================================================================== */
+
+/* O StackPane raiz */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-base: #f4f6f9; /* Cor de fundo principal */
+    -fx-background-color: #f4f6f9; /* Fundo da janela */
+}
+
+/* O VBox que contém todo o conteúdo */
+.content-card {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.2, 0, 2); /* Sombra suave */
+}
+
+/* Título Principal */
+.page-title {
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e; /* Azul Escuro */
+    -fx-padding: 0 0 10px 0;
+}
+
+/* Barra de Filtro (HBox) */
+.filter-bar {
+    -fx-padding: 5px 0 5px 0;
+}
+
+
+/* ======================================================================
+   CAMPOS E BOTÕES
+   ====================================================================== */
+
+/* Campo de Texto (Buscar por ID do Usuário) */
+.text-field {
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5px 10px;
+}
+.text-field:focused {
+    -fx-border-color: #3498db;
+    -fx-background-insets: 0;
+}
+
+/* Botões Primários (Buscar, Cadastrar Novo PDI) */
+.primary-button {
+    -fx-background-color: #2A8E9D; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.primary-button:hover {
+    -fx-background-color: #27ae60; /* Azul mais escuro no hover */
+}
+
+/* Botões Secundários (Mostrar Todos) */
+.secondary-button {
+    -fx-background-color: #dbe2e3; /* Cinza Claro */
+    -fx-text-fill: #2e4c6a;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.secondary-button:hover {
+    -fx-background-color: #bdc3c7;
+}
+
+/* Estilo específico para o botão de Cadastro (se quiser destacá-lo ainda mais) */
+#cadastrarPdiButton { /* Usa o fx:id="cadastrarPdiButton" como ID CSS */
+    -fx-background-color: #2A8E9D; /* Verde */
+}
+#cadastrarPdiButton:hover {
+    -fx-background-color: #27ae60;
+}
+
+
+/* ==================================== */
+/* Estilos para os Cards de PDI         */
+/* ==================================== */
+.pdi-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+    -fx-background-radius: 12;
+    -fx-border-color: #dfe4e8;
+    -fx-border-radius: 12;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+}
+
+.clickable-card:hover {
+    -fx-cursor: hand;
+    -fx-border-color: #357ABD; /* Destaque azul ao passar o mouse */
+    -fx-effect: dropshadow(gaussian, rgba(53,122,189,0.3), 10, 0, 0, 2);
+}
+
+.pdi-card-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.pdi-card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+.pdi-card-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* --- Estilos de Status (Badges) --- */
+.pdi-card-status {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 4px 8px;
+    -fx-max-width: 120; /* Impede que o badge ocupe a largura toda */
+}
+
+.status-andamento {
+    -fx-background-color: #e6f7ff; /* Fundo azul claro */
+    -fx-text-fill: #096dd9;
+    -fx-border-color: #91d5ff;
+}
+
+.status-concluido {
+    -fx-background-color: #f6ffed; /* Fundo verde claro */
+    -fx-text-fill: #389e0d;
+    -fx-border-color: #b7eb8f;
+}
+
+.status-arquivado {
+    -fx-background-color: #fafafa; /* Fundo cinza claro */
+    -fx-text-fill: #8c8c8c;
+    -fx-border-color: #d9d9d9;
+}
+
+.pdi-card-progress-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
+    -fx-padding: 0 0 0 5px; /* Pequeno espaço à esquerda do texto */
+}

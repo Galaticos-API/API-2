@@ -15,7 +15,6 @@ public class PDI {
     // Correspondem aos campos da tabela PDI no diagrama.
     private String id;
     private String colaboradorId;
-    private int ano;
     private String status;
     private Date dataCriacao;
     private Date dataFechamento;
@@ -26,6 +25,7 @@ public class PDI {
     // A anotação 1..* no diagrama significa "um ou mais".
     private List<Objetivo> objetivos;
     private List<Documento> documentos;
+    private String nomeColaborador;
 
 
     // --- Construtores ---
@@ -68,14 +68,6 @@ public class PDI {
 
     public void setColaboradorId(String colaboradorId) {
         this.colaboradorId = colaboradorId;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
     }
 
     public String getStatus() {
@@ -124,5 +116,13 @@ public class PDI {
 
     public void setDocumentos(List<Documento> documentos) {
         this.documentos = documentos;
+    }
+
+    public String getNomeColaborador() {
+        return nomeColaborador;
+    }
+
+    public void setNomeColaborador(String nomeColaborador) {
+        this.nomeColaborador = nomeColaborador;
     }
 }
