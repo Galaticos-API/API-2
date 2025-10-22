@@ -57,9 +57,10 @@ public class MainController {
         navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard, btnObjetivos);
 
         if (usuarioLogado != null) {
+            //validação do layout para tipo de usuário
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
-            btnUsuarios.setVisible(podeVerUsuarios);
             btnUsuarios.setManaged(podeVerUsuarios);
+            btnDashboard.setManaged(podeVerUsuarios);
 
             handleMenuDashboard();
         }

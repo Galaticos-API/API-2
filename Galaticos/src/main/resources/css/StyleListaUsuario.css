@@ -1,116 +1,100 @@
-/* --- Estilo Geral da Aplicação --- */
+/* ==================================== */
+/* Estilos Globais                      */
+/* ==================================== */
 .root {
-    -fx-background-color: #E8ECEF; /* Fundo cinza-azulado claro */
-    -fx-font-family: "Arial", sans-serif;
+    -fx-background-color: #f5f7fa;
+    -fx-font-family: "Segoe UI", sans-serif;
 }
 
-/* --- Barra de Navegação (Tabs) --- */
-.tab-pane .tab-header-area {
-    -fx-padding: 0;
+/* ==================================== */
+/* Card de Conteúdo                     */
+/* ==================================== */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    /* -fx-padding já está definido no FXML */
 }
 
-.tab-pane .tab-header-background {
-    -fx-background-color: #2A9D8F; /* Cor principal (verde-azulado) */
-}
-
-.tab-pane .tab {
-    -fx-background-color: #2A9D8F; /* Cor da aba não selecionada */
-    -fx-background-insets: 0;
-    -fx-padding: 10px 20px 10px 20px; /* Espaçamento interno da aba */
-}
-
-.tab-pane .tab .tab-label {
-    -fx-text-fill: white; /* Cor do texto da aba */
-    -fx-font-size: 14px;
+/* ==================================== */
+/* Título da Página                     */
+/* ==================================== */
+.page-title {
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
 }
 
-/* Estilo da Aba SELECIONADA */
-.tab-pane .tab:selected {
-    -fx-background-color: #E8ECEF; /* Cor de fundo da página (root) para "conectar" */
-    -fx-background-radius: 5 5 0 0; /* Cantos arredondados no topo */
-    -fx-background-insets: 0 0 -1 0;
-}
-
-.tab-pane .tab:selected .tab-label {
-    -fx-text-fill: #333333; /* Texto escuro para tab selecionada */
-}
-
-/* Remove a borda de foco azul */
-.tab:focused {
-    -fx-focus-color: transparent;
-}
-
-/* --- Título da Página --- */
-/* Certifique-se de adicionar fx:id="tituloPagina" ao seu Label */
-#tituloPagina {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #444444;
-}
-
-/* --- Tabela de Usuários --- */
+/* ==================================== */
+/* Estilo da Tabela                     */
+/* ==================================== */
 .table-view {
-    -fx-background-color: #FFFFFF; /* Fundo branco da tabela */
-    -fx-border-color: #CCCCCC; /* Borda cinza ao redor da tabela */
-    -fx-border-width: 1px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-background-color: white; /* Garante fundo branco */
 }
 
-/* Cabeçalho da Tabela */
 .table-view .column-header-background {
-    -fx-background-color: #F4F4F4; /* Fundo cinza claro do cabeçalho */
+    -fx-background-color: #f8f9fa; /* Fundo cinza bem claro para cabeçalho */
+    -fx-background-radius: 8 8 0 0; /* Arredonda cantos superiores */
+    -fx-background-insets: 0;
 }
 
 .table-view .column-header {
     -fx-background-color: transparent;
-    -fx-border-color: #CCCCCC;
-    -fx-border-width: 0 1px 1px 0; /* Borda direita e inferior */
-    -fx-padding: 8px;
+    -fx-border-color: transparent transparent #dee2e6 transparent; /* Linha sutil abaixo */
+    -fx-border-width: 1px;
+    -fx-padding: 10px 12px; /* Aumenta um pouco o padding */
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: #333333; /* Cor do texto do cabeçalho */
+    -fx-text-fill: #495057; /* Texto do cabeçalho um pouco mais escuro */
     -fx-font-weight: bold;
-    -fx-font-size: 13px;
+    -fx-font-size: 13px; /* Tamanho ligeiramente menor */
     -fx-alignment: CENTER_LEFT;
 }
 
-/* Células da Tabela */
 .table-view .table-cell {
-    -fx-padding: 8px;
-    -fx-border-color: #EEEEEE;
-    -fx-border-width: 0 1px 1px 0; /* Borda direita e inferior fina */
-    -fx-font-size: 13px;
+    -fx-padding: 10px 12px; /* Aumenta padding da célula */
+    -fx-border-color: transparent transparent #eeeeee transparent; /* Linha sutil abaixo da célula */
+    -fx-border-width: 1px;
+    -fx-font-size: 14px; /* Tamanho do texto da célula */
     -fx-alignment: CENTER_LEFT;
+}
+
+/* Linha Par/Ímpar (Opcional, mas melhora leitura) */
+.table-row-cell:odd {
+    -fx-background-color: #ffffff;
+}
+.table-row-cell:even {
+    -fx-background-color: #f8f9fa;
+}
+.table-row-cell:selected {
+   -fx-background-color: #d6eaff; /* Azul claro para seleção */
 }
 
 /* Remove bordas extras da tabela */
 .table-view .filler {
-    -fx-background-color: #F4F4F4;
+    -fx-background-color: white; /* Mantém o fundo branco */
 }
 .table-view .column-header:last-visible,
 .table-view .table-cell:last-visible {
     -fx-border-width: 0 0 1px 0; /* Remove borda direita da última coluna */
 }
 
-/* --- Botão de Registrar --- */
-/* Certifique-se de adicionar fx:id="btnRegistrar" ao seu Button */
-#btnRegistrar {
-    -fx-background-color: #F0F0F0;
-    -fx-border-color: #BDBDBD;
-    -fx-border-width: 1px;
-    -fx-background-radius: 3px;
-    -fx-border-radius: 3px;
-    -fx-font-size: 13px;
-    -fx-text-fill: #333333;
-    -fx-padding: 6px 12px;
-    -fx-cursor: hand; /* Muda o cursor para mãozinha */
+/* ==================================== */
+/* Botões                               */
+/* ==================================== */
+/* Botões Primários (Buscar, Cadastrar Novo PDI) */
+.primary-button {
+    -fx-background-color: #2A8E9D; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
 }
-
-#btnRegistrar:hover {
-    -fx-background-color: #E0E0E0; /* Efeito hover */
+.primary-button:hover {
+    -fx-background-color: #1c616b; /* Azul mais escuro no hover */
 }
-
-#btnRegistrar:pressed {
-    -fx-background-color: #D0D0D0; /* Efeito ao pressionar */
-}
+/* (Adicione outros estilos de botão .secondary-button, etc., se precisar) */

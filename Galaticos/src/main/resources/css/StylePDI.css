@@ -17,11 +17,9 @@
 /* O VBox que contém todo o conteúdo */
 .content-card {
     -fx-background-color: white;
-    -fx-border-color: #bdc3c7;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.2, 0, 2); /* Sombra suave */
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    /* -fx-padding já está definido no FXML */
 }
 
 /* Título Principal */
@@ -63,7 +61,7 @@
     -fx-padding: 6px 15px;
 }
 .primary-button:hover {
-    -fx-background-color: #27ae60; /* Azul mais escuro no hover */
+    -fx-background-color: #1c616b; /* Azul mais escuro no hover */
 }
 
 /* Botões Secundários (Mostrar Todos) */
@@ -88,69 +86,195 @@
 
 
 /* ==================================== */
+/* Estilos para o Quadro Kanban (PDI & Objetivos) */
+/* ==================================== */
+
+/* Coluna Kanban */
+.kanban-column {
+    -fx-background-color: #f8f9fa; /* Fundo cinza bem claro, como header da tabela */
+    -fx-padding: 0; /* Remove padding extra, o título cuidará disso */
+    -fx-background-radius: 8px 8px 0 0; /* Arredonda só cantos superiores */
+    -fx-border-color: #dee2e6; /* Borda sutil como a tabela */
+    -fx-border-width: 1px 1px 0 1px; /* Borda nos lados e topo */
+    -fx-min-width: 280px; /* Largura mínima */
+}
+
+/* Título da Coluna Kanban */
+.kanban-column-title {
+    -fx-font-size: 14px; /* Tamanho do header da tabela */
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057; /* Cor do header da tabela */
+    -fx-padding: 12px 15px; /* Padding igual ao header da tabela */
+    -fx-background-color: #f8f9fa; /* Garante fundo igual ao da coluna */
+    -fx-border-color: transparent transparent #dee2e6 transparent; /* Linha inferior */
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px 8px 0 0; /* Arredonda cantos superiores */
+    -fx-alignment: center; /* Centraliza o título */
+}
+
+/* ScrollPane dentro da coluna */
+.kanban-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-color: #dee2e6; /* Borda para separar do título */
+    -fx-border-width: 1px 0 0 0; /* Apenas borda superior */
+}
+.kanban-scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+/* Área de Conteúdo dos Cards */
+.kanban-content-area {
+     -fx-padding: 15px; /* Espaçamento interno para os cards */
+     -fx-background-color: #ffffff; /* Fundo branco para a área dos cards */
+}
+
+/* Placeholder para Colunas Vazias (Mantém o estilo anterior) */
+.kanban-empty-placeholder {
+    -fx-font-size: 14px;
+    -fx-text-fill: #95a5a6;
+    -fx-padding: 30px 10px;
+    -fx-alignment: center;
+    -fx-font-style: italic;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* ==================================== */
 /* Estilos para os Cards de PDI         */
 /* ==================================== */
 .pdi-card {
     -fx-background-color: #ffffff;
-    -fx-padding: 20px;
-    -fx-background-radius: 12;
-    -fx-border-color: #dfe4e8;
-    -fx-border-radius: 12;
+    -fx-padding: 15px; /* Padding interno do card */
+    -fx-background-radius: 8; /* Menos arredondado para combinar com tabela */
+    -fx-border-color: #e9ecef; /* Borda mais sutil */
+    -fx-border-radius: 8;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 2); /* Sombra mais leve */
 }
 
 .clickable-card:hover {
     -fx-cursor: hand;
-    -fx-border-color: #357ABD; /* Destaque azul ao passar o mouse */
-    -fx-effect: dropshadow(gaussian, rgba(53,122,189,0.3), 10, 0, 0, 2);
+    -fx-border-color: #adb5bd; /* Borda cinza mais escura no hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
 }
 
 .pdi-card-title {
-    -fx-font-size: 20px;
+    -fx-font-size: 16px; /* Ligeiramente menor */
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
+    -fx-text-fill: #343a40; /* Preto suave */
 }
 
 .pdi-card-subtitle {
-    -fx-font-size: 14px;
-    -fx-text-fill: #555555;
+    -fx-font-size: 13px; /* Ligeiramente menor */
+    -fx-text-fill: #6c757d; /* Cinza */
 }
 
 .pdi-card-date {
-    -fx-font-size: 12px;
-    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 11px; /* Menor */
+    -fx-text-fill: #6c757d;
 }
 
-/* --- Estilos de Status (Badges) --- */
-.pdi-card-status {
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 6;
-    -fx-padding: 4px 8px;
-    -fx-max-width: 120; /* Impede que o badge ocupe a largura toda */
+/* Barra de Progresso dentro do card */
+.pdi-card .progress-bar {
+    -fx-pref-height: 8px; /* Barra mais fina */
+}
+.pdi-card .progress-bar .bar {
+     -fx-background-color: #357ABD; /* Azul primário */
+     -fx-background-insets: 0;
+     -fx-background-radius: 4px;
+     -fx-padding: 0;
+}
+.pdi-card .progress-bar .track {
+     -fx-background-color: #e9ecef; /* Fundo da barra */
+     -fx-background-insets: 0;
+     -fx-background-radius: 4px;
 }
 
-.status-andamento {
-    -fx-background-color: #e6f7ff; /* Fundo azul claro */
-    -fx-text-fill: #096dd9;
-    -fx-border-color: #91d5ff;
-}
-
-.status-concluido {
-    -fx-background-color: #f6ffed; /* Fundo verde claro */
-    -fx-text-fill: #389e0d;
-    -fx-border-color: #b7eb8f;
-}
-
-.status-arquivado {
-    -fx-background-color: #fafafa; /* Fundo cinza claro */
-    -fx-text-fill: #8c8c8c;
-    -fx-border-color: #d9d9d9;
+/* Texto da Porcentagem */
+.pdi-card-progress-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6c757d;
+    -fx-padding: 0 0 0 5px;
 }
 
 .pdi-card-progress-text {
     -fx-font-size: 12px;
     -fx-text-fill: #555555;
     -fx-padding: 0 0 0 5px; /* Pequeno espaço à esquerda do texto */
+}
+/* ======================================================================
+   MODAL - REGISTRAR NOVO PDI
+   ====================================================================== */
+
+.modal-container {
+    -fx-background-color: white;
+    -fx-padding: 25px;
+    -fx-border-color: #dfe4e8;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.modal-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 20px 0;
+}
+
+.modal-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+}
+
+.modal-field {
+    -fx-pref-width: 260px;
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6px 10px;
+}
+
+.modal-field:focused {
+    -fx-border-color: #2A8E9D;
+    -fx-effect: dropshadow(gaussian, rgba(42,142,157,0.3), 6, 0, 0, 0);
+    -fx-background-color: white;
+}
+
+/* Botões do Modal */
+.modal-button {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+/* Botão "Criar PDI" */
+.modal-button-create {
+    -fx-background-color: #2A8E9D;
+    -fx-text-fill: white;
+}
+.modal-button-create:hover {
+    -fx-background-color: #27ae60;
+}
+
+/* Botão "Cancelar" */
+.modal-button-cancel {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: #2c3e50;
+}
+.modal-button-cancel:hover {
+    -fx-background-color: #d0d7db;
+}
+
+/* Alinhamento do rodapé de botões */
+.modal-footer {
+    -fx-alignment: center-right;
+    -fx-spacing: 10;
+    -fx-padding: 20 0 0 0;
 }

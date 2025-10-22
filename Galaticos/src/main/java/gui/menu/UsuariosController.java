@@ -43,6 +43,7 @@ public class UsuariosController {
 
     public void setUsuario(Usuario usuario) throws SQLException {
         this.usuarioLogado = usuario;
+        initialize();
     }
 
     @FXML
@@ -54,7 +55,7 @@ public class UsuariosController {
             colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
             btnAddUsuario.setOnAction(event -> handleAbrirModalCadastro());
-
+            System.out.println("initialize UsuariosController");
             atualizarUsuarios();
         }
     }
