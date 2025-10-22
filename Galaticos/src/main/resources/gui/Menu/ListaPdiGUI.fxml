@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -16,14 +15,17 @@
         <URL value="@/css/StylePDI.css" /> </stylesheets>
 
     <children>
-        <VBox alignment="TOP_CENTER" maxHeight="650.0" maxWidth="900.0" spacing="20.0" styleClass="content-card">
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1100.0" spacing="20.0" styleClass="content-card">
+            <StackPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </StackPane.margin>
             <padding>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
             <children>
-                <Label styleClass="page-title" text="Planos de Desenvolvimento" />
+                <Label styleClass="page-title" text="Gerenciamento de Planos de Desenvolvimento (Kanban)" />
 
-                <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="filter-bar">
+                <HBox fx:id="filterBar" alignment="CENTER_LEFT" spacing="15.0" styleClass="filter-bar">
                     <children>
                         <Label text="Buscar por ID do Usuário:" />
                         <TextField fx:id="usuarioIdTextField" prefWidth="150.0" promptText="Digite o ID" />
@@ -32,15 +34,42 @@
                     </children>
                 </HBox>
 
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
-                    <content>
-                        <FlowPane fx:id="pdiFlowPane" hgap="20.0" vgap="20.0">
-                            <padding>
-                                <Insets top="10.0" />
-                            </padding>
-                        </FlowPane>
-                    </content>
-                </ScrollPane>
+                <HBox fx:id="kanbanBoardPdi" spacing="20.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Em Andamento" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaEmAndamento" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Concluído" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaConcluido" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="kanban-column-title" text="Arquivado" />
+                                <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="colunaArquivado" spacing="15.0" styleClass="kanban-content-area" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
 
                 <HBox alignment="CENTER_RIGHT">
                     <children>

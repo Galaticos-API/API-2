@@ -33,7 +33,7 @@ public class ObjetivosController {
     /**
      * Método chamado pela tela principal para passar o usuário logado.
      */
-    public void setUsuarioLogado(Usuario usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
         configurarTela(); // Chama a configuração e carregamento
     }
