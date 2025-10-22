@@ -1,0 +1,116 @@
+/* --- Estilo Geral da Aplicação --- */
+.root {
+    -fx-background-color: #E8ECEF; /* Fundo cinza-azulado claro */
+    -fx-font-family: "Arial", sans-serif;
+}
+
+/* --- Barra de Navegação (Tabs) --- */
+.tab-pane .tab-header-area {
+    -fx-padding: 0;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: #2A9D8F; /* Cor principal (verde-azulado) */
+}
+
+.tab-pane .tab {
+    -fx-background-color: #2A9D8F; /* Cor da aba não selecionada */
+    -fx-background-insets: 0;
+    -fx-padding: 10px 20px 10px 20px; /* Espaçamento interno da aba */
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: white; /* Cor do texto da aba */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Estilo da Aba SELECIONADA */
+.tab-pane .tab:selected {
+    -fx-background-color: #E8ECEF; /* Cor de fundo da página (root) para "conectar" */
+    -fx-background-radius: 5 5 0 0; /* Cantos arredondados no topo */
+    -fx-background-insets: 0 0 -1 0;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #333333; /* Texto escuro para tab selecionada */
+}
+
+/* Remove a borda de foco azul */
+.tab:focused {
+    -fx-focus-color: transparent;
+}
+
+/* --- Título da Página --- */
+/* Certifique-se de adicionar fx:id="tituloPagina" ao seu Label */
+#tituloPagina {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #444444;
+}
+
+/* --- Tabela de Usuários --- */
+.table-view {
+    -fx-background-color: #FFFFFF; /* Fundo branco da tabela */
+    -fx-border-color: #CCCCCC; /* Borda cinza ao redor da tabela */
+    -fx-border-width: 1px;
+}
+
+/* Cabeçalho da Tabela */
+.table-view .column-header-background {
+    -fx-background-color: #F4F4F4; /* Fundo cinza claro do cabeçalho */
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 0 1px 1px 0; /* Borda direita e inferior */
+    -fx-padding: 8px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #333333; /* Cor do texto do cabeçalho */
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Células da Tabela */
+.table-view .table-cell {
+    -fx-padding: 8px;
+    -fx-border-color: #EEEEEE;
+    -fx-border-width: 0 1px 1px 0; /* Borda direita e inferior fina */
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Remove bordas extras da tabela */
+.table-view .filler {
+    -fx-background-color: #F4F4F4;
+}
+.table-view .column-header:last-visible,
+.table-view .table-cell:last-visible {
+    -fx-border-width: 0 0 1px 0; /* Remove borda direita da última coluna */
+}
+
+/* --- Botão de Registrar --- */
+/* Certifique-se de adicionar fx:id="btnRegistrar" ao seu Button */
+#btnRegistrar {
+    -fx-background-color: #F0F0F0;
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand; /* Muda o cursor para mãozinha */
+}
+
+#btnRegistrar:hover {
+    -fx-background-color: #E0E0E0; /* Efeito hover */
+}
+
+#btnRegistrar:pressed {
+    -fx-background-color: #D0D0D0; /* Efeito ao pressionar */
+}
