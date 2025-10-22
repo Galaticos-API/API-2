@@ -119,4 +119,20 @@ public class Usuario {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", tipo_usuario='" + tipo_usuario + '\'' +
+                ", status='" + status + '\'' +
+                ", data_criacao=" + data_criacao +
+                ", data_nascimento=" + data_nascimento +
+                ", genero='" + genero + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
+    }
 }
