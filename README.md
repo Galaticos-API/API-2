@@ -56,7 +56,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 ## 4. DoR Definition of Ready
 
 **:link: Clique no link abaixo para visualizar o DoR do projeto:**  
-> [Definition of Ready](https://docs.google.com/document/d/#)
+> [Definition of Ready](https://docs.google.com/document/d/1JypgD6klpmaMFWAlN-XvFfIDdT5w3FigAVdgb19mErk/edit?usp=sharing)
  
 <br>
  
@@ -75,7 +75,7 @@ Tópicos utilizados para definir o DoR das Sprints:
 
 ## 📍 DoD Definition of Done
 **:link: Clique no link abaixo para visualizar o DoD do projeto:**
-> [Definition of Done](https://docs.google.com/document/d/#)
+> [Definition of Done](https://docs.google.com/document/d/1XPf3VzQwvh62Na2uDACP2GVw0jecU-QrGtIdyGhpPGo/edit?usp=sharing)
 
 <br>
 
