@@ -36,9 +36,9 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 | 1 | Alta | **US-01:** Como RH, quero cadastrar, consultar, editar e inativar usuários no sistema, para gerenciar quem tem acesso à plataforma. | 35 | Sprint 1 |
 | 2 | Alta | **US-02:** Como RH, quero criar um novo PDI para um colaborador, associando-o a um ano específico, para iniciar o registro histórico dos planos. | 17 | Sprint 1 |
 | 3 | Alta | **US-03:** Como RH ou Gestor de Área, quero definir objetivos e metas dentro de um PDI existente, para detalhar o que se espera do colaborador. | 16 | Sprint 1 |
-| 4 | Média | **US-04:** Como RH ou Gestor de Área, quero avaliar as Hard Skills e Soft Skills de um colaborador dentro do seu PDI, para registrar suas competências. | 22 | Sprint 2 |
-| 5 | Média | **US-05:** Como RH ou Gestor de Área, quero atualizar o status de atingimento das metas de um PDI, para acompanhar o progresso do colaborador. | 17 | Sprint 2 |
-| 6 | Média | **US-06:** Como RH ou Gestor de Área, quero poder fazer o upload de documentos em um PDI específico, para centralizar as evidências de desenvolvimento. | 11 | Sprint 2 |
+| 4 | Média | **US-04:** Como RH ou Gestor de Área, quero avaliar as Hard Skills e Soft Skills de um colaborador dentro do seu PDI, para registrar suas competências. | 23 | Sprint 2 |
+| 5 | Média | **US-05:** Como RH ou Gestor de Área, quero atualizar o status de atingimento das metas de um PDI, para acompanhar o progresso do colaborador. | 36 | Sprint 2 |
+| 6 | Média | **US-06:** Como RH ou Gestor de Área, quero poder fazer o upload de documentos em um PDI específico, para centralizar as evidências de desenvolvimento. | 47 | Sprint 2 |
 | 7 | Baixa | **US-07:** Como Gestor Geral, quero visualizar um painel com o cálculo de atingimento de metas coletivo, para ter uma visão macro do desenvolvimento. | A ser estimado | Sprint 3 |
 | 8 | Baixa | **US-08:** Como RH, quero poder exportar as informações de um PDI para uma planilha, para análises externas. | A ser estimado | Sprint 3 |
 | 9 | Baixa | **US-09:** Como Gestor de Área, quero ter uma visualização consolidada do progresso dos PDIs de todos os meus liderados, para gerenciar minha equipe. | A ser estimado | Sprint 3 |
