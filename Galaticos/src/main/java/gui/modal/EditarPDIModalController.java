@@ -28,6 +28,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -136,9 +138,9 @@ public class EditarPDIModalController implements Initializable {
         if (pdiAtual == null) return;
 
         try {
-            // 1. Buscar dados do Usuário
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            // Assumindo que pdi.getColaboradorId() agora retorna o ID do usuário
             Usuario usuario = usuarioDAO.buscarPorId(pdiAtual.getColaboradorId());
 
             if (usuario != null) {
@@ -146,14 +148,19 @@ public class EditarPDIModalController implements Initializable {
                 usuarioCargoField.setText(usuario.getTipo_usuario());
             }
 
-            // 2. Preencher dados do PDI
             statusPdiComboBox.setValue(pdiAtual.getStatus());
 
             if (pdiAtual.getDataCriacao() != null) {
-                dataCriacaoPicker.setValue(pdiAtual.getDataCriacao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                // Supondo que getDataCriacao() retorna a String '20-10-2025'
+                String dataCriacaoStr = pdiAtual.getDataCriacao();
+                LocalDate dataCriacao = LocalDate.parse(dataCriacaoStr, formatter);
+                dataCriacaoPicker.setValue(dataCriacao);
             }
+
             if (pdiAtual.getDataFechamento() != null) {
-                dataFechamentoPicker.setValue(pdiAtual.getDataFechamento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                String dataFechamentoStr = pdiAtual.getDataFechamento();
+                LocalDate dataFechamento = LocalDate.parse(dataFechamentoStr, formatter);
+                dataFechamentoPicker.setValue(dataFechamento);
             }
 
             float pontuacao = pdiAtual.getPontuacaoGeral();

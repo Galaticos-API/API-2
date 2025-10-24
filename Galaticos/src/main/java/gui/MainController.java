@@ -9,13 +9,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import modelo.PDI;
 import modelo.Usuario;
+import util.Session;
+import util.StageManager;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -57,10 +61,14 @@ public class MainController {
         navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard, btnObjetivos);
 
         if (usuarioLogado != null) {
-            //validação do layout para tipo de usuário
             boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
             btnUsuarios.setManaged(podeVerUsuarios);
             btnDashboard.setManaged(podeVerUsuarios);
+            btnPDI.setManaged(podeVerUsuarios);
+
+            if (podeVerUsuarios){
+                btnObjetivos.setText("Objetivos");
+            }
 
             handleMenuDashboard();
         }
@@ -97,6 +105,34 @@ public class MainController {
     @FXML
     void handleMenuObjetivos() {
         loadPage("ObjetivosGUI", btnObjetivos);
+    }
+
+    @FXML
+    void handleSair(ActionEvent event) {
+        try {
+            // 1. Clear the current user session
+            Session.setUsuarioAtual(null);
+
+            // 2. Load the Login screen FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/login/LoginGUI.fxml")); // Adjust path if needed
+            Parent loginRoot = loader.load();
+
+            // 3. Get the main stage and set the login screen as its root
+            Stage stage = StageManager.getStage(); // Or get stage from button: (Stage) btnSair.getScene().getWindow();
+            if (stage != null && stage.getScene() != null) {
+                stage.getScene().setRoot(loginRoot);
+                // Optional: Reset title if needed, ensure maximized state persists automatically
+                // stage.setTitle("Sistema PDI - Login");
+            } else {
+                System.err.println("Erro: Não foi possível obter o Stage ou a Scene para deslogar.");
+                // Handle error appropriately, maybe show an alert
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show error alert to the user
+            util.Util.mostrarAlerta(javafx.scene.control.Alert.AlertType.ERROR, "Erro", "Não foi possível carregar a tela de login.");
+        }
     }
 
     private void updateActiveButton(Button activeButton) {

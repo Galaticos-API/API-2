@@ -135,10 +135,12 @@ public class MeuPdiController implements Initializable {
                 statusPdiField.setText(pdiDoUsuario.getStatus());
 
                 if (pdiDoUsuario.getDataCriacao() != null) {
-                    dataCriacaoPicker.setValue(pdiDoUsuario.getDataCriacao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    LocalDate dataCriacao = LocalDate.parse(pdiDoUsuario.getDataCriacao());
+                    dataCriacaoPicker.setValue(dataCriacao);
                 }
                 if (pdiDoUsuario.getDataFechamento() != null) {
-                    dataFechamentoPicker.setValue(pdiDoUsuario.getDataFechamento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    LocalDate dataFechamento = LocalDate.parse(pdiDoUsuario.getDataFechamento());
+                    dataFechamentoPicker.setValue(dataFechamento);
                 }
 
                 // Atualiza progresso

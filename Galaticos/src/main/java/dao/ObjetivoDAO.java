@@ -33,7 +33,7 @@ public class ObjetivoDAO {
             stmt.setString(2, objetivo.getDescricao());
 
             if (objetivo.getPrazo() != null) {
-                stmt.setDate(3, new java.sql.Date(objetivo.getPrazo().getTime()));
+                stmt.setString(3, objetivo.getPrazo());
             } else {
                 stmt.setNull(3, Types.DATE);
             }
@@ -178,7 +178,7 @@ public class ObjetivoDAO {
             stmt.setString(2, objetivo.getDescricao());
 
             if (objetivo.getPrazo() != null) {
-                stmt.setDate(3, new java.sql.Date(objetivo.getPrazo().getTime()));
+                stmt.setString(3, objetivo.getPrazo());
             } else {
                 stmt.setNull(3, Types.DATE);
             }

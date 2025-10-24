@@ -28,10 +28,10 @@ public class PdiDAO {
             if (pdi.getDataCriacao() == null) {
                 pdi.setDataCriacao(new java.util.Date());
             }
-            pstmt.setDate(3, new java.sql.Date(pdi.getDataCriacao().getTime()));
+            pstmt.setString(3, pdi.getDataCriacao());
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataFechamento().getTime()));
+                pstmt.setString(4, pdi.getDataFechamento());
             } else {
                 pstmt.setNull(4, Types.DATE);
             }
@@ -185,13 +185,13 @@ public class PdiDAO {
             pstmt.setString(2, pdi.getStatus());
 
             if (pdi.getDataCriacao() != null) {
-                pstmt.setDate(3, new java.sql.Date(pdi.getDataCriacao().getTime()));
+                pstmt.setString(3, pdi.getDataCriacao());
             } else {
                 pstmt.setNull(3, Types.DATE);
             }
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(4, new java.sql.Date(pdi.getDataFechamento().getTime()));
+                pstmt.setString(4, pdi.getDataFechamento());
             } else {
                 pstmt.setNull(4, Types.DATE);
             }

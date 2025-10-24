@@ -165,7 +165,7 @@ public class ListaPdiController implements Initializable {
         Label anoLabel = new Label("PDI " + pdi.getId()); // Usa o Ano do PDI
         anoLabel.getStyleClass().add("pdi-card-title");
 
-        String nome = mapaNomesUsuarios.getOrDefault(pdi.getColaboradorId(), "Usuário ID: " + pdi.getColaboradorId());
+        String nome = mapaNomesUsuarios.getOrDefault(pdi.getColaboradorId(), "Colaborador: " + pdi.getNomeColaborador());
         Label nomeLabel = new Label(nome);
         nomeLabel.getStyleClass().add("pdi-card-subtitle");
 
@@ -181,8 +181,7 @@ public class ListaPdiController implements Initializable {
         progressBox.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(progressBar, Priority.ALWAYS);
 
-        String dataFormatada = (pdi.getDataCriacao() != null) ?
-                FORMATADOR_DATA.format(pdi.getDataCriacao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) : "N/A";
+        String dataFormatada = (pdi.getDataCriacao() != null) ? pdi.getDataCriacao() : "N/A";
         Label dataLabel = new Label("Criado em: " + dataFormatada);
         dataLabel.getStyleClass().add("pdi-card-date");
 
