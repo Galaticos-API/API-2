@@ -1,5 +1,6 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Objetivo {
@@ -13,6 +14,10 @@ public class Objetivo {
     private String comentarios;
     private float peso;
     private float pontuacao;
+
+    private String pattern = "dd-MM-yyyy";
+    private SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+
 
     // --- Construtores ---
     public Objetivo() {
@@ -55,8 +60,8 @@ public class Objetivo {
         this.descricao = descricao;
     }
 
-    public Date getPrazo() {
-        return prazo;
+    public String getPrazo() {
+        return formatter.format(this.prazo);
     }
 
     public void setPrazo(Date prazo) {

@@ -1,79 +1,166 @@
 /* ==================================== */
-/* Estilos para o Quadro Kanban         */
+/* Estilos REFINADOS para Quadro Kanban (PDI & Objetivos) */
 /* ==================================== */
 
-.kanban-column {
-    -fx-background-color: #f0f2f5; /* Fundo cinza claro para as colunas */
-    -fx-padding: 10px;
-    -fx-background-radius: 8px;
-    -fx-min-width: 250px; /* Largura mínima para cada coluna */
+/* O StackPane raiz */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-base: #f4f6f9; /* Cor de fundo principal */
+    -fx-background-color: #f4f6f9; /* Fundo da janela */
 }
 
-.kanban-column-title {
-    -fx-font-size: 16px;
+/* O VBox que contém todo o conteúdo */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    /* -fx-padding já está definido no FXML */
+}
+
+/* Título Principal */
+.page-title {
+    -fx-font-size: 1.4em;
     -fx-font-weight: bold;
-    -fx-text-fill: #34495e;
-    -fx-padding: 0 0 10px 5px; /* Espaçamento abaixo do título */
-    -fx-border-color: transparent transparent #d1d8e0 transparent; /* Linha sutil abaixo */
-    -fx-border-width: 2px;
+    -fx-text-fill: #34495e; /* Azul Escuro */
+    -fx-padding: 0 0 10px 0;
 }
 
-/* Remove fundo e bordas do ScrollPane dentro da coluna */
+/* Barra de Filtro (HBox) */
+.filter-bar {
+    -fx-padding: 5px 0 5px 0;
+}
+
+/* Coluna Kanban */
+.kanban-column {
+    -fx-background-color: #f8f9fa; /* Mesmo cinza claro do header da tabela */
+    -fx-padding: 0;
+    -fx-background-radius: 8px 8px 0 0; /* Arredonda topo */
+    -fx-border-color: #dee2e6; /* Mesma borda da tabela */
+    -fx-border-width: 1px 1px 0 1px; /* Borda nos lados e topo */
+    -fx-min-width: 280px;
+}
+
+/* Título da Coluna Kanban */
+.kanban-column-title {
+    -fx-font-size: 13px; /* Mesmo tamanho do header da tabela */
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057; /* Mesma cor do header da tabela */
+    -fx-padding: 10px 12px; /* Mesmo padding do header da tabela */
+    -fx-background-color: transparent; /* Usa fundo da coluna */
+    -fx-border-color: transparent transparent #dee2e6 transparent; /* Linha inferior como header */
+    -fx-border-width: 1px;
+    -fx-alignment: center; /* Centraliza */
+}
+
+/* ScrollPane dentro da coluna */
 .kanban-scroll-pane {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
+    -fx-border-color: #dee2e6; /* Borda separando do título */
+    -fx-border-width: 1px 0 0 0;
 }
 .kanban-scroll-pane > .viewport {
-   -fx-background-color: transparent;
+   -fx-background-color: #ffffff; /* Fundo branco para a área de scroll */
 }
 
-/* Área onde os cards ficam dentro do ScrollPane */
+/* Área de Conteúdo dos Cards */
 .kanban-content-area {
-     -fx-padding: 10px 0 0 0; /* Espaço acima do primeiro card */
+     -fx-padding: 15px; /* Espaçamento interno */
+     -fx-background-color: transparent; /* Usa fundo do scrollpane */
 }
 
-/* ==================================== */
-/* Estilos para os Cards de Objetivo    */
-/* ==================================== */
-
-.objetivo-card {
-    -fx-background-color: #ffffff;
-    -fx-padding: 15px;
-    -fx-background-radius: 8px;
-    -fx-border-color: #dfe4e8;
-    -fx-border-radius: 8px;
-    -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 5, 0, 0, 1);
-    -fx-cursor: hand; /* Indica que é clicável */
-}
-
-.objetivo-card:hover {
-    -fx-border-color: #357ABD;
-    -fx-effect: dropshadow(gaussian, rgba(53,122,189,0.1), 8, 0, 0, 2);
-}
-
-.objetivo-card-descricao {
-    -fx-font-size: 14px;
-    -fx-text-fill: #2c3e50;
-    -fx-font-weight: normal;
-}
-
-.objetivo-card-prazo {
-    -fx-font-size: 12px;
-    -fx-text-fill: #7f8c8d; /* Cinza mais claro */
-}
-
-/* ==================================== */
-/* Placeholder para Colunas Kanban Vazias */
-/* ==================================== */
-
+/* Placeholder para Colunas Vazias */
 .kanban-empty-placeholder {
     -fx-font-size: 14px;
-    -fx-text-fill: #95a5a6; /* Cinza claro */
-    -fx-padding: 30px 10px; /* Adiciona espaço vertical */
-    -fx-alignment: center; /* Centraliza o texto */
+    -fx-text-fill: #adb5bd; /* Cinza mais claro */
+    -fx-padding: 30px 10px;
+    -fx-alignment: center;
     -fx-font-style: italic;
-    -fx-text-alignment: center; /* Centraliza texto que quebra linha */
-    -fx-wrap-text: true; /* Permite quebrar linha se necessário */
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
 }
+
+/* ==================================== */
+/* Estilos para os Cards de PDI (Aplicável aos Objetivos também) */
+/* ==================================== */
+/* Usaremos a classe .pdi-card como base visual para ambos */
+.pdi-card, .objetivo-mini-card { /* << Aplica o mesmo estilo a ambos */
+    -fx-background-color: #ffffff;
+    -fx-padding: 15px;
+    -fx-background-radius: 8;
+    -fx-border-color: #e9ecef; /* Borda sutil */
+    -fx-border-radius: 8;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 2); /* Sombra leve */
+    -fx-cursor: hand; /* Adicionado aqui para ser padrão */
+}
+
+.clickable-card:hover, .objetivo-mini-card:hover { /* Aplica hover a ambos */
+    -fx-cursor: hand;
+    -fx-border-color: #adb5bd; /* Borda cinza no hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+}
+
+/* --- Elementos DENTRO dos cards --- */
+
+/* Título Principal (Ex: PDI 2025) */
+.pdi-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #343a40;
+}
+
+/* Subtítulo / Nome (Ex: Nome do Colaborador) */
+.pdi-card-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Descrição Principal do Objetivo (NOVO ou ajustar .objetivo-card-descricao) */
+.objetivo-card-descricao {
+     -fx-font-size: 14px;
+     -fx-text-fill: #343a40; /* Cor principal, igual ao título do PDI */
+     -fx-font-weight: normal;
+ }
+
+/* Data (Ex: Criado em / Prazo) */
+.pdi-card-date, .objetivo-card-prazo { /* Aplica a ambos */
+    -fx-font-size: 11px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Detalhes menores (Ex: Peso do Objetivo) */
+.objetivo-card-detail {
+     -fx-font-size: 11px; /* Mesmo tamanho da data */
+     -fx-text-fill: #6c757d;
+}
+
+/* Informação Extra no Card RH (Objetivos) */
+.objetivo-card-info-rh {
+    -fx-font-size: 11px;
+    -fx-text-fill: #007bff; /* Azul primário dos botões */
+    -fx-font-weight: normal;
+    -fx-border-color: transparent transparent #ecf0f1 transparent;
+    -fx-border-width: 1px;
+    -fx-padding-bottom: 5px;
+    -fx-margin-bottom: 5px;
+}
+
+
+/* Barra de Progresso (PDI) */
+.pdi-card .progress-bar { /* ... manter como antes ... */ }
+.pdi-card .progress-bar .bar { /* ... manter como antes ... */ }
+.pdi-card .progress-bar .track { /* ... manter como antes ... */ }
+.pdi-card-progress-text { /* ... manter como antes ... */ }
+
+/* Separador dentro do Card de Objetivo */
+.objetivo-mini-card .separator .line {
+    -fx-border-color: #f1f3f5; /* Linha bem sutil */
+    -fx-border-width: 1px;
+}
+.objetivo-mini-card .separator {
+    -fx-padding: 5 0 5 0; /* Adiciona um pouco de espaço vertical ao redor da linha */
+}
+
+/* (Manter os estilos de Status/Badges .status-andamento, etc.) */

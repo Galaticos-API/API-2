@@ -96,7 +96,7 @@
     -fx-background-radius: 8px 8px 0 0; /* Arredonda só cantos superiores */
     -fx-border-color: #dee2e6; /* Borda sutil como a tabela */
     -fx-border-width: 1px 1px 0 1px; /* Borda nos lados e topo */
-    -fx-min-width: 280px; /* Largura mínima */
+    -fx-min-width: 350px; /* Largura mínima */
 }
 
 /* Título da Coluna Kanban */

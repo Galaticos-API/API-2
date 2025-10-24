@@ -8,7 +8,7 @@ public class ConnectionFactory {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost/pdi_youtan", "root", "18g@ts");
+            return DriverManager.getConnection("jdbc:mysql://localhost/pdi_youtan", "root", "");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

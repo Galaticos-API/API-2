@@ -2,6 +2,7 @@
 
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class PDI {
     private List<Documento> documentos;
     private String nomeColaborador;
 
+
+    private String pattern = "dd-MM-yyyy";
+    private SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 
     // --- Construtores ---
 
@@ -78,16 +82,16 @@ public class PDI {
         this.status = status;
     }
 
-    public Date getDataCriacao() {
-        return dataCriacao;
+    public String getDataCriacao() {
+        return formatter.format(this.dataCriacao);
     }
 
     public void setDataCriacao(Date dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public Date getDataFechamento() {
-        return dataFechamento;
+    public String getDataFechamento() {
+        return formatter.format(this.dataFechamento);
     }
 
     public void setDataFechamento(Date dataFechamento) {

@@ -2,11 +2,10 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ObjetivosController">
     <stylesheets>
@@ -21,9 +20,9 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
             <children>
-                <Label fx:id="lblTituloPDI" styleClass="page-title" text="Objetivos do PDI" />
+                <Label fx:id="lblTituloPDI" styleClass="page-title" text="Carregando..." />
 
-                <HBox fx:id="kanbanBoard" spacing="20.0" VBox.vgrow="ALWAYS">
+                <HBox fx:id="kanbanContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
                     <children>
                         <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
                             <children>
@@ -35,7 +34,6 @@
                                 </ScrollPane>
                             </children>
                         </VBox>
-
                         <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label styleClass="kanban-column-title" text="Em Progresso" />
@@ -46,7 +44,6 @@
                                 </ScrollPane>
                             </children>
                         </VBox>
-
                         <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label styleClass="kanban-column-title" text="Concluído" />
@@ -59,6 +56,82 @@
                         </VBox>
                     </children>
                 </HBox>
+
+                <VBox fx:id="pdiDetalhesContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox styleClass="pdi-details-card" spacing="10.0">
+                            <Label styleClass="widget-title" text="Detalhes do PDI" />
+                            <GridPane hgap="10.0" vgap="8.0">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                    <ColumnConstraints prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                </rowConstraints>
+                                <children>
+                                    <Label styleClass="form-label" text="Status:" />
+                                    <Label fx:id="lblPdiStatus" styleClass="pdi-detail-value" text="-" GridPane.columnIndex="1" />
+
+                                    <Label styleClass="form-label" text="Id:" GridPane.columnIndex="2" />
+                                    <Label fx:id="lblPdiId" styleClass="pdi-detail-value" text="-" GridPane.columnIndex="3" />
+
+                                    <Label styleClass="form-label" text="Data Criação:" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblPdiDataCriacao" styleClass="pdi-detail-value" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                    <Label styleClass="form-label" text="Data Fechamento:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblPdiDataFechamento" styleClass="pdi-detail-value" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                </children>
+                            </GridPane>
+                            <Label styleClass="form-label" text="Progresso Geral:" />
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <ProgressBar fx:id="progressBarGeral" prefWidth="Infinity" progress="0.0" HBox.hgrow="ALWAYS" />
+                                <Text fx:id="textPontuacaoGeral" style="-fx-font-size: 14;" text="0.0%" />
+                            </HBox>
+                        </VBox>
+
+                        <VBox styleClass="pdi-details-card" spacing="10.0" VBox.vgrow="ALWAYS">
+                            <Label styleClass="widget-title" text="Meus Objetivos" />
+                            <HBox fx:id="kanbanObjetivosUsuario" spacing="15.0" VBox.vgrow="ALWAYS">
+                                <VBox styleClass="kanban-column-small" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="kanban-column-title-small" text="Não Iniciado" />
+                                        <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <VBox fx:id="colunaNaoIniciadoUser" spacing="10.0" styleClass="kanban-content-area" />
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+                                <VBox styleClass="kanban-column-small" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="kanban-column-title-small" text="Em Progresso" />
+                                        <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <VBox fx:id="colunaEmProgressoUser" spacing="10.0" styleClass="kanban-content-area" />
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+                                <VBox styleClass="kanban-column-small" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="kanban-column-title-small" text="Concluído" />
+                                        <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <VBox fx:id="colunaConcluidoUser" spacing="10.0" styleClass="kanban-content-area" />
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                        <Label fx:id="lblSemPdi" managed="false" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-padding: 20px;" text="Você ainda não possui um Plano de Desenvolvimento Individual ativo." visible="false" />
+                    </children>
+                </VBox>
+
             </children>
         </VBox>
     </children>
