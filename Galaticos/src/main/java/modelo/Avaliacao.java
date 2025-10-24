@@ -9,16 +9,18 @@ public class Avaliacao {
     private double nota;
     private String comentario;
     private LocalDate dataAvaliacao;
+    private String status_objetivo;
 
     public Avaliacao() {
     }
 
-    public Avaliacao(int objetivoId, int avaliadorId, double nota, String comentario, LocalDate dataAvaliacao) {
+    public Avaliacao(int objetivoId, int avaliadorId, double nota, String comentario, LocalDate dataAvaliacao, String status_objetivo) {
         this.objetivoId = objetivoId;
         this.avaliadorId = avaliadorId;
         this.nota = nota;
         this.comentario = comentario;
         this.dataAvaliacao = dataAvaliacao;
+        this.status_objetivo = status_objetivo;
     }
 
     public int getId() {
@@ -41,7 +43,7 @@ public class Avaliacao {
         return avaliadorId;
     }
 
-    public void setAvaliadorId(int AvaliadorId) {
+    public void setAvaliadorId(int avaliadorId) {
         this.avaliadorId = avaliadorId;
     }
 
@@ -69,6 +71,14 @@ public class Avaliacao {
         this.dataAvaliacao = dataAvaliacao;
     }
 
+    public String getStatus_objetivo() {
+        return status_objetivo;
+    }
+
+    public void setStatus_objetivo(String status_objetivo) {
+        this.status_objetivo = status_objetivo;
+    }
+
     @Override
     public String toString() {
         return "Avaliacao{" +
@@ -76,6 +86,7 @@ public class Avaliacao {
                 ", objetivoId=" + objetivoId +
                 ", nota=" + nota +
                 ", dataAvaliacao=" + dataAvaliacao +
+                ", status_objetivo='" + status_objetivo + '\'' +
                 '}';
     }
 }
