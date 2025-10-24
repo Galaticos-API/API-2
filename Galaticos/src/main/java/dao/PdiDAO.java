@@ -17,27 +17,26 @@ public class PdiDAO {
             return null;
         }
 
-        String sql = "INSERT INTO pdi (usuario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pdi (usuario_id, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             System.out.println("ID do usuario cadastrado:" + pdi.getColaboradorId());
             pstmt.setString(1, pdi.getColaboradorId());
-            pstmt.setInt(2, 0);
-            pstmt.setString(3, pdi.getStatus());
+            pstmt.setString(2, pdi.getStatus());
 
             if (pdi.getDataCriacao() == null) {
                 pdi.setDataCriacao(new java.util.Date());
             }
-            pstmt.setDate(4, new java.sql.Date(pdi.getDataCriacao().getTime()));
+            pstmt.setDate(3, new java.sql.Date(pdi.getDataCriacao().getTime()));
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setDate(5, new java.sql.Date(pdi.getDataFechamento().getTime()));
+                pstmt.setDate(4, new java.sql.Date(pdi.getDataFechamento().getTime()));
             } else {
-                pstmt.setNull(5, Types.DATE);
+                pstmt.setNull(4, Types.DATE);
             }
 
-            pstmt.setFloat(6, 0);
+            pstmt.setFloat(5, 0);
 
             int affectedRows = pstmt.executeUpdate();
 
