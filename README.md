@@ -5,12 +5,13 @@
 - [1. Descrição do Desafio](#1-descrição-do-desafio)
 - [2. Backlog do Produto](#2-backlog-do-produto)
 - [3. Cronograma de Evolução do Projeto](#3-cronograma-de-evolução-do-projeto)
-- [4. Sprints](#4-sprints)
-- [5. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
-- [6. Estrutura do Projeto](#6-estrutura-do-projeto)
-- [7. Como Executar o Projeto](#7-como-executar-o-projeto)
-- [8. Documentação](#8-documentação)
-- [9. Equipe](#9-equipe)
+- [4. Dor e Dod](#4-dor-definition-of-ready)
+- [5. Sprints](#4-sprints)
+- [6. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
+- [7. Estrutura do Projeto](#6-estrutura-do-projeto)
+- [8. Como Executar o Projeto](#7-como-executar-o-projeto)
+- [9. Documentação](#8-documentação)
+- [10. Equipe](#9-equipe)
 
 ---
 
@@ -52,7 +53,40 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ---
 
-## 4. Sprints
+## 4. DoR Definition of Ready
+
+**:link: Clique no link abaixo para visualizar o DoR do projeto:**  
+> [Definition of Ready](https://docs.google.com/document/d/#)
+ 
+<br>
+ 
+Tópicos utilizados para definir o DoR das Sprints:
+* Resumo - Empresa GSW;
+* Desafio Proposto;
+* Requisitos do Projeto;
+* Possíveis Usuários;
+* User stories detalhadas e bem definidas;
+* Critérios de Aceitação;
+* Cenários de Testes;
+* Mockup específico para a história;
+* Dicionário de dados específico para a história;
+ 
+<br>
+
+## 📍 DoD Definition of Done
+**:link: Clique no link abaixo para visualizar o DoD do projeto:**
+> [Definition of Done](https://docs.google.com/document/d/#)
+
+<br>
+
+Tópicos utilizados para definir o DoD das Sprints:
+* Testes e comprovações;
+
+<br>
+
+---
+
+## 5. Sprints
 
 | Fase                 | Previsão                | Status       |
 | -------------------- | ----------------------- | ------------ |
@@ -63,7 +97,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 | Feira de Soluções    | 29/05/2025              | A começar    |
 ---
 
-## 5. Tecnologias Utilizadas
+## 6. Tecnologias Utilizadas
 
 - **Linguagem:** Java (Desktop com JavaFX)
 - **Banco de Dados:** MySQL
@@ -72,7 +106,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ---
 
-## 6. Estrutura do Projeto
+## 7. Estrutura do Projeto
 
 ```/
 ├── src/
@@ -87,7 +121,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ---
 
-## 7. Como Executar o Projeto
+## 8. Como Executar o Projeto
 
 ### Pré-requisitos
 
@@ -110,7 +144,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 
 ---
 
-## 8. Documentação
+## 9. Documentação
 
 A documentação completa do projeto pode ser encontrada na pasta `/docs` do repositório ou através do link abaixo.
 
@@ -126,7 +160,7 @@ A pasta irá incluir (WIP):
 
 ---
 
-## 9. Equipe
+## 10. Equipe
 
 |           Nome            |     Função     |                                                                            GitHub                                                                             |                                                                                               Linkedin                                                                                                 |
 | :-----------------------: | :------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
