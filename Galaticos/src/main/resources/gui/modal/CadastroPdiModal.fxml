@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-padding: 30; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.modal.CadastroPdiModalController">
+    <stylesheets>
+        <URL value="@/css/StyleModais.css" />
+    </stylesheets>
 
     <Text style="-fx-fill: #333333;" text="Novo Plano de Desenvolvimento Individual (PDI)">
         <font>
@@ -14,8 +18,8 @@
 
     <GridPane alignment="TOP_CENTER" hgap="15.0" vgap="15.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="79.4" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="381.2" minWidth="10.0" prefWidth="378.2" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -23,20 +27,38 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
 
-        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <ComboBox fx:id="comboUsuario" prefWidth="300.0" promptText="Selecione um usuário" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="128.0" text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <ComboBox fx:id="comboUsuario" prefHeight="30.0" prefWidth="388.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label prefHeight="17.0" prefWidth="159.0" text="Data de fechamento:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <DatePicker fx:id="dataFechamentoField" prefHeight="25.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="136.0" text="Término em:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <DatePicker fx:id="dataFechamentoField" prefHeight="26.0" prefWidth="387.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label text="Status Inicial:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <ComboBox fx:id="statusComboBox" prefWidth="300.0" promptText="Selecione o Status" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="112.0" text="Status Inicial:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <ComboBox fx:id="statusComboBox" prefHeight="30.0" prefWidth="398.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
     </GridPane>
 
     <HBox alignment="CENTER_RIGHT" spacing="10.0">
-        <Button onAction="#handleCancelar" style="-fx-background-color: #f0f0f0; -fx-text-fill: #333333;" text="Cancelar" />
-        <Button onAction="#handleCriarPdi" style="-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-font-weight: bold;" text="Criar PDI" />
+        <Button onAction="#handleCancelar" style="-fx-background-color: #e03a3a;" styleClass="modal-button-cancel" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+        </Button>
+
+        <Button onAction="#handleCriarPdi" style="-fx-background-color: #2a8e9d;" styleClass="modal-button-save" text="Criar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+        </Button>
     </HBox>
 
     <Text fx:id="mensagemErro" style="-fx-fill: red; -fx-font-weight: bold;" />
