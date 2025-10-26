@@ -69,9 +69,6 @@ CREATE TABLE `avaliacao` (
 ;
 
 --
--- Table structure for table `colaborador`
---
---
 -- Table structure for table `documento`
 --
 DROP TABLE IF EXISTS `documento`;
@@ -216,7 +213,7 @@ CREATE TABLE `usuario` (
   `senha` varchar(255) NOT NULL,
   `tipo_usuario` enum(
     'RH',
-    'Gestor de Area',
+    'Gestor de Área',
     'Gestor Geral',
     'Colaborador'
   ) NOT NULL,

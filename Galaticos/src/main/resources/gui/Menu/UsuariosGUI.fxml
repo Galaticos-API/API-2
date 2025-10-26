@@ -37,7 +37,7 @@
 
                 <HBox alignment="CENTER_RIGHT">
                     <children>
-                        <Button fx:id="btnAddUsuario" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Registrar Novo Usuário" />
+                        <Button fx:id="btnAddUsuario" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Registrar Novo" />
                     </children>
                 </HBox>
             </children>

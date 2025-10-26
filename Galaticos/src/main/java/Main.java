@@ -14,7 +14,7 @@ public class Main extends Application {
         stage.setScene(new Scene(listaRoot));
         stage.setTitle("Sistema PDI");
         stage.setMaximized(true);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.show();
         StageManager.setStage(stage);
     }

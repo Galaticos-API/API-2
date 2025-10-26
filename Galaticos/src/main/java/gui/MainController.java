@@ -1,10 +1,5 @@
 package gui;
 
-import dao.PdiDAO;
-import gui.menu.ListaPdiController;
-import gui.menu.MeuPdiController;
-import gui.menu.ObjetivosController;
-import gui.menu.UsuariosController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +7,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import modelo.PDI;
 import modelo.Usuario;
 import util.Session;
 import util.StageManager;
@@ -24,7 +18,6 @@ import util.StageManager;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,8 +28,10 @@ public class MainController {
     private Usuario usuarioLogado;
 
     @FXML
-    private StackPane conteudo; // A área central que será atualizada
+    private StackPane conteudo;
 
+    @FXML
+    private HBox navigationBar;
     @FXML
     public Button btnObjetivos;
     @FXML
@@ -47,6 +42,8 @@ public class MainController {
     private Button btnUsuarios;
     @FXML
     private Button btnDashboard;
+    @FXML
+    private Separator rhSeparator;
     private List<Button> navigationButtons;
 
     public void setUsuario(Usuario usuario) {
@@ -58,19 +55,39 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        navigationButtons = Arrays.asList(btnPerfil, btnPDI, btnUsuarios, btnDashboard, btnObjetivos);
+        navigationButtons = Arrays.asList(btnObjetivos, btnPerfil, btnPDI, btnUsuarios, btnDashboard);
 
         if (usuarioLogado != null) {
-            boolean podeVerUsuarios = "RH".equals(usuarioLogado.getTipo_usuario());
-            btnUsuarios.setManaged(podeVerUsuarios);
-            btnDashboard.setManaged(podeVerUsuarios);
-            btnPDI.setManaged(podeVerUsuarios);
+            boolean isRh = "RH".equals(usuarioLogado.getTipo_usuario());
 
-            if (podeVerUsuarios){
-                btnObjetivos.setText("Objetivos");
+            rhSeparator.setVisible(isRh);
+            rhSeparator.setManaged(isRh);
+            btnPDI.setVisible(isRh);
+            btnPDI.setManaged(isRh);
+            btnDashboard.setVisible(isRh);
+            btnDashboard.setManaged(isRh);
+            btnUsuarios.setVisible(isRh);
+            btnUsuarios.setManaged(isRh);
+
+            if (isRh) {
+                btnObjetivos.setText("Gerenciar objetivos");
+
+                navigationBar.getChildren().remove(btnObjetivos);
+                int indiceInsercao = navigationBar.getChildren().indexOf(btnPDI) + 1;
+                if (indiceInsercao >= 1 && indiceInsercao <= navigationBar.getChildren().size()) {
+                    navigationBar.getChildren().add(indiceInsercao, btnObjetivos);
+                } else {
+                    navigationBar.getChildren().add(btnObjetivos);
+                }
+            } else {
+                btnObjetivos.setText("Meu PDI");
             }
 
-            handleMenuDashboard();
+            if (isRh) {
+                handleMenuDashboard();
+            } else {
+                handleMenuObjetivos();
+            }
         }
     }
 

@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -25,11 +24,10 @@ import modelo.Usuario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class ListaPdiController implements Initializable {
+public class PDIsController implements Initializable {
 
     // --- Componentes FXML ---
     @FXML

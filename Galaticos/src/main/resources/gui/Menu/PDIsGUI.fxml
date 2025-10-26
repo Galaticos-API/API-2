@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.ListaPdiController">
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PDIsController">
     <stylesheets>
         <URL value="@/css/StylePDI.css" /> </stylesheets>
 
@@ -73,7 +73,7 @@
 
                 <HBox alignment="CENTER_RIGHT">
                     <children>
-                        <Button fx:id="cadastrarPdiButton" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Cadastrar Novo PDI" />
+                        <Button fx:id="cadastrarPdiButton" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Registrar novo" />
                     </children>
                 </HBox>
             </children>
