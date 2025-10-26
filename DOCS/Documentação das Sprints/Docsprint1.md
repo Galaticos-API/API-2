@@ -60,7 +60,7 @@ O principal objetivo desta sprint foi entregar as funcionalidades básicas de ad
 
 <div align="center">
 
-![Burndown Chart Sprint 1](burndown_sprint1.jpg) </div>
+![Burndown Chart Sprint 1](../burndown_sprint1.jpg) </div>
 
 <br>
 
