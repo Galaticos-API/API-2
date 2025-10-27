@@ -46,67 +46,133 @@ public class MainController {
     private Separator rhSeparator;
     private List<Button> navigationButtons;
 
+    /**
+     * Ponto de entrada principal. Chamado após o login para injetar o usuário.
+     */
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
         logadoComo.setText("Logado como: " + usuario.getNome());
         funcaoUsuario.setText("Função: " + usuario.getTipo_usuario());
-        initialize();
+
+        // Chama a lógica de configuração da UI baseada no usuário
+        configurarPermissoes();
     }
 
+    /**
+     * Chamado pelo FXML Loader. Executa ANTES de setUsuario().
+     * Coloque aqui apenas inicializações que não dependem do usuário.
+     */
     @FXML
     public void initialize() {
+        // Apenas mapeia a lista de botões para o método updateActiveButton()
         navigationButtons = Arrays.asList(btnObjetivos, btnPerfil, btnPDI, btnUsuarios, btnDashboard);
 
-        if (usuarioLogado != null) {
-            boolean isRh = "RH".equals(usuarioLogado.getTipo_usuario());
-
-            rhSeparator.setVisible(isRh);
-            rhSeparator.setManaged(isRh);
-            btnPDI.setVisible(isRh);
-            btnPDI.setManaged(isRh);
-            btnDashboard.setVisible(isRh);
-            btnDashboard.setManaged(isRh);
-            btnUsuarios.setVisible(isRh);
-            btnUsuarios.setManaged(isRh);
-
-            if (isRh) {
-                btnObjetivos.setText("Gerenciar objetivos");
-
-                navigationBar.getChildren().remove(btnObjetivos);
-                int indiceInsercao = navigationBar.getChildren().indexOf(btnPDI) + 1;
-                if (indiceInsercao >= 1 && indiceInsercao <= navigationBar.getChildren().size()) {
-                    navigationBar.getChildren().add(indiceInsercao, btnObjetivos);
-                } else {
-                    navigationBar.getChildren().add(btnObjetivos);
-                }
-            } else {
-                btnObjetivos.setText("Meu PDI");
-            }
-
-            if (isRh) {
-                handleMenuDashboard();
-            } else {
-                handleMenuObjetivos();
-            }
-        }
+        // A lógica de permissões foi movida para configurarPermissoes()
+        // para garantir que 'usuarioLogado' não seja nulo.
     }
 
+    /**
+     * Configura a visibilidade, texto e ordem dos botões
+     * com base no tipo de usuário logado.
+     */
+    private void configurarPermissoes() {
+        if (usuarioLogado == null) return;
+
+        String tipoUsuario = usuarioLogado.getTipo_usuario();
+
+        // --- 1. Estado Padrão (O mais restrito: Colaborador) ---
+        // Todos veem "Meu Perfil"
+        btnPerfil.setVisible(true);
+        btnPerfil.setManaged(true);
+
+        // Colaborador vê "Meu PDI"
+        btnPDI.setVisible(true);
+        btnPDI.setManaged(true);
+        btnPDI.setText("Meu PDI"); // O handler 'handleMenuPDI' já sabe carregar a tela certa
+
+        // O resto começa escondido
+        btnObjetivos.setVisible(false);
+        btnObjetivos.setManaged(false);
+        btnDashboard.setVisible(false);
+        btnDashboard.setManaged(false);
+        btnUsuarios.setVisible(false);
+        btnUsuarios.setManaged(false);
+        rhSeparator.setVisible(false);
+        rhSeparator.setManaged(false);
+
+        // Define a página inicial padrão
+        Runnable paginaInicial = this::handleMenuPDI; // Padrão: Colaborador começa em "Meu PDI"
+
+        // --- 2. Aplica permissões adicionais ---
+        switch (tipoUsuario) {
+            case "RH":
+                // Mostrar tudo
+                btnPDI.setText("Gerenciar PDIs"); // Texto original do FXML
+                btnDashboard.setVisible(true);
+                btnDashboard.setManaged(true);
+                btnUsuarios.setVisible(true);
+                btnUsuarios.setManaged(true);
+                rhSeparator.setVisible(true);
+                rhSeparator.setManaged(true);
+
+                // Botão Objetivos
+                btnObjetivos.setVisible(true);
+                btnObjetivos.setManaged(true);
+                btnObjetivos.setText("Gerenciar Objetivos");
+
+                // Reordenar para RH (como no código original)
+                navigationBar.getChildren().remove(btnObjetivos);
+                int indiceInsercao = navigationBar.getChildren().indexOf(btnPDI) + 1;
+                navigationBar.getChildren().add(indiceInsercao, btnObjetivos);
+
+                paginaInicial = this::handleMenuDashboard; // RH começa no Dashboard
+                break;
+
+            case "Gestor Geral":
+                btnObjetivos.setVisible(true);
+                btnObjetivos.setManaged(true);
+                btnObjetivos.setText("Objetivos (Geral)");
+                paginaInicial = this::handleMenuObjetivos; // Gestor começa em Objetivos
+                break;
+
+            case "Gestor de Area":
+                btnObjetivos.setVisible(true);
+                btnObjetivos.setManaged(true);
+                btnObjetivos.setText("Objetivos (" + usuarioLogado.getSetorNome() + ")");
+                paginaInicial = this::handleMenuObjetivos; // Gestor começa em Objetivos
+                break;
+
+            case "Colaborador":
+                paginaInicial = this::handleMenuPDI;
+                break;
+
+            default:
+                btnPDI.setVisible(false);
+                btnPDI.setManaged(false);
+                paginaInicial = this::handleMenuPerfil;
+                break;
+        }
+
+        // --- 3. Carregar a página inicial definida ---
+        paginaInicial.run();
+    }
+
+
     @FXML
-    void handleMenuPerfil(ActionEvent event) {
+    void handleMenuPerfil() {
         loadPage("PerfilGUI", btnPerfil);
     }
 
     @FXML
     void handleMenuPDI() {
         if (usuarioLogado == null) return;
-        boolean isRh = "RH".equals(usuarioLogado.getTipo_usuario());
 
+        boolean isRh = "RH".equals(usuarioLogado.getTipo_usuario());
         if (isRh) {
-            loadPage("ListaPdiGUI", btnPDI);
+            loadPage("PDIsGUI", btnPDI);
         } else {
             loadPage("MeuPdiGUI", btnPDI);
         }
-
     }
 
     @FXML
@@ -127,27 +193,19 @@ public class MainController {
     @FXML
     void handleSair(ActionEvent event) {
         try {
-            // 1. Clear the current user session
             Session.setUsuarioAtual(null);
-
-            // 2. Load the Login screen FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/login/LoginGUI.fxml")); // Adjust path if needed
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/login/LoginGUI.fxml"));
             Parent loginRoot = loader.load();
+            Stage stage = StageManager.getStage();
 
-            // 3. Get the main stage and set the login screen as its root
-            Stage stage = StageManager.getStage(); // Or get stage from button: (Stage) btnSair.getScene().getWindow();
             if (stage != null && stage.getScene() != null) {
                 stage.getScene().setRoot(loginRoot);
-                // Optional: Reset title if needed, ensure maximized state persists automatically
-                // stage.setTitle("Sistema PDI - Login");
             } else {
                 System.err.println("Erro: Não foi possível obter o Stage ou a Scene para deslogar.");
-                // Handle error appropriately, maybe show an alert
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            // Show error alert to the user
             util.Util.mostrarAlerta(javafx.scene.control.Alert.AlertType.ERROR, "Erro", "Não foi possível carregar a tela de login.");
         }
     }
@@ -163,16 +221,16 @@ public class MainController {
         updateActiveButton(btnClicado);
         try {
             String resourcePath = "/gui/menu/" + fxmlFile + ".fxml";
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));
             Node page = loader.load();
-            Object controller = loader.getController();
 
+            // Injeta o usuário logado no controller da página carregada
+            Object controller = loader.getController();
             try {
                 Method setUsuarioMethod = controller.getClass().getMethod("setUsuario", Usuario.class);
                 setUsuarioMethod.invoke(controller, this.usuarioLogado);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
-                // Controller não tem setUsuario — tudo bem, só não faz nada
+                // Normal. O controller da página não precisa/não tem o método setUsuario()
             }
 
             conteudo.getChildren().setAll(page);
@@ -182,5 +240,4 @@ public class MainController {
             System.err.println("Falha ao carregar a página: " + fxmlFile);
         }
     }
-
 }

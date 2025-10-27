@@ -16,13 +16,12 @@
     /* -fx-padding já está definido no FXML */
 }
 
-/* ==================================== */
-/* Título da Página                     */
-/* ==================================== */
+/* Título Principal */
 .page-title {
-    -fx-font-size: 24px;
+    -fx-font-size: 1.4em;
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
+    -fx-text-fill: #34495e; /* Azul Escuro */
+    -fx-padding: 0 0 10px 0;
 }
 
 /* ==================================== */

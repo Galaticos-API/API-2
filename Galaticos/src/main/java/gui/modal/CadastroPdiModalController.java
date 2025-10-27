@@ -2,14 +2,11 @@ package gui.modal;
 
 import dao.PdiDAO;
 import dao.UsuarioDAO;
+import exceptions.PDIException; // Presumi que você tem essa exceção
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*; // Import genérico para Alert, ComboBox, DatePicker, ListCell, ListView
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -17,9 +14,9 @@ import modelo.PDI;
 import modelo.Usuario;
 
 import java.net.URL;
+import java.sql.Date; // Use java.sql.Date em vez de java.util.Date
 import java.sql.SQLException;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate; // Mantenha LocalDate para o DatePicker
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -102,6 +99,7 @@ public class CadastroPdiModalController implements Initializable {
         // 1. Obter os valores dos campos
         Usuario usuarioSelecionado = comboUsuario.getValue();
         String status = statusComboBox.getValue();
+        LocalDate dataFechamentoLocal = dataFechamentoField.getValue();
 
         // 2. Validar os dados de entrada
         if (!isInputValid(usuarioSelecionado, status, dataFechamentoField.getValue())) {
@@ -111,14 +109,9 @@ public class CadastroPdiModalController implements Initializable {
         mensagemErro.setText(""); // Limpa erros
 
         try {
-            // 3. Converter a data
-            Date dataFechamento = Date.from(dataFechamentoField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-            // 4. Criar o objeto PDI
-            // (Assumindo que PDI agora aceita o ID do usuário diretamente)
-
-            System.out.println(usuarioSelecionado.getId());
-            PDI novoPdi = new PDI(usuarioSelecionado.getId(), status, new Date(), dataFechamento);
+            Date dataFechamentoSQL = Date.valueOf(dataFechamentoLocal);
+            Date dataCriacaoSQL = new Date(System.currentTimeMillis());
+            PDI novoPdi = new PDI(usuarioSelecionado.getId(), status, dataCriacaoSQL, dataFechamentoSQL);
 
             // 5. Salvar no banco de dados
             PDI pdiCriado = pdiDao.adicionar(novoPdi);
@@ -130,6 +123,9 @@ public class CadastroPdiModalController implements Initializable {
             } else {
                 mensagemErro.setText("Falha ao salvar o PDI no banco de dados.");
             }
+        } catch (PDIException e) {
+            mensagemErro.setText("Erro: " + e.getMessage());
+            e.printStackTrace();
         } catch (RuntimeException e) {
             mensagemErro.setText("Erro ao criar PDI: " + e.getMessage());
             e.printStackTrace();

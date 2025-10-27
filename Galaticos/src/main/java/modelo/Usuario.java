@@ -1,7 +1,10 @@
 package modelo;
 
+import dao.SetorDAO;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class Usuario {
     private String id;
@@ -11,6 +14,7 @@ public class Usuario {
     private String tipo_usuario;
     private String status;
     private LocalDateTime data_criacao;
+    private String setor_id;
 
     // Novos atributos para corresponder ao DAO
     private LocalDate data_nascimento;
@@ -22,7 +26,7 @@ public class Usuario {
     }
 
     // Construtor completo com todos os campos (exceto id e data_criacao, que são gerados pelo banco)
-    public Usuario(String nome, String email, String senha, String tipo_usuario, String status, LocalDate data_nascimento, String genero, String cpf) {
+    public Usuario(String nome, String email, String senha, String tipo_usuario, String status, LocalDate data_nascimento, String genero, String cpf, String setor_id) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -31,6 +35,7 @@ public class Usuario {
         this.data_nascimento = data_nascimento;
         this.genero = genero;
         this.cpf = cpf;
+        this.setor_id = setor_id;
     }
 
 
@@ -120,6 +125,29 @@ public class Usuario {
         this.cpf = cpf;
     }
 
+    public Setor getSetor() {
+        SetorDAO setorDAO = new SetorDAO();
+        if (this.setor_id != null && !this.setor_id.equals("")) {
+            return setorDAO.buscarPorId(Integer.parseInt(this.setor_id));
+        } else {
+            return new Setor();
+        }
+
+    }
+    public String getSetor_id(){
+        return this.setor_id;
+    }
+
+    public String getSetorNome() {
+        SetorDAO setorDAO = new SetorDAO();
+        Setor setor = setorDAO.buscarPorId(Integer.parseInt(this.setor_id));
+        return setor != null ? setor.getNome() : "";
+    }
+
+    public void setSetor_id(String setor_id) {
+        this.setor_id = setor_id;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -130,6 +158,7 @@ public class Usuario {
                 ", tipo_usuario='" + tipo_usuario + '\'' +
                 ", status='" + status + '\'' +
                 ", data_criacao=" + data_criacao +
+                ", setor_id='" + setor_id + '\'' +
                 ", data_nascimento=" + data_nascimento +
                 ", genero='" + genero + '\'' +
                 ", cpf='" + cpf + '\'' +

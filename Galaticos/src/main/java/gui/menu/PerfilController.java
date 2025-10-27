@@ -4,8 +4,8 @@ import dao.UsuarioDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import modelo.Usuario;
-import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
-import util.Util; // Sua classe utilitária para mostrar alertas
+import util.CriptografiaUtil;
+import util.Util;
 
 public class PerfilController {
 
@@ -21,6 +21,11 @@ public class PerfilController {
     private TextField txtEmail;
     @FXML
     private TextField txtCpf;
+
+    // --- CAMPO ADICIONADO ---
+    @FXML
+    private TextField txtStatus; // Campo para exibir o status
+
     @FXML
     private PasswordField txtSenha;
 
@@ -28,12 +33,7 @@ public class PerfilController {
 
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
-//        System.out.println(usuarioLogado.getNome());
-//        System.out.println(usuarioLogado.getEmail());
-//        System.out.println(usuarioLogado.getCpf());
-//        System.out.println(usuarioLogado.getStatus());
-//        System.out.println(usuarioLogado.getSenha());
-        System.out.println();
+        System.out.println(usuarioLogado); // Ótimo para debug
         popularDados();
     }
 
@@ -47,7 +47,11 @@ public class PerfilController {
         txtNome.setText(usuarioLogado.getNome());
         txtEmail.setText(usuarioLogado.getEmail());
         txtCpf.setText(usuarioLogado.getCpf());
+
+        // --- LINHA ADICIONADA ---
+        txtStatus.setText(usuarioLogado.getStatus()); // Popula o campo de status
     }
+
     private boolean isEmpty(TextField field) {
         return field.getText() == null || field.getText().trim().isEmpty();
     }
@@ -67,20 +71,18 @@ public class PerfilController {
                 usuarioLogado.setCpf(txtCpf.getText().trim());
             }
 
-            // --- ALTERAÇÃO AQUI ---
             // Só atualiza a senha se o campo não estiver vazio
             if (!isEmpty(txtSenha)) {
-                System.out.println("CAMPO SENHA NÃO TÁ VAZIO");
                 String senhaPlana = txtSenha.getText();
                 String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
                 usuarioLogado.setSenha(senhaCriptografada);
             }
-            // --- FIM DA ALTERAÇÃO ---
+
+            // O campo 'status' não é salvo, pois é somente leitura
 
             // Persiste as alterações no banco de dados
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.atualizar(usuarioLogado);
-            System.out.println("teste teste testiano");
 
             // Atualiza a UI e mostra feedback
             popularDados();

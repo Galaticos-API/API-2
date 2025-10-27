@@ -1,6 +1,6 @@
 package modelo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class ObjetivoComPDI extends Objetivo {
 
@@ -39,7 +39,7 @@ public class ObjetivoComPDI extends Objetivo {
     }
 
     // Opcional: Construtor para facilitar a criação no DAO
-    public ObjetivoComPDI(int id, int pdiId, String descricao, Date prazo, String status,
+    public ObjetivoComPDI(int id, String pdiId, String descricao, Date prazo, String status,
                           String comentarios, float peso, float pontuacao,
                           int pdiIdOriginal, int usuarioId, String nomeUsuario) {
         super(id, pdiId, descricao, prazo, status, comentarios, peso, pontuacao); // Chama construtor da superclasse

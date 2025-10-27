@@ -1,20 +1,22 @@
 package gui.modal;
 
+import dao.SetorDAO;
 import dao.UsuarioDAO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import modelo.Setor;
 import modelo.Usuario;
 import util.CriptografiaUtil; // <-- IMPORT ADICIONADO
 import util.Util;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class EditarUsuarioModalController {
 
-    // --- Campos FXML ---
     @FXML
     private TextField txtNome;
     @FXML
@@ -24,15 +26,21 @@ public class EditarUsuarioModalController {
     @FXML
     private ComboBox<String> comboTipoUsuario;
     @FXML
+    public ComboBox<Setor> comboSetor;
+    @FXML
     private ComboBox<String> comboStatus;
 
     private Stage dialogStage;
     private Usuario usuarioEditado;
     private boolean salvo = false;
 
+    private SetorDAO setorDAO = new SetorDAO();
+
     @FXML
     private void initialize() {
-        // Preenche os ComboBoxes com as opções
+        List<Setor> setores = setorDAO.listarTodos();
+
+        comboSetor.setItems(FXCollections.observableArrayList(setores));
         comboTipoUsuario.setItems(FXCollections.observableArrayList("RH", "Gestor de Área", "Gestor Geral", "Colaborador"));
         comboStatus.setItems(FXCollections.observableArrayList("Ativo", "Inativo"));
     }
@@ -52,6 +60,7 @@ public class EditarUsuarioModalController {
         txtEmail.setText(usuario.getEmail());
         comboTipoUsuario.setValue(usuario.getTipo_usuario());
         comboStatus.setValue(usuario.getStatus());
+        comboSetor.setValue(usuario.getSetor());
     }
 
     @FXML
@@ -62,14 +71,13 @@ public class EditarUsuarioModalController {
                 usuarioEditado.setEmail(txtEmail.getText().trim());
                 usuarioEditado.setTipo_usuario(comboTipoUsuario.getValue());
                 usuarioEditado.setStatus(comboStatus.getValue());
+                usuarioEditado.setSetor_id(comboSetor.getValue().getId());
 
-                // --- ALTERAÇÃO AQUI ---
                 if (!txtSenha.getText().trim().isEmpty()) {
                     String senhaPlana = txtSenha.getText().trim();
                     String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
                     usuarioEditado.setSenha(senhaCriptografada);
                 }
-                // --- FIM DA ALTERAÇÃO ---
 
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 usuarioDAO.atualizar(usuarioEditado);

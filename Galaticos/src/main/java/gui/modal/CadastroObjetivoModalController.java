@@ -8,7 +8,7 @@ import modelo.Objetivo;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 
 public class CadastroObjetivoModalController {
     @FXML
@@ -18,7 +18,7 @@ public class CadastroObjetivoModalController {
     @FXML
     private ComboBox<String> statusComboBox;
     @FXML
-    private TextArea comentariosField;
+    private ComboBox<String> comentariosField;
     @FXML
     private TextField pesoField;
     @FXML
@@ -26,11 +26,11 @@ public class CadastroObjetivoModalController {
     @FXML
     private Label mensagemErro;
 
-    private int pdiId;
+    private String pdiId;
     private Stage dialogStage;
     private boolean salvo = false;
 
-    public void setPdiId(int pdiId) {
+    public void setPdiId(String pdiId) {
         this.pdiId = pdiId;
     }
 
@@ -45,15 +45,16 @@ public class CadastroObjetivoModalController {
     @FXML
     private void initialize() {
         statusComboBox.getItems().addAll("Não Iniciado", "Em Progresso", "Concluído");
+        comentariosField.getItems().addAll("Hard skill", "Soft Skill");
     }
 
     @FXML
-    private void handleSalvar() {
+    private void handleSalvar() throws Exception {
         try {
             String descricao = descricaoField.getText();
             LocalDate prazo = prazoField.getValue();
             String status = statusComboBox.getValue();
-            String comentarios = comentariosField.getText();
+            String comentarios = comentariosField.getValue();
             float peso = pesoField.getText().isEmpty() ? 0 : Float.parseFloat(pesoField.getText());
             float pontuacao = pontuacaoField.getText().isEmpty() ? 0 : Float.parseFloat(pontuacaoField.getText());
 
@@ -73,7 +74,7 @@ public class CadastroObjetivoModalController {
             Objetivo objetivo = new Objetivo();
             objetivo.setPdiId(pdiId);
             objetivo.setDescricao(descricao.trim());
-            objetivo.setPrazo(Date.from(prazo.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            objetivo.setPrazo(Date.valueOf(prazo));
             objetivo.setStatus(status);
             objetivo.setComentarios(comentarios != null ? comentarios.trim() : "");
             objetivo.setPeso(peso);
@@ -86,6 +87,7 @@ public class CadastroObjetivoModalController {
             dialogStage.close();
         } catch (Exception e) {
             mensagemErro.setText("Erro ao salvar objetivo: " + e.getMessage());
+            throw new Exception(e);
         }
     }
 

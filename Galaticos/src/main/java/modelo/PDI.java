@@ -3,7 +3,7 @@
 package modelo;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -86,12 +86,19 @@ public class PDI {
         return formatter.format(this.dataCriacao);
     }
 
+    public Date getDataCriacaoDate() {
+        return this.dataCriacao;
+    }
+
     public void setDataCriacao(Date dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
     public String getDataFechamento() {
         return formatter.format(this.dataFechamento);
+    }
+    public Date getDataFechamentoDate() {
+        return this.dataFechamento;
     }
 
     public void setDataFechamento(Date dataFechamento) {

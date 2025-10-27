@@ -1,70 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilController">
+<StackPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.PerfilController">
     <stylesheets>
-        <URL value="@/css/StylePerfil.css"/>
+        <URL value="@/css/StylePerfil.css" />
     </stylesheets>
 
     <children>
-        <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="profile-card" AnchorPane.bottomAnchor="40.0"
-              AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1100.0" spacing="20.0" styleClass="profile-card">
+            <StackPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </StackPane.margin>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
             <children>
                 <VBox alignment="CENTER" spacing="10.0">
                     <children>
                         <StackPane>
                             <children>
-                                <Circle radius="60.0" styleClass="profile-picture"/>
-                                <Label fx:id="lblIniciais" styleClass="initials-label" text="US"/>
+                                <Circle radius="60.0" styleClass="profile-picture" />
+                                <Label fx:id="lblIniciais" styleClass="initials-label" text="US" />
                             </children>
                         </StackPane>
-                        <Label fx:id="lblNomeUsuario" styleClass="profile-name" text="Nome do Usuário"/>
-                        <Label fx:id="lblTipoUsuario" styleClass="profile-role" text="Tipo de Usuário"/>
+                        <Label fx:id="lblNomeUsuario" styleClass="profile-name" text="Nome do Usuário" />
+                        <Label fx:id="lblTipoUsuario" styleClass="profile-role" text="Tipo de Usuário" />
                     </children>
                 </VBox>
 
-                <Separator prefWidth="200.0"/>
+                <Separator prefWidth="200.0" />
 
                 <GridPane hgap="15.0" styleClass="form-grid" vgap="15.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label styleClass="form-label" text="Nome Completo:"/>
-                        <TextField fx:id="txtNome" GridPane.columnIndex="1"/>
+                        <Label styleClass="form-label" text="Nome Completo:" />
+                        <TextField fx:id="txtNome" GridPane.columnIndex="1" />
 
-                        <Label styleClass="form-label" text="E-mail:" GridPane.rowIndex="1"/>
-                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label styleClass="form-label" text="E-mail:" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <Label styleClass="form-label" text="CPF:" GridPane.rowIndex="2"/>
-                        <TextField fx:id="txtCpf" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label disable="true" styleClass="form-label" text="CPF:" visible="false" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtCpf" disable="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-
-                        <Label styleClass="form-label" text="Nova Senha:" GridPane.rowIndex="3"/>
-                        <PasswordField fx:id="txtSenha" promptText="Deixe em branco para não alterar"
-                                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label styleClass="form-label" text="Status da Conta:" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtStatus" editable="false" styleClass="read-only-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label styleClass="form-label" text="Nova Senha:" GridPane.rowIndex="4" />
+                        <PasswordField fx:id="txtSenha" promptText="Deixe em branco para não alterar" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </children>
                 </GridPane>
 
                 <HBox alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar"
-                                styleClass="save-button" text="Salvar Alterações"/>
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" styleClass="save-button" text="Salvar Alterações" />
                     </children>
                 </HBox>
             </children>
         </VBox>
     </children>
-</AnchorPane>
+</StackPane>

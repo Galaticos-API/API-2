@@ -2,375 +2,399 @@ package gui.menu;
 
 import dao.ObjetivoDAO;
 import dao.PdiDAO;
-import dao.UsuarioDAO; // Importar se precisar buscar o nome do usuário novamente
-import gui.modal.EditarPDIModalController; // Importar modal de edição
-import javafx.collections.FXCollections;
+import gui.modal.AvaliacaoObjetivoModalController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modelo.Documento; // Supondo que você tenha esse modelo
 import modelo.Objetivo;
-import modelo.PDI;
+import modelo.ObjetivoComPDI;
+import modelo.PDI; // Pode ser removido se 'popularDetalhesPDI' for removido
 import modelo.Usuario;
+import util.Util;
 
 import java.io.IOException;
-import java.net.URL;
-import java.sql.Date; // Use java.sql.Date se for o tipo do DAO
-import java.sql.SQLException;
+import java.sql.Date;
+// import java.text.SimpleDateFormat; // Não utilizado
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class MeuPdiController implements Initializable {
+public class MeuPdiController {
 
     // --- Componentes FXML ---
     @FXML
-    private Label lblMensagemSemPdi;
+    private Label lblTituloPDI;
+
+    // Container Kanban (AGORA USADO POR TODOS: RH, Gestor Geral, Gestor de Area)
     @FXML
-    private VBox pdiContentBox; // Container principal do PDI
+    private HBox kanbanContainer;
+    @FXML
+    private VBox colunaNaoIniciado;
+    @FXML
+    private VBox colunaEmProgresso;
+    @FXML
+    private VBox colunaConcluido;
+
+    // Container Detalhes PDI (NÃO MAIS USADO NESTA TELA)
+    // Esta lógica agora pertence ao 'MeuPdiGUIController'
+    @FXML
+    private VBox pdiDetalhesContainer;
+    @FXML
+    private Label lblPdiStatus;
+    @FXML
+    private Label lblPdiId;
+    @FXML
+    private Label lblPdiDataCriacao;
+    @FXML
+    private Label lblPdiDataFechamento;
     @FXML
     private ProgressBar progressBarGeral;
     @FXML
     private Text textPontuacaoGeral;
     @FXML
-    private TextField usuarioNomeField;
+    private Label lblSemPdi;
     @FXML
-    private TextField usuarioCargoField;
+    private VBox colunaNaoIniciadoUser;
     @FXML
-    private TextField statusPdiField; // Alterado de ComboBox para TextField (somente leitura)
+    private VBox colunaEmProgressoUser;
     @FXML
-    private DatePicker dataCriacaoPicker;
-    @FXML
-    private DatePicker dataFechamentoPicker;
-    @FXML
-    private TabPane tabPanePDI;
-    @FXML
-    private Button btnAbrirEdicao; // Botão para abrir o modal de edição
+    private VBox colunaConcluidoUser;
 
-    // Tabela Objetivos
-    @FXML
-    private TableView<Objetivo> objetivoTable;
-    @FXML
-    private TableColumn<Objetivo, String> descricaoColumn;
-    @FXML
-    private TableColumn<Objetivo, Date> prazoColumn; // Mantenha o tipo do seu modelo
-    @FXML
-    private TableColumn<Objetivo, String> statusColumn;
-    @FXML
-    private TableColumn<Objetivo, Void> acoesColumn;
-    @FXML
-    private Button btnAdicionarObjetivo;
 
-    // Tabela Documentos (Exemplo)
-    @FXML
-    private TableView<Documento> documentoTable;
-    @FXML
-    private TableColumn<Documento, String> docNomeArquivoCol;
-    @FXML
-    private TableColumn<Documento, String> docTipoCol;
-    @FXML
-    private TableColumn<Documento, Date> docDataUploadCol; // Mantenha o tipo do seu modelo
-    @FXML
-    private TableColumn<Documento, Void> docAcoesCol;
-    @FXML
-    private Button btnUploadDocumento;
-
-    // --- DAOs e Variáveis ---
     private Usuario usuarioLogado;
-    private PDI pdiDoUsuario;
     private PdiDAO pdiDAO = new PdiDAO();
     private ObjetivoDAO objetivoDAO = new ObjetivoDAO();
-    // private DocumentoDAO documentoDAO = new DocumentoDAO(); // Se tiver
-
     private final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configura as colunas das tabelas que não dependem dos dados
-        configurarTabelaObjetivos();
-        configurarTabelaDocumentos(); // Chame se tiver a tabela de documentos
-    }
-
     /**
-     * Chamado pelo MainController para iniciar a tela.
+     * Chamado pelo MainController para passar o usuário logado.
      */
-    public void setUsuarioLogado(Usuario usuario) {
+    public void setUsuario(Usuario usuario) {
+        System.out.println("setusuario Meu pdi");
         this.usuarioLogado = usuario;
-        carregarDadosPDI();
+        configurarTela();
     }
 
     /**
-     * Busca o PDI do usuário e popula a interface.
+     * Configura a tela. Agora, SEMPRE mostrará o Kanban,
+     * filtrando os dados com base no tipo de usuário.
      */
-    private void carregarDadosPDI() {
+    private void configurarTela() {
         if (usuarioLogado == null) return;
 
+        limparConteudos();
+
+        kanbanContainer.setVisible(false);
+        kanbanContainer.setManaged(false);
+        pdiDetalhesContainer.setVisible(true);
+        pdiDetalhesContainer.setManaged(true);
+        System.out.println("configurarTela Meu pdi");
         try {
-            // Busca o PDI do usuário logado
-            PDI pdiDoUsuario = pdiDAO.buscarPorColaborador(usuarioLogado.getId());
+            lblTituloPDI.setText("Meu Plano de Desenvolvimento");
+            PDI pdiUsuario = pdiDAO.buscarPorColaborador(usuarioLogado.getId()); // Busca o PDI
 
-            if (pdiDoUsuario != null) {
+            if (pdiUsuario != null) {
+                lblSemPdi.setVisible(false);
+                lblSemPdi.setManaged(false);
 
-                // Esconde a mensagem e mostra o conteúdo do PDI
-                lblMensagemSemPdi.setVisible(false);
-                lblMensagemSemPdi.setManaged(false);
-                pdiContentBox.setVisible(true);
-                pdiContentBox.setManaged(true);
+                popularDetalhesPDI(pdiUsuario);
 
-                // Popula os campos da aba "Dados Gerais"
-                usuarioNomeField.setText(usuarioLogado.getNome()); // Pega do usuário logado
-                usuarioCargoField.setText(usuarioLogado.getTipo_usuario());
-                statusPdiField.setText(pdiDoUsuario.getStatus());
-
-                if (pdiDoUsuario.getDataCriacao() != null) {
-                    LocalDate dataCriacao = LocalDate.parse(pdiDoUsuario.getDataCriacao());
-                    dataCriacaoPicker.setValue(dataCriacao);
+                List<Objetivo> meusObjetivos = objetivoDAO.buscarPorPdiId(pdiUsuario.getId());
+                for (Objetivo obj : meusObjetivos) {
+                    Node cardObjetivo = criarCardObjetivoPadrao(obj);
+                    distribuirCard(cardObjetivo, obj.getStatus());
                 }
-                if (pdiDoUsuario.getDataFechamento() != null) {
-                    LocalDate dataFechamento = LocalDate.parse(pdiDoUsuario.getDataFechamento());
-                    dataFechamentoPicker.setValue(dataFechamento);
-                }
-
-                // Atualiza progresso
-                float pontuacao = pdiDoUsuario.getPontuacaoGeral();
-                progressBarGeral.setProgress(pontuacao);
-                textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pontuacao * 100));
-
-                // Carrega os dados das tabelas das outras abas
-                carregarObjetivosNaTabela();
-                carregarDocumentosNaTabela(); // Chame se tiver a tabela
-
+                adicionarPlaceholderSeVazio(colunaNaoIniciadoUser);
+                adicionarPlaceholderSeVazio(colunaEmProgressoUser);
+                adicionarPlaceholderSeVazio(colunaConcluidoUser);
             } else {
-                // Se não encontrou PDI, mostra a mensagem e esconde o resto
-                this.pdiDoUsuario = null;
-                lblMensagemSemPdi.setVisible(true);
-                lblMensagemSemPdi.setManaged(true);
-                pdiContentBox.setVisible(false);
-                pdiContentBox.setManaged(false);
+                lblSemPdi.setVisible(true);
+                lblSemPdi.setManaged(true);
+                pdiDetalhesContainer.lookup(".pdi-details-card").setVisible(false);
+                pdiDetalhesContainer.lookup(".pdi-details-card").setManaged(false);
+                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setVisible(false);
+                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setManaged(false);
             }
+
+            // Adiciona placeholders no Kanban principal
+            adicionarPlaceholderSeVazio(colunaNaoIniciado);
+            adicionarPlaceholderSeVazio(colunaEmProgresso);
+            adicionarPlaceholderSeVazio(colunaConcluido);
 
         } catch (RuntimeException e) {
             e.printStackTrace();
-            exibirAlerta("Erro", "Não foi possível carregar os dados do seu PDI.");
-            // Esconde tudo em caso de erro
-            lblMensagemSemPdi.setText("Erro ao carregar PDI.");
-            lblMensagemSemPdi.setVisible(true);
-            lblMensagemSemPdi.setManaged(true);
-            pdiContentBox.setVisible(false);
-            pdiContentBox.setManaged(false);
+            lblTituloPDI.setText("Erro ao carregar dados");
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar os dados: " + e.getMessage());
+            limparConteudos(); // Limpa tudo em caso de erro
         }
     }
 
     /**
-     * Configura as colunas da tabela de objetivos.
+     * Limpa o conteúdo de ambos os containers (Kanban RH e Detalhes User).
      */
-    private void configurarTabelaObjetivos() {
-        descricaoColumn.setCellValueFactory(new PropertyValueFactory<>("descricao"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        // Formatação da coluna Prazo
-        prazoColumn.setCellValueFactory(new PropertyValueFactory<>("prazo"));
-        prazoColumn.setCellFactory(column -> new TableCell<Objetivo, Date>() {
-            @Override
-            protected void updateItem(Date item, boolean empty) {
-                super.updateItem(item, empty);
-                setText((item == null || empty) ? null : formatarDataSql(item));
-            }
-        });
-
-        // Configuração da coluna de Ações (Exemplo: Botão Editar)
-        acoesColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEditarObj = new Button("✏️");
-            private final HBox pane = new HBox(btnEditarObj);
-
-            {
-                pane.setAlignment(Pos.CENTER);
-                btnEditarObj.setOnAction(event -> {
-                    Objetivo objetivo = getTableView().getItems().get(getIndex());
-                    handleEditarObjetivo(objetivo);
-                });
-                // Adicione estilos se desejar
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : pane);
-            }
-        });
+    private void limparConteudos() {
+        // Kanban RH
+        colunaNaoIniciado.getChildren().clear();
+        colunaEmProgresso.getChildren().clear();
+        colunaConcluido.getChildren().clear();
+        // Kanban User (limpa por segurança)
+        colunaNaoIniciadoUser.getChildren().clear();
+        colunaEmProgressoUser.getChildren().clear();
+        colunaConcluidoUser.getChildren().clear();
+        // Detalhes PDI (limpa por segurança)
+        lblPdiStatus.setText("-");
+        lblPdiId.setText("-");
+        lblPdiDataCriacao.setText("-");
+        lblPdiDataFechamento.setText("-");
+        progressBarGeral.setProgress(0.0);
+        textPontuacaoGeral.setText("0.0%");
+        lblSemPdi.setVisible(false);
+        lblSemPdi.setManaged(false);
     }
 
     /**
-     * Configura as colunas da tabela de documentos (Exemplo).
+     * Adiciona um card à coluna Kanban correta (MÉTODO SIMPLIFICADO).
      */
-    private void configurarTabelaDocumentos() {
-        if (documentoTable == null) return; // Verifica se a tabela existe no FXML
+    private void distribuirCard(Node card, String status) {
+        VBox targetColumn;
+        if (status == null) status = "Não Iniciado"; // Tratamento de nulo
 
-        docNomeArquivoCol.setCellValueFactory(new PropertyValueFactory<>("nomeArquivo"));
-        docTipoCol.setCellValueFactory(new PropertyValueFactory<>("tipoDocumento"));
-
-        // Formatação da Data de Upload
-        docDataUploadCol.setCellValueFactory(new PropertyValueFactory<>("dataUpload"));
-        docDataUploadCol.setCellFactory(column -> new TableCell<Documento, Date>() {
-            @Override
-            protected void updateItem(Date item, boolean empty) {
-                super.updateItem(item, empty);
-                setText((item == null || empty) ? null : formatarDataUtil(item)); // Usa formatador diferente se for java.util.Date
-            }
-        });
-
-        // Coluna de Ações para Documentos (Exemplo: Download, Excluir)
-        docAcoesCol.setCellFactory(param -> new TableCell<>() {
-            private final Button btnDownload = new Button("⬇️");
-            private final Button btnExcluirDoc = new Button("🗑️");
-            private final HBox pane = new HBox(5, btnDownload, btnExcluirDoc);
-
-            {
-                pane.setAlignment(Pos.CENTER);
-                btnDownload.setOnAction(event -> { /* Lógica de download */ });
-                btnExcluirDoc.setOnAction(event -> { /* Lógica de exclusão */ });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : pane);
-            }
-        });
-    }
-
-    /**
-     * Carrega os objetivos do PDI atual na tabela.
-     */
-    private void carregarObjetivosNaTabela() {
-        if (pdiDoUsuario != null) {
-            List<Objetivo> objetivos = objetivoDAO.buscarPorPdiId(pdiDoUsuario.getId());
-            objetivoTable.setItems(FXCollections.observableArrayList(objetivos));
-        } else {
-            objetivoTable.getItems().clear();
+        switch (status) {
+            case "Em Progresso":
+                targetColumn = colunaEmProgresso; // Sempre usa as colunas principais
+                break;
+            case "Concluído":
+                targetColumn = colunaConcluido; // Sempre usa as colunas principais
+                break;
+            case "Não Iniciado":
+            default:
+                targetColumn = colunaNaoIniciado; // Sempre usa as colunas principais
+                break;
         }
+        targetColumn.getChildren().add(card);
+    }
+
+
+    /**
+     * Cria um card visual para um objetivo na visão do RH (com mais informações).
+     * Este card será usado por todos os gestores nesta tela.
+     */
+    private Node criarCardObjetivoRH(ObjetivoComPDI objetivo) {
+        VBox card = new VBox();
+        card.getStyleClass().add("objetivo-mini-card");
+
+        // Informações extras (Colaborador e PDI ID)
+        Label infoColaborador = new Label(objetivo.getNomeUsuario() + " (PDI: " + objetivo.getPdiIdOriginal() + ")");
+        infoColaborador.getStyleClass().add("objetivo-card-info-rh");
+        VBox.setMargin(infoColaborador, new Insets(10, 10, 8, 10));
+
+        Separator separatorRh = new Separator();
+        separatorRh.setPadding(new Insets(0, 10, 0, 10));
+
+        // Descrição
+        Label descricaoLabel = new Label(objetivo.getDescricao());
+        descricaoLabel.setWrapText(true);
+        descricaoLabel.getStyleClass().add("objetivo-card-descricao");
+        VBox.setMargin(descricaoLabel, new Insets(10, 10, 10, 10));
+
+        Separator separatorDesc = new Separator();
+        separatorDesc.setPadding(new Insets(0, 10, 0, 10));
+
+        // Detalhes (Prazo, Peso)
+        Label prazoLabel = new Label("Prazo: " + objetivo.getPrazo());
+        prazoLabel.getStyleClass().add("objetivo-card-detail");
+
+        Label pesoLabel = null;
+        if (objetivo.getPeso() > 0) {
+            pesoLabel = new Label("Peso: " + String.format("%.1f", objetivo.getPeso()));
+            pesoLabel.getStyleClass().add("objetivo-card-detail");
+        }
+
+        VBox detailsBox = new VBox(3);
+        detailsBox.getChildren().add(prazoLabel);
+        if (pesoLabel != null) {
+            detailsBox.getChildren().add(pesoLabel);
+        }
+        VBox.setMargin(detailsBox, new Insets(8, 10, 10, 10));
+
+        card.getChildren().addAll(infoColaborador, separatorRh, descricaoLabel, separatorDesc, detailsBox);
+
+        adicionarAcaoClique(card, objetivo); // Adiciona ação de clique
+        return card;
     }
 
     /**
-     * Carrega os documentos do PDI atual na tabela.
+     * Adiciona a funcionalidade de clique a um card de objetivo.
+     * ATENÇÃO: A lógica atual SÓ permite que RH abra o modal.
+     * Gestores (Geral/Area) podem clicar, mas nada acontecerá.
+     * Se desejar que eles também avaliem, mude o IF.
      */
-    private void carregarDocumentosNaTabela() {
-        if (documentoTable == null || pdiDoUsuario == null) return;
-
-        // try {
-        //     List<Documento> documentos = documentoDAO.buscarPorPdiId(pdiDoUsuario.getId());
-        //     documentoTable.setItems(FXCollections.observableArrayList(documentos));
-        // } catch (RuntimeException e) {
-        //     e.printStackTrace();
-        //     exibirAlerta("Erro", "Não foi possível carregar os documentos.");
-        //     documentoTable.getItems().clear();
-        // }
-
-        // Simulação enquanto não há DAO
-        documentoTable.getItems().clear();
-        System.out.println("Lógica para carregar documentos aqui.");
-
+    private void adicionarAcaoClique(Node card, Objetivo objetivo) {
+        card.setOnMouseClicked(event -> {
+            // Apenas RH pode abrir o modal de avaliação
+            if ("RH".equals(usuarioLogado.getTipo_usuario()) && objetivo instanceof ObjetivoComPDI) {
+                handleAbrirModalAvaliacao((ObjetivoComPDI) objetivo);
+            } else if (objetivo instanceof ObjetivoComPDI) {
+                // Gestores (não-RH) clicam, mas não faz nada
+                System.out.println("Gestor (" + usuarioLogado.getTipo_usuario() + ") visualizou objetivo ID:" + objetivo.getId());
+            } else {
+                System.err.println("Erro: Tentativa de avaliar objetivo sem dados completos. Objetivo ID: " + objetivo.getId());
+                if (Util.class != null)
+                    Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Dados incompletos para avaliação.");
+            }
+        });
+        card.getStyleClass().add("clickable-card");
     }
 
     /**
-     * Abre o modal de edição do PDI atual.
+     * Abre o modal (janela pop-up) para o RH registrar uma nova avaliação.
      */
-    @FXML
-    private void handleAbrirEdicao() {
-        if (pdiDoUsuario == null) return;
+    private void handleAbrirModalAvaliacao(ObjetivoComPDI objetivo) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/EditarPDIModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/AvaliacaoModal.fxml"));
             Parent page = loader.load();
 
-            EditarPDIModalController controller = loader.getController();
-            controller.setPDI(this.pdiDoUsuario); // Passa o PDI atual
+            AvaliacaoObjetivoModalController controller = loader.getController();
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Editar Meu PDI");
+            dialogStage.setTitle("Registrar Avaliação de Objetivo");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(btnAbrirEdicao.getScene().getWindow()); // Usa o botão como referência
+            dialogStage.initOwner(lblTituloPDI.getScene().getWindow());
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
             controller.setDialogStage(dialogStage);
+            controller.setDados(objetivo, usuarioLogado);
+
             dialogStage.showAndWait();
 
-            // Se o modal foi salvo, recarrega os dados nesta tela
             if (controller.isSalvo()) {
-                carregarDadosPDI();
+                configurarTela(); // Recarrega o Kanban
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    // --- Métodos de Ação para Objetivos e Documentos (Abrir Modais) ---
-    @FXML
-    private void handleAdicionarObjetivo() {
-        if (pdiDoUsuario == null) return;
-        System.out.println("Abrir modal para adicionar objetivo ao PDI ID: " + pdiDoUsuario.getId());
-        // Lógica para abrir o modal de cadastro de objetivo
-        // ...
-        // Após fechar o modal, chamar carregarObjetivosNaTabela()
-    }
-
-    private void handleEditarObjetivo(Objetivo objetivo) {
-        System.out.println("Abrir modal para editar objetivo ID: " + objetivo.getId());
-        // Lógica para abrir o modal de edição de objetivo
-        // ...
-        // Após fechar o modal, chamar carregarObjetivosNaTabela()
-    }
-
-    @FXML
-    private void handleUploadDocumento() {
-        if (pdiDoUsuario == null) return;
-        System.out.println("Abrir FileChooser para upload no PDI ID: " + pdiDoUsuario.getId());
-        // Lógica de upload
-        // ...
-        // Após upload, chamar carregarDocumentosNaTabela()
-    }
-
-
-    // --- Métodos Auxiliares ---
-    private String formatarDataSql(Date prazoSqlDate) {
-        if (prazoSqlDate == null) return "N/A";
-        try {
-            LocalDate prazoLocalDate = prazoSqlDate.toLocalDate();
-            return FORMATADOR_DATA.format(prazoLocalDate);
+            if (Util.class != null) {
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro FXML", "Não foi possível carregar a tela de avaliação (AvaliacaoModal.fxml): " + e.getMessage());
+            }
         } catch (Exception e) {
-            return "Data inválida";
+            e.printStackTrace();
+            if (Util.class != null) {
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro Inesperado", "Ocorreu um erro ao tentar abrir a tela de avaliação: " + e.getMessage());
+            }
         }
     }
 
-    // Formatador para java.util.Date (ex: Data Upload do Documento)
-    private String formatarDataUtil(java.util.Date dataUtil) {
-        if (dataUtil == null) return "N/A";
+
+    /**
+     * Verifica se um VBox está vazio e adiciona um Label de placeholder.
+     */
+    private void adicionarPlaceholderSeVazio(VBox coluna) {
+        if (coluna.getChildren().isEmpty()) {
+            Label placeholder = new Label("Nenhum objetivo nesta etapa.");
+            placeholder.getStyleClass().add("kanban-empty-placeholder");
+            placeholder.setMaxWidth(Double.MAX_VALUE);
+            placeholder.setAlignment(Pos.CENTER);
+            coluna.setAlignment(Pos.CENTER);
+            coluna.getChildren().add(placeholder);
+        } else {
+            coluna.setAlignment(Pos.TOP_LEFT); // Alinha cards ao topo
+        }
+    }
+
+    // --- MÉTODOS NÃO MAIS UTILIZADOS NESTA TELA ---
+    // (Podem ser removidos se você tiver certeza)
+
+    /**
+     * [NÃO UTILIZADO]
+     * Popula os Labels e ProgressBar com os detalhes do PDI.
+     * Esta lógica agora pertence a 'MeuPdiGUIController'.
+     */
+    private void popularDetalhesPDI(PDI pdi) {
+        String dataCriacaoStr = pdi.getDataCriacao();
+        String dataFechamentoStr = pdi.getDataFechamento();
+
+        lblPdiStatus.setText(pdi.getStatus() != null ? pdi.getStatus() : "-");
+        lblPdiDataCriacao.setText(dataCriacaoStr != null ? dataCriacaoStr : "N/A");
+        lblPdiDataFechamento.setText(dataFechamentoStr != null ? dataFechamentoStr : "N/A");
+
+        float pontuacao = pdi.getPontuacaoGeral();
+        progressBarGeral.setProgress(pontuacao);
+        textPontuacaoGeral.setText(String.format("%.1f%%", pontuacao * 100));
+    }
+
+    /**
+     * [NÃO UTILIZADO]
+     * Cria um card visual para um objetivo padrão (visão do colaborador).
+     * Esta lógica agora pertence a 'MeuPdiGUIController'.
+     */
+    private Node criarCardObjetivoPadrao(Objetivo objetivo) {
+        VBox card = new VBox();
+        card.getStyleClass().add("objetivo-mini-card");
+
+        Label descricaoLabel = new Label(objetivo.getDescricao());
+        descricaoLabel.setWrapText(true);
+        descricaoLabel.getStyleClass().add("objetivo-card-descricao");
+        VBox.setMargin(descricaoLabel, new Insets(10, 10, 10, 10));
+
+        Separator separator = new Separator();
+        separator.setPadding(new Insets(0, 10, 0, 10));
+
+        Label prazoLabel = new Label("Prazo: " + objetivo.getPrazo());
+        prazoLabel.getStyleClass().add("objetivo-card-detail");
+
+        Label pesoLabel = null;
+        if (objetivo.getPeso() > 0) {
+            pesoLabel = new Label("Peso: " + String.format("%.1f", objetivo.getPeso()));
+            pesoLabel.getStyleClass().add("objetivo-card-detail");
+        }
+
+        VBox detailsBox = new VBox(3);
+        detailsBox.getChildren().add(prazoLabel);
+        if (pesoLabel != null) {
+            detailsBox.getChildren().add(pesoLabel);
+        }
+        VBox.setMargin(detailsBox, new Insets(8, 10, 10, 10));
+        card.getChildren().addAll(descricaoLabel, separator, detailsBox);
+
+        // Esta versão do card (padrão) não é clicável para avaliação
+        // adicionarAcaoClique(card, objetivo);
+        return card;
+    }
+
+    /**
+     * [NÃO UTILIZADO]
+     * Formata um objeto java.util.Date para String dd/MM/yyyy.
+     */
+    private String formatarData(Date data) {
+        if (data == null) {
+            return "N/A";
+        }
         try {
-            LocalDate dataLocal = dataUtil.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return FORMATADOR_DATA.format(dataLocal);
+            LocalDate localDate;
+            if (data instanceof Date) {
+                localDate = ((Date) data).toLocalDate();
+            } else {
+                localDate = data.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+            }
+            return localDate.format(FORMATADOR_DATA);
         } catch (Exception e) {
-            return "Data inválida";
+            System.err.println("Erro ao formatar data (" + data.getClass().getName() + "): " + e.getMessage());
+            return "Inválida";
         }
-    }
-
-    private void exibirAlerta(String titulo, String mensagem) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensagem);
-        alert.showAndWait();
     }
 }

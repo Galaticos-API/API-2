@@ -29,11 +29,11 @@ public class ObjetivoDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, objetivo.getPdiId());
+            stmt.setString(1, objetivo.getPdiId());
             stmt.setString(2, objetivo.getDescricao());
 
             if (objetivo.getPrazo() != null) {
-                stmt.setString(3, objetivo.getPrazo());
+                stmt.setDate(3, objetivo.getPrazo());
             } else {
                 stmt.setNull(3, Types.DATE);
             }
@@ -52,6 +52,7 @@ public class ObjetivoDAO {
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage() + " " + e.getCause());
             throw new RuntimeException("Erro ao adicionar objetivo no banco de dados.", e);
         }
     }
@@ -75,7 +76,7 @@ public class ObjetivoDAO {
                 if (rs.next()) {
                     objetivo = new Objetivo();
                     objetivo.setId(rs.getInt("id"));
-                    objetivo.setPdiId(rs.getInt("pdi_id"));
+                    objetivo.setPdiId(rs.getString("pdi_id"));
                     objetivo.setDescricao(rs.getString("descricao"));
                     objetivo.setPrazo(rs.getDate("prazo"));
                     objetivo.setStatus(rs.getString("status"));
@@ -108,7 +109,7 @@ public class ObjetivoDAO {
             while (rs.next()) {
                 Objetivo objetivo = new Objetivo();
                 objetivo.setId(rs.getInt("id"));
-                objetivo.setPdiId(rs.getInt("pdi_id"));
+                objetivo.setPdiId(rs.getString("pdi_id"));
                 objetivo.setDescricao(rs.getString("descricao"));
                 objetivo.setPrazo(rs.getDate("prazo"));
                 objetivo.setStatus(rs.getString("status"));
@@ -145,7 +146,7 @@ public class ObjetivoDAO {
                 while (rs.next()) {
                     Objetivo objetivo = new Objetivo();
                     objetivo.setId(rs.getInt("id"));
-                    objetivo.setPdiId(rs.getInt("pdi_id"));
+                    objetivo.setPdiId(rs.getString("pdi_id"));
                     objetivo.setDescricao(rs.getString("descricao"));
                     objetivo.setPrazo(rs.getDate("prazo"));
                     objetivo.setStatus(rs.getString("status"));
@@ -174,11 +175,11 @@ public class ObjetivoDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, objetivo.getPdiId());
+            stmt.setString(1, objetivo.getPdiId());
             stmt.setString(2, objetivo.getDescricao());
 
             if (objetivo.getPrazo() != null) {
-                stmt.setString(3, objetivo.getPrazo());
+                stmt.setDate(3, objetivo.getPrazo());
             } else {
                 stmt.setNull(3, Types.DATE);
             }
@@ -200,8 +201,9 @@ public class ObjetivoDAO {
      * Remove um objetivo do banco de dados pelo seu ID.
      *
      * @param id O ID do objetivo a ser removido.
+     * @return
      */
-    public void remover(int id) {
+    public boolean remover(int id) {
         String sql = "DELETE FROM objetivo WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -209,15 +211,61 @@ public class ObjetivoDAO {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao remover o objetivo.", e);
         }
+
+    }
+
+    public List<ObjetivoComPDI> listarPorSetor(String setorId) {
+        List<ObjetivoComPDI> listaPorSetor = new ArrayList<>();
+
+        // A query é a mesma de 'listarTodosComPDI', mas com um WHERE em u.setor_id
+        String sql = "SELECT o.*, p.id as pdi_original_id, p.usuario_id, u.nome as nome_usuario " +
+                "FROM objetivo o " +
+                "JOIN pdi p ON o.pdi_id = p.id " +
+                "JOIN usuario u ON p.usuario_id = u.id " +
+                "WHERE u.setor_id = ?"; // <-- Filtro adicionado aqui
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Define o parâmetro do WHERE
+            stmt.setString(1, setorId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ObjetivoComPDI obj = new ObjetivoComPDI();
+
+                    // Popula os campos herdados de Objetivo
+                    obj.setId(rs.getInt("o.id"));
+                    obj.setPdiId(rs.getString("o.pdi_id"));
+                    obj.setDescricao(rs.getString("o.descricao"));
+                    obj.setPrazo(rs.getDate("o.prazo"));
+                    obj.setStatus(rs.getString("o.status"));
+                    obj.setComentarios(rs.getString("o.comentarios"));
+                    obj.setPeso(rs.getFloat("o.peso"));
+                    obj.setPontuacao(rs.getFloat("o.pontuacao"));
+
+                    // Popula os campos específicos de ObjetivoComPDI
+                    obj.setPdiIdOriginal(rs.getInt("pdi_original_id"));
+                    obj.setUsuarioId(rs.getInt("p.usuario_id"));
+                    obj.setNomeUsuario(rs.getString("nome_usuario"));
+
+                    listaPorSetor.add(obj);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar objetivos por setor.", e);
+        }
+
+        return listaPorSetor;
     }
 
     public List<ObjetivoComPDI> listarTodosComPDI() {
         List<ObjetivoComPDI> listaCompleta = new ArrayList<>();
-        // Query com JOINs para buscar dados das 3 tabelas
         String sql = "SELECT o.*, p.id as pdi_original_id, p.usuario_id, u.nome as nome_usuario " +
                 "FROM objetivo o " +
                 "JOIN pdi p ON o.pdi_id = p.id " +
@@ -232,7 +280,7 @@ public class ObjetivoDAO {
 
                 // Popula os campos herdados de Objetivo
                 obj.setId(rs.getInt("o.id"));
-                obj.setPdiId(rs.getInt("o.pdi_id")); // ID do PDI ao qual o objetivo pertence diretamente
+                obj.setPdiId(rs.getString("o.pdi_id")); // ID do PDI ao qual o objetivo pertence diretamente
                 obj.setDescricao(rs.getString("o.descricao"));
                 obj.setPrazo(rs.getDate("o.prazo")); // Retorna java.sql.Date
                 obj.setStatus(rs.getString("o.status"));

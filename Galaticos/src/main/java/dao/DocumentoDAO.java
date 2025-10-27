@@ -66,7 +66,7 @@ public class DocumentoDAO {
         return documentosDoPdi;
     }
 
-    public void remover(int id) {
+    public boolean remover(int id) {
         String sql = "DELETE FROM documento WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -74,7 +74,7 @@ public class DocumentoDAO {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao remover o documento.", e);
         }

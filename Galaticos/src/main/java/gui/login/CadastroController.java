@@ -61,7 +61,7 @@ public class CadastroController {
             // --- ALTERAÇÃO AQUI ---
             // Criptografa a senha antes de criar o objeto Usuario
             String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
-            Usuario usuario = new Usuario(nome, email, senhaCriptografada, tipo_usuario, "Ativo", null, "", "");
+            Usuario usuario = new Usuario(nome, email, senhaCriptografada, tipo_usuario, "Ativo", null, "", "", "");
             // --- FIM DA ALTERAÇÃO ---
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();

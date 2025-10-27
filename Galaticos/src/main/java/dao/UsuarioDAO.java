@@ -4,6 +4,7 @@ import factory.ConnectionFactory;
 import modelo.Usuario;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UsuarioDAO {
         }
 
         // SQL atualizado sem o campo 'cargo'
-        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, email, senha, tipo_usuario, status, setor_id) VALUES(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario.getNome());
@@ -29,6 +30,7 @@ public class UsuarioDAO {
             pstmt.setString(3, usuario.getSenha());
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
+            pstmt.setString(6, usuario.getSetor().getId());
 
             pstmt.executeUpdate();
 
@@ -44,7 +46,7 @@ public class UsuarioDAO {
 
     public List<Usuario> lerTodos() throws SQLException {
         // SQL atualizado sem o campo 'cargo'
-        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao FROM usuario";
+        String sql = "SELECT id, nome, email, senha, tipo_usuario, status, data_criacao, setor_id FROM usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -59,11 +61,11 @@ public class UsuarioDAO {
                 usuario.setTipo_usuario(rs.getString("tipo_usuario"));
                 usuario.setStatus(rs.getString("status"));
                 Timestamp timestamp = rs.getTimestamp("data_criacao");
+                String setor_id = rs.getString("setor_id");
+                usuario.setSetor_id(setor_id != null ? setor_id : "");
                 if (timestamp != null) {
                     usuario.setData_criacao(timestamp.toLocalDateTime());
                 }
-
-                System.out.println(usuario);
 
                 usuarios.add(usuario);
             }
@@ -99,8 +101,7 @@ public class UsuarioDAO {
     }
 
     public boolean atualizar(Usuario usuario) throws SQLException {
-        // SQL atualizado sem o campo 'cargo'
-        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, tipo_usuario = ?, status = ?, setor_id = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, usuario.getNome());
@@ -108,8 +109,9 @@ public class UsuarioDAO {
             pstmt.setString(3, usuario.getSenha());
             pstmt.setString(4, usuario.getTipo_usuario());
             pstmt.setString(5, usuario.getStatus());
+            pstmt.setString(6, usuario.getSetor_id());
 
-            pstmt.setString(6, usuario.getId()); // O índice foi ajustado
+            pstmt.setString(7, usuario.getId()); // O índice foi ajustado
             return pstmt.executeUpdate() > 0;
         }
     }
@@ -145,12 +147,17 @@ public class UsuarioDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     Usuario usuario = new Usuario();
+
+                    // Campos que você já tinha
                     usuario.setId(rs.getString("id"));
                     usuario.setNome(rs.getString("nome"));
                     usuario.setEmail(rs.getString("email"));
                     usuario.setSenha(rs.getString("senha"));
                     usuario.setStatus(rs.getString("status"));
                     usuario.setTipo_usuario(rs.getString("tipo_usuario"));
+                    usuario.setSetor_id(rs.getString("setor_id"));
+                    usuario.setData_criacao(rs.getObject("data_criacao", LocalDateTime.class));
+
                     return usuario;
                 }
             }

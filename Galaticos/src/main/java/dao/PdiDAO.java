@@ -1,37 +1,45 @@
 package dao;
 
+import exceptions.PDIException;
 import factory.ConnectionFactory;
 import modelo.ObjetivoComPDI;
 import modelo.PDI;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PdiDAO {
 
-    public PDI adicionar(PDI pdi) {
-        // ALTERAÇÃO AQUI: troque 'usuario_id' por 'usuario_id'
+    public PDI adicionar(PDI pdi) throws PDIException {
 
         if (this.buscarPorColaborador(pdi.getColaboradorId()) != null) {
-            return null;
+            throw new PDIException("Esse colaborador já possui um PDI");
         }
 
         String sql = "INSERT INTO pdi (usuario_id, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?)";
 
+        DateTimeFormatter formatterStringParaLocalDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            System.out.println("ID do usuario cadastrado:" + pdi.getColaboradorId());
             pstmt.setString(1, pdi.getColaboradorId());
             pstmt.setString(2, pdi.getStatus());
 
-            if (pdi.getDataCriacao() == null) {
-                pdi.setDataCriacao(new java.util.Date());
+            String dataCriacaoStr = pdi.getDataCriacao();
+            if (dataCriacaoStr == null || dataCriacaoStr.trim().isEmpty()) {
+                pstmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+            } else {
+                LocalDate dataCriacaoLocal = LocalDate.parse(dataCriacaoStr, formatterStringParaLocalDate);
+                pstmt.setDate(3, java.sql.Date.valueOf(dataCriacaoLocal));
             }
-            pstmt.setString(3, pdi.getDataCriacao());
 
-            if (pdi.getDataFechamento() != null) {
-                pstmt.setString(4, pdi.getDataFechamento());
+            String dataFechamentoStr = pdi.getDataFechamento();
+            if (dataFechamentoStr != null && !dataFechamentoStr.trim().isEmpty()) {
+                LocalDate dataFechamentoLocal = LocalDate.parse(dataFechamentoStr, formatterStringParaLocalDate);
+                pstmt.setDate(4, java.sql.Date.valueOf(dataFechamentoLocal));
             } else {
                 pstmt.setNull(4, Types.DATE);
             }
@@ -44,7 +52,6 @@ public class PdiDAO {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         pdi.setId(generatedKeys.getString(1));
-                        System.out.println("PDI cadastrado com sucesso com o ID: " + pdi.getId());
                         return pdi;
                     }
                 }
@@ -54,8 +61,6 @@ public class PdiDAO {
         }
         return null;
     }
-
-    // ---- MÉTODOS ORIGINAIS (SEM ALTERAÇÃO) ----
 
     /**
      * Lê todos os registros de PDI da tabela.
@@ -79,10 +84,10 @@ public class PdiDAO {
                 pdi.setStatus(rs.getString("status"));
 
                 Date criacao = rs.getDate("data_criacao");
-                if (criacao != null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
+                if (criacao != null) pdi.setDataCriacao(new java.sql.Date(criacao.getTime()));
 
                 Date fechamento = rs.getDate("data_fechamento");
-                if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
+                if (fechamento != null) pdi.setDataFechamento(new java.sql.Date(fechamento.getTime()));
 
                 pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
 
@@ -119,10 +124,10 @@ public class PdiDAO {
                     pdi.setStatus(rs.getString("status"));
 
                     Date criacao = rs.getDate("data_criacao");
-                    if (criacao != null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
+                    if (criacao != null) pdi.setDataCriacao(new java.sql.Date(criacao.getTime()));
 
                     Date fechamento = rs.getDate("data_fechamento");
-                    if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
+                    if (fechamento != null) pdi.setDataFechamento(new java.sql.Date(fechamento.getTime()));
 
                     pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
                     return pdi;
@@ -152,10 +157,10 @@ public class PdiDAO {
                     pdi.setStatus(rs.getString("status"));
 
                     Date criacao = rs.getDate("data_criacao");
-                    if (criacao != null) pdi.setDataCriacao(new java.util.Date(criacao.getTime()));
+                    if (criacao != null) pdi.setDataCriacao(new java.sql.Date(criacao.getTime()));
 
                     Date fechamento = rs.getDate("data_fechamento");
-                    if (fechamento != null) pdi.setDataFechamento(new java.util.Date(fechamento.getTime()));
+                    if (fechamento != null) pdi.setDataFechamento(new java.sql.Date(fechamento.getTime()));
 
                     pdi.setPontuacaoGeral(rs.getFloat("pontuacao_geral"));
 
@@ -176,7 +181,7 @@ public class PdiDAO {
      * @return true se a atualização foi bem-sucedida, false caso contrário.
      */
     public boolean atualizar(PDI pdi) {
-        String sql = "UPDATE pdi SET usuario_id = ?, ano = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
+        String sql = "UPDATE pdi SET usuario_id = ?, status = ?, data_criacao = ?, data_fechamento = ?, pontuacao_geral = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -185,13 +190,13 @@ public class PdiDAO {
             pstmt.setString(2, pdi.getStatus());
 
             if (pdi.getDataCriacao() != null) {
-                pstmt.setString(3, pdi.getDataCriacao());
+                pstmt.setDate(3, pdi.getDataCriacaoDate());
             } else {
                 pstmt.setNull(3, Types.DATE);
             }
 
             if (pdi.getDataFechamento() != null) {
-                pstmt.setString(4, pdi.getDataFechamento());
+                pstmt.setDate(4, pdi.getDataFechamentoDate());
             } else {
                 pstmt.setNull(4, Types.DATE);
             }

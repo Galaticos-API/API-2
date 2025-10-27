@@ -50,18 +50,24 @@
         </font></Label>
         <ComboBox fx:id="comboTipoUsuario" prefHeight="30.0" prefWidth="361.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="122.0" text="Status:" GridPane.rowIndex="5">
+        <Label alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="122.0" text="Setor:" GridPane.rowIndex="5">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font></Label>
+        <ComboBox fx:id="comboSetor" prefHeight="30.0" prefWidth="369.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="122.0" text="Status:" GridPane.rowIndex="6">
         <font>
             <Font name="System Bold" size="12.0" />
         </font></Label>
-        <ComboBox fx:id="comboStatus" prefHeight="30.0" prefWidth="369.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ComboBox fx:id="comboStatus" prefHeight="30.0" prefWidth="369.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
 
-        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
             <children>
                 <Button onAction="#handleCancelar" style="-fx-background-color: #e03a3a;" styleClass="modal-button-cancel" text="Cancelar" />
 
-                <Button onAction="#handleSalvar" style="-fx-background-color: #2a8e9d;" styleClass="modal-button-save" text="Criar" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <Button onAction="#handleSalvar" style="-fx-background-color: #2a8e9d;" styleClass="modal-button-save" text="Salvar" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>

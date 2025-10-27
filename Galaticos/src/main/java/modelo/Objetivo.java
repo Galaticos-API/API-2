@@ -1,13 +1,13 @@
 package modelo;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 
 public class Objetivo {
 
     // --- Atributos ---
     private int id;
-    private int pdiId; // Chave estrangeira para saber a qual PDI este objetivo pertence
+    private String pdiId;
     private String descricao;
     private Date prazo;
     private String status;
@@ -23,7 +23,7 @@ public class Objetivo {
     public Objetivo() {
     }
 
-    public Objetivo(int id, int pdiId, String descricao, Date prazo, String status, String comentarios, float peso, float pontuacao) {
+    public Objetivo(int id, String pdiId, String descricao, Date prazo, String status, String comentarios, float peso, float pontuacao) {
         this.id = id;
         this.pdiId = pdiId;
         this.descricao = descricao;
@@ -44,11 +44,11 @@ public class Objetivo {
         this.id = id;
     }
 
-    public int getPdiId() {
+    public String getPdiId() {
         return pdiId;
     }
 
-    public void setPdiId(int pdiId) {
+    public void setPdiId(String pdiId) {
         this.pdiId = pdiId;
     }
 
@@ -60,7 +60,11 @@ public class Objetivo {
         this.descricao = descricao;
     }
 
-    public String getPrazo() {
+    public Date getPrazo() {
+        return this.prazo;
+    }
+
+    public String getPrazoString() {
         return formatter.format(this.prazo);
     }
 

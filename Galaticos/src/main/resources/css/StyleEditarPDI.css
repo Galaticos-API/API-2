@@ -1,0 +1,129 @@
+/* ==================================== */
+/* Estilos para Modal (Editar PDI)      */
+/* ==================================== */
+
+/* (O .root e .page-title já devem existir) */
+
+/* Caixa de Progresso */
+.progress-box {
+    -fx-background-color: #f8f9fa; /* Cinza claro */
+    -fx-padding: 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dee2e6;
+}
+
+.progress-box .label { /* Label "Progresso Geral" */
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.progress-box .progress-bar { /* Barra de progresso */
+    -fx-pref-height: 10px;
+}
+.progress-box .progress-bar .bar {
+     -fx-background-color: #357ABD; /* Azul primário */
+     -fx-background-insets: 0;
+     -fx-background-radius: 5px;
+     -fx-padding: 0;
+}
+.progress-box .progress-bar .track {
+     -fx-background-color: #e9ecef;
+     -fx-background-insets: 0;
+     -fx-background-radius: 5px;
+}
+
+/* Texto da Porcentagem */
+.progress-box .text {
+     -fx-font-size: 13px;
+     -fx-fill: #495057;
+}
+
+
+/* Estilo do TabPane */
+.tab-pane {
+    -fx-tab-min-height: 40px; /* Altura da aba */
+    -fx-tab-max-height: 40px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #f8f9fa; /* Fundo da área das abas */
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 0 0 1 0; /* Linha inferior */
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent; /* Aba não selecionada transparente */
+    -fx-background-insets: 0;
+    -fx-padding: 8px 18px 8px 18px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3 0; /* Linha inferior invisível */
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: #e9ecef; /* Fundo leve no hover */
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #495057; /* Texto cinza escuro */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Aba Selecionada */
+.tab-pane .tab:selected {
+    -fx-background-color: white; /* Conecta com o fundo do conteúdo */
+    -fx-border-color: #dee2e6 #dee2e6 #357ABD #dee2e6; /* Borda nos lados e linha azul embaixo */
+    -fx-border-width: 1 1 3 1;
+    -fx-border-radius: 5 5 0 0; /* Cantos arredondados no topo */
+    -fx-background-radius: 5 5 0 0;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #357ABD; /* Texto azul */
+}
+
+/* Conteúdo das Abas */
+.tab-pane .tab-content-area {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6; /* Borda ao redor do conteúdo */
+    -fx-border-width: 0 1 1 1; /* Borda nos lados e embaixo */
+    -fx-background-radius: 0 0 8 8; /* Cantos inferiores arredondados */
+    -fx-border-radius: 0 0 8 8;
+}
+
+
+/* Estilos de Formulário (Reutilizáveis) */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+    -fx-alignment: center-left;
+    -fx-padding: 5 0 0 0; /* Ajuste para alinhar com campos */
+}
+
+/* (Reutilize os estilos .text-field, .combo-box, .date-picker que você já tem) */
+
+/* Botão Salvar Dados Gerais */
+.save-button {
+     -fx-background-color: #2ecc71; /* Verde */
+     -fx-text-fill: white;
+     -fx-font-weight: bold;
+     -fx-background-radius: 6;
+     -fx-padding: 6 15;
+     -fx-font-size: 13px;
+     -fx-cursor: hand;
+}
+.save-button:hover {
+     -fx-background-color: #27ae60;
+}
+
+/* (Reutilize os estilos .primary-button, .secondary-button) */
+
+/* Título dentro das abas (Ex: Metas Detalhadas) */
+.widget-title {
+     -fx-font-size: 16px;
+     -fx-font-weight: bold;
+     -fx-text-fill: #34495e;
+ }
