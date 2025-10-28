@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.TextField?>
 <VBox alignment="TOP_CENTER" spacing="15.0" styleClass="modal-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.modal.AvaliacaoObjetivoModalController">
     <stylesheets>
         <URL value="@/css/StyleAvaliacaoModal.css" />
@@ -37,11 +38,11 @@
             <Label styleClass="modal-label" text="Objetivo:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <TextArea fx:id="txtObjetivo" editable="false" prefRowCount="3" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Label styleClass="modal-label" text="Nota (0-10):" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <ComboBox fx:id="comboNota" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label styleClass="modal-label" text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="txtTipo" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-            <Label styleClass="modal-label" text="Comentário:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-            <TextArea fx:id="txtComentario" prefRowCount="4" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label styleClass="modal-label" text="Nota (0-10):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <ComboBox fx:id="comboNota" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </children>
     </GridPane>
 

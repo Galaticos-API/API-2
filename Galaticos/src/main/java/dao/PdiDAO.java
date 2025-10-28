@@ -20,32 +20,31 @@ public class PdiDAO {
             throw new PDIException("Esse colaborador já possui um PDI");
         }
 
-        String sql = "INSERT INTO pdi (usuario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pdi (usuario_id, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?)";
 
         DateTimeFormatter formatterStringParaLocalDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, pdi.getColaboradorId());
-            pstmt.setInt(2, pdi.getAno());
-            pstmt.setString(3, pdi.getStatus());
+            pstmt.setString(2, pdi.getStatus());
 
             String dataCriacaoStr = pdi.getDataCriacao();
             if (dataCriacaoStr == null || dataCriacaoStr.trim().isEmpty()) {
-                pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+                pstmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
             } else {
                 LocalDate dataCriacaoLocal = LocalDate.parse(dataCriacaoStr, formatterStringParaLocalDate);
-                pstmt.setDate(4, java.sql.Date.valueOf(dataCriacaoLocal));
+                pstmt.setDate(3, java.sql.Date.valueOf(dataCriacaoLocal));
             }
 
             String dataFechamentoStr = pdi.getDataFechamento();
             if (dataFechamentoStr != null && !dataFechamentoStr.trim().isEmpty()) {
                 LocalDate dataFechamentoLocal = LocalDate.parse(dataFechamentoStr, formatterStringParaLocalDate);
-                pstmt.setDate(5, java.sql.Date.valueOf(dataFechamentoLocal));
+                pstmt.setDate(4, java.sql.Date.valueOf(dataFechamentoLocal));
             } else {
-                pstmt.setNull(5, Types.DATE);
+                pstmt.setNull(4, Types.DATE);
             }
 
-            pstmt.setFloat(6, 0);
+            pstmt.setFloat(5, 0);
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -259,6 +258,46 @@ public class PdiDAO {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public static void atualizarPontuacaoGeral(String pdiId) {
+        // Query para calcular o percentual de concluídos
+        String sqlCalculo = "SELECT COALESCE(SUM(CASE WHEN status = 'Concluído' THEN 1.0 ELSE 0.0 END) / COUNT(*), 0.0) AS percentual " +
+                "FROM objetivo " +
+                "WHERE pdi_id = ?";
+
+        // Query para atualizar o PDI
+        String sqlUpdate = "UPDATE pdi SET pontuacao_geral = ? WHERE id = ?";
+
+        double novaPontuacao = 0.0;
+
+        // Abre uma nova conexão para esta operação
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            // Etapa 1: Calcular o percentual
+            try (PreparedStatement stmtCalc = conn.prepareStatement(sqlCalculo)) {
+                stmtCalc.setString(1, pdiId);
+                System.out.println(pdiId);
+                try (ResultSet rs = stmtCalc.executeQuery()) {
+                    if (rs.next()) {
+                        novaPontuacao = rs.getDouble("percentual");
+                        System.out.println(novaPontuacao);
+                    }
+                }
+            }
+
+            // Etapa 2: Atualizar a tabela PDI
+            // A tabela 'pdi' usa 'id' como INT, então convertemos o pdiId (String)
+            try (PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate)) {
+                stmtUpdate.setDouble(1, novaPontuacao);
+                stmtUpdate.setInt(2, Integer.parseInt(pdiId));
+                stmtUpdate.executeUpdate();
+            }
+
+        } catch (SQLException | NumberFormatException e) {
+            // NumberFormatException caso o pdiId não seja um inteiro válido
+            throw new RuntimeException("Erro ao recalcular a pontuação do PDI (ID: " + pdiId + ").", e);
         }
     }
 

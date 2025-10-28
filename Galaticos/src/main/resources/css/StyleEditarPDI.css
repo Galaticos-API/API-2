@@ -119,7 +119,29 @@
      -fx-background-color: #27ae60;
 }
 
-/* (Reutilize os estilos .primary-button, .secondary-button) */
+/* Botões Primários (Buscar, Cadastrar Novo PDI) */
+.primary-button {
+    -fx-background-color: #2A8E9D; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.primary-button:hover {
+    -fx-background-color: #1c616b; /* Azul mais escuro no hover */
+}
+
+/* Botões Secundários (Mostrar Todos) */
+.secondary-button {
+    -fx-background-color: #dbe2e3; /* Cinza Claro */
+    -fx-text-fill: #2e4c6a;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.secondary-button:hover {
+    -fx-background-color: #bdc3c7;
+}
 
 /* Título dentro das abas (Ex: Metas Detalhadas) */
 .widget-title {

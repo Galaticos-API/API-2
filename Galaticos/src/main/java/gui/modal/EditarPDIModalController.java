@@ -371,6 +371,7 @@ public class EditarPDIModalController implements Initializable {
 
             if (controller.isSalvo()) {
                 carregarObjetivosNaTabela(); // Refresh objective table
+                this.salvo = true; // Marca que o PDI teve mudanças
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -381,7 +382,36 @@ public class EditarPDIModalController implements Initializable {
     }
 
     private void handleEditarObjetivo(Objetivo objetivo) {
+        if (objetivo == null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/EditarObjetivoModal.fxml"));
+            Parent page = loader.load();
+            Stage modalStage = new Stage();
+            modalStage.setTitle("Editar Objetivo");
+            modalStage.initModality(Modality.WINDOW_MODAL);
+            modalStage.initOwner(objetivoTable.getScene().getWindow());
+            Scene scene = new Scene(page);
+            modalStage.setScene(scene);
+
+            // Pega o controller do NOVO modal
+            EditarObjetivoModalController controller = loader.getController();
+            controller.setDialogStage(modalStage);
+            controller.setObjetivo(objetivo); // Passa o objetivo selecionado para o modal
+
+            // Mostra o modal e espera
+            modalStage.showAndWait();
+
+            // Se o usuário salvou, atualiza a tabela
+            if (controller.isSalvo()) {
+                carregarObjetivosNaTabela(); // Atualiza a tabela de objetivos
+                this.salvo = true; // Marca que o PDI teve mudanças
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro FXML", "Não foi possível abrir a tela de edição de objetivo.");
+        }
     }
+
 
     private void handleExcluirObjetivo(Objetivo objetivo) {
         if (objetivo == null) return;
@@ -397,6 +427,7 @@ public class EditarPDIModalController implements Initializable {
                 if (sucesso) {
                     showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Objetivo excluído.");
                     carregarObjetivosNaTabela();
+                    this.salvo = true; // Marca que o PDI teve mudanças
                 } else {
                     showAlert(Alert.AlertType.WARNING, "Falha", "Não foi possível excluir o objetivo do banco.");
                 }

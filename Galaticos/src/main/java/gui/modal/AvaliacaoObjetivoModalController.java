@@ -2,11 +2,13 @@ package gui.modal;
 
 import dao.AvaliacaoDAO;
 import dao.ObjetivoDAO;
+import dao.PdiDAO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelo.Avaliacao;
 import modelo.ObjetivoComPDI;
@@ -26,11 +28,9 @@ public class AvaliacaoObjetivoModalController {
     @FXML
     private TextArea txtObjetivo;
     @FXML
-    private ComboBox<Double> comboNota;
-    // @FXML
-    // private ComboBox<String> comboStatus;    Não é mais necessário
+    public TextField txtTipo;
     @FXML
-    private TextArea txtComentario;
+    private ComboBox<Double> comboNota;
     @FXML
     private Label lblMensagemErro;
 
@@ -62,7 +62,7 @@ public class AvaliacaoObjetivoModalController {
         lblColaborador.setText(objetivo.getNomeUsuario());
         lblPdiId.setText(String.valueOf(objetivo.getPdiIdOriginal()));
         txtObjetivo.setText(objetivo.getDescricao());
-        // comboStatus.setValue(objetivo.getStatus());
+        txtTipo.setText(objetivo.getComentarios());
     }
 
     @FXML
@@ -77,7 +77,7 @@ public class AvaliacaoObjetivoModalController {
             novaAvaliacao.setObjetivoId(objetivo.getId());
             novaAvaliacao.setAvaliadorId(Integer.parseInt(avaliador.getId()));
             novaAvaliacao.setNota(comboNota.getValue());
-            novaAvaliacao.setComentario(txtComentario.getText().trim());
+            novaAvaliacao.setComentario(txtTipo.getText().trim());
             novaAvaliacao.setStatus_objetivo("Concluído");
             novaAvaliacao.setDataAvaliacao(LocalDate.now());
 
@@ -87,6 +87,7 @@ public class AvaliacaoObjetivoModalController {
             objetivo.setStatus("Concluído");
 
             objetivoDAO.atualizar(objetivo);
+            PdiDAO.atualizarPontuacaoGeral(objetivo.getPdiId());
 
             salvo = true;
             dialogStage.close();
@@ -103,14 +104,6 @@ public class AvaliacaoObjetivoModalController {
     private boolean validarCampos() {
         if (comboNota.getValue() == null) {
             lblMensagemErro.setText("Por favor, selecione uma nota.");
-            return false;
-        }
-//        if (comboStatus.getValue() == null) {
-//            lblMensagemErro.setText("Por favor, selecione um novo status para o objetivo.");
-//            return false;
-//        }
-        if (txtComentario.getText() == null || txtComentario.getText().trim().isEmpty()) {
-            lblMensagemErro.setText("Por favor, adicione um comentário à avaliação.");
             return false;
         }
         lblMensagemErro.setText("");

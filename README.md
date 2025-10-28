@@ -6,7 +6,7 @@
 - [2. Backlog do Produto](#2-backlog-do-produto)
 - [3. Cronograma de Evolução do Projeto](#3-cronograma-de-evolução-do-projeto)
 - [4. Dor e Dod](#4-dor-definition-of-ready)
-- [5. Sprints](#4-sprints)
+- [5. Sprints](#5-sprints)
 - [6. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
 - [7. Estrutura do Projeto](#6-estrutura-do-projeto)
 - [8. Como Executar o Projeto](#7-como-executar-o-projeto)

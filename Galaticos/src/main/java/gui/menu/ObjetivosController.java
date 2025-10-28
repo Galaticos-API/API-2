@@ -114,13 +114,13 @@ public class ObjetivosController {
                 case "RH":
                     lblTituloPDI.setText("Gerenciar Objetivos (Visão RH)");
                     // RH vê todos os objetivos
-                    objetivosParaMostrar = objetivoDAO.listarTodosComPDI();
+                    objetivosParaMostrar = objetivoDAO.listarTodosComPDI(usuarioLogado.getId());
                     break;
 
                 case "Gestor Geral":
                     lblTituloPDI.setText("Objetivos (Visão Geral de Setores)");
                     // Gestor Geral também vê todos
-                    objetivosParaMostrar = objetivoDAO.listarTodosComPDI();
+                    objetivosParaMostrar = objetivoDAO.listarTodosComPDI(usuarioLogado.getId());
                     break;
 
                 case "Gestor de Area":
@@ -129,7 +129,7 @@ public class ObjetivosController {
                     // --- Bloco Atualizado ---
                     String setorDoGestor = usuarioLogado.getSetor_id();
                     if (setorDoGestor != null && !setorDoGestor.isEmpty()) {
-                        objetivosParaMostrar = objetivoDAO.listarPorSetor(setorDoGestor);
+                        objetivosParaMostrar = objetivoDAO.listarPorSetor(setorDoGestor, usuarioLogado.getId());
                     } else {
                         // Caso o gestor não tenha um setor definido, não mostra nada
                         System.err.println("AVISO: Gestor de Área (ID: " + usuarioLogado.getId() + ") não possui um setor_id definido.");
@@ -220,7 +220,7 @@ public class ObjetivosController {
         card.getStyleClass().add("objetivo-mini-card");
 
         // Informações extras (Colaborador e PDI ID)
-        Label infoColaborador = new Label(objetivo.getNomeUsuario() + " (PDI: " + objetivo.getPdiIdOriginal() + ")");
+        Label infoColaborador = new Label("Colaborador: " + objetivo.getNomeUsuario());
         infoColaborador.getStyleClass().add("objetivo-card-info-rh");
         VBox.setMargin(infoColaborador, new Insets(10, 10, 8, 10));
 
@@ -276,10 +276,8 @@ public class ObjetivosController {
         naoIniciadoItem.setOnAction(e -> handleChangeStatus(objetivo, "Não Iniciado"));
         MenuItem emProgressoItem = new MenuItem("Em Progresso");
         emProgressoItem.setOnAction(e -> handleChangeStatus(objetivo, "Em Progresso"));
-        MenuItem concluidoItem = new MenuItem("Concluído");
-        concluidoItem.setOnAction(e -> handleChangeStatus(objetivo, "Concluído"));
 
-        mudarStatusMenu.getItems().addAll(naoIniciadoItem, emProgressoItem, concluidoItem);
+        mudarStatusMenu.getItems().addAll(naoIniciadoItem, emProgressoItem);
 
         MenuItem avaliarItem = new MenuItem("Avaliar");
         avaliarItem.setOnAction(e -> {

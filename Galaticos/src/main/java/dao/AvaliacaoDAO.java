@@ -28,15 +28,10 @@ public class AvaliacaoDAO {
 
             pstmt.executeUpdate();
 
-            try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    avaliacao.setId(rs.getInt(1));
-                }
-            }
-
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao adicionar avaliação no banco de dados.", e);
         }
+
     }
 
     public List<Avaliacao> buscarPorObjetivoId(int objetivoId) {

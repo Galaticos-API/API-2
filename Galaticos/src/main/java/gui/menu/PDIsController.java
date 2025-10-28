@@ -160,7 +160,7 @@ public class PDIsController implements Initializable {
         card.getStyleClass().add("pdi-card"); // Usará o mesmo estilo de card
         // card.setPrefWidth(270); // Não precisa mais de largura fixa no Kanban
 
-        Label anoLabel = new Label("PDI " + pdi.getId()); // Usa o Ano do PDI
+        Label anoLabel = new Label("PDI " + pdi.getId()); // Usa o ID do PDI
         anoLabel.getStyleClass().add("pdi-card-title");
 
         String nome = mapaNomesUsuarios.getOrDefault(pdi.getColaboradorId(), "Colaborador: " + pdi.getNomeColaborador());

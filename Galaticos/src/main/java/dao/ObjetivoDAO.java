@@ -55,6 +55,10 @@ public class ObjetivoDAO {
             System.out.println(e.getMessage() + " " + e.getCause());
             throw new RuntimeException("Erro ao adicionar objetivo no banco de dados.", e);
         }
+
+        if (objetivo.getPdiId() != null) {
+            PdiDAO.atualizarPontuacaoGeral(objetivo.getPdiId());
+        }
     }
 
     /**
@@ -218,21 +222,36 @@ public class ObjetivoDAO {
 
     }
 
-    public List<ObjetivoComPDI> listarPorSetor(String setorId) {
+    /**
+     * Lista todos os objetivos que pertencem a usuários de um setor específico.
+     * (Usado por 'Gestor de Area')
+     *
+     * Regras:
+     * 1. Filtra pelo setorId.
+     * 2. Oculta o PDI do próprio gestor logado.
+     * 3. Oculta PDIs de usuários 'Gestor Geral'.
+     *
+     * @param setorId O ID do setor para filtrar.
+     * @param idGestorLogado O ID do gestor que está fazendo a consulta.
+     * @return Uma lista de ObjetivosComPDI filtrada.
+     */
+    public List<ObjetivoComPDI> listarPorSetor(String setorId, String idGestorLogado) {
         List<ObjetivoComPDI> listaPorSetor = new ArrayList<>();
 
-        // A query é a mesma de 'listarTodosComPDI', mas com um WHERE em u.setor_id
         String sql = "SELECT o.*, p.id as pdi_original_id, p.usuario_id, u.nome as nome_usuario " +
                 "FROM objetivo o " +
                 "JOIN pdi p ON o.pdi_id = p.id " +
                 "JOIN usuario u ON p.usuario_id = u.id " +
-                "WHERE u.setor_id = ?"; // <-- Filtro adicionado aqui
+                "WHERE u.setor_id = ? " +              // Filtro de setor
+                "  AND u.id != ? " +                    // Regra 1: Não mostrar o próprio PDI
+                "  AND u.tipo_usuario != 'Gestor Geral'"; // Regra 2: Não mostrar Gestor Geral
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Define o parâmetro do WHERE
+            // Define os parâmetros do WHERE
             stmt.setString(1, setorId);
+            stmt.setString(2, idGestorLogado);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -264,36 +283,51 @@ public class ObjetivoDAO {
         return listaPorSetor;
     }
 
-    public List<ObjetivoComPDI> listarTodosComPDI() {
+    /**
+     * Lista todos os objetivos com informações de PDI e Usuário.
+     * (Usado por 'RH' e 'Gestor Geral')
+     *
+     * Regras:
+     * 1. Oculta o PDI do próprio gestor/RH logado.
+     *
+     * @param idGestorLogado O ID do usuário (RH ou Gestor) que está fazendo a consulta.
+     * @return Uma lista de ObjetivosComPDI filtrada.
+     */
+    public List<ObjetivoComPDI> listarTodosComPDI(String idGestorLogado) {
         List<ObjetivoComPDI> listaCompleta = new ArrayList<>();
+
         String sql = "SELECT o.*, p.id as pdi_original_id, p.usuario_id, u.nome as nome_usuario " +
                 "FROM objetivo o " +
                 "JOIN pdi p ON o.pdi_id = p.id " +
-                "JOIN usuario u ON p.usuario_id = u.id";
+                "JOIN usuario u ON p.usuario_id = u.id " +
+                "WHERE u.id != ?"; // Regra 1: Não mostrar o próprio PDI
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                ObjetivoComPDI obj = new ObjetivoComPDI();
+            stmt.setString(1, idGestorLogado);
 
-                // Popula os campos herdados de Objetivo
-                obj.setId(rs.getInt("o.id"));
-                obj.setPdiId(rs.getString("o.pdi_id")); // ID do PDI ao qual o objetivo pertence diretamente
-                obj.setDescricao(rs.getString("o.descricao"));
-                obj.setPrazo(rs.getDate("o.prazo")); // Retorna java.sql.Date
-                obj.setStatus(rs.getString("o.status"));
-                obj.setComentarios(rs.getString("o.comentarios"));
-                obj.setPeso(rs.getFloat("o.peso"));
-                obj.setPontuacao(rs.getFloat("o.pontuacao"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ObjetivoComPDI obj = new ObjetivoComPDI();
 
-                // Popula os campos específicos de ObjetivoComPDI
-                obj.setPdiIdOriginal(rs.getInt("pdi_original_id")); // ID do PDI vindo da tabela PDI
-                obj.setUsuarioId(rs.getInt("p.usuario_id"));
-                obj.setNomeUsuario(rs.getString("nome_usuario"));
+                    // Popula os campos herdados de Objetivo
+                    obj.setId(rs.getInt("o.id"));
+                    obj.setPdiId(rs.getString("o.pdi_id")); // ID do PDI ao qual o objetivo pertence diretamente
+                    obj.setDescricao(rs.getString("o.descricao"));
+                    obj.setPrazo(rs.getDate("o.prazo")); // Retorna java.sql.Date
+                    obj.setStatus(rs.getString("o.status"));
+                    obj.setComentarios(rs.getString("o.comentarios"));
+                    obj.setPeso(rs.getFloat("o.peso"));
+                    obj.setPontuacao(rs.getFloat("o.pontuacao"));
 
-                listaCompleta.add(obj);
+                    // Popula os campos específicos de ObjetivoComPDI
+                    obj.setPdiIdOriginal(rs.getInt("pdi_original_id")); // ID do PDI vindo da tabela PDI
+                    obj.setUsuarioId(rs.getInt("p.usuario_id"));
+                    obj.setNomeUsuario(rs.getString("nome_usuario"));
+
+                    listaCompleta.add(obj);
+                }
             }
 
         } catch (SQLException e) {
