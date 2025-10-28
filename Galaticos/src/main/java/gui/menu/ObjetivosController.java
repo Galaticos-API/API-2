@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -258,28 +259,62 @@ public class ObjetivosController {
         return card;
     }
 
-    /**
-     * Adiciona a funcionalidade de clique a um card de objetivo.
-     * ATENÇÃO: A lógica atual SÓ permite que RH abra o modal.
-     * Gestores (Geral/Area) podem clicar, mas nada acontecerá.
-     * Se desejar que eles também avaliem, mude o IF.
-     */
     private void adicionarAcaoClique(Node card, Objetivo objetivo) {
-        card.setOnMouseClicked(event -> {
-            // Apenas RH pode abrir o modal de avaliação
-            if ("RH".equals(usuarioLogado.getTipo_usuario()) && objetivo instanceof ObjetivoComPDI) {
+//        card.setOnMouseClicked(event -> {
+//            if (event.getButton() == MouseButton.PRIMARY) {
+//                if ("RH".equals(usuarioLogado.getTipo_usuario()) && objetivo instanceof ObjetivoComPDI) {
+//                    handleAbrirModalAvaliacao((ObjetivoComPDI) objetivo);
+//                } else {
+//                    // Gestores podem clicar, mas nada acontece no clique primário
+//                }
+//            }
+//        });
+
+        ContextMenu contextMenu = new ContextMenu();
+        Menu mudarStatusMenu = new Menu("Mudar status");
+        MenuItem naoIniciadoItem = new MenuItem("Não Iniciado");
+        naoIniciadoItem.setOnAction(e -> handleChangeStatus(objetivo, "Não Iniciado"));
+        MenuItem emProgressoItem = new MenuItem("Em Progresso");
+        emProgressoItem.setOnAction(e -> handleChangeStatus(objetivo, "Em Progresso"));
+        MenuItem concluidoItem = new MenuItem("Concluído");
+        concluidoItem.setOnAction(e -> handleChangeStatus(objetivo, "Concluído"));
+
+        mudarStatusMenu.getItems().addAll(naoIniciadoItem, emProgressoItem, concluidoItem);
+
+        MenuItem avaliarItem = new MenuItem("Avaliar");
+        avaliarItem.setOnAction(e -> {
+            if (objetivo instanceof ObjetivoComPDI) {
                 handleAbrirModalAvaliacao((ObjetivoComPDI) objetivo);
-            } else if (objetivo instanceof ObjetivoComPDI) {
-                // Gestores (não-RH) clicam, mas não faz nada
-                System.out.println("Gestor (" + usuarioLogado.getTipo_usuario() + ") visualizou objetivo ID:" + objetivo.getId());
             } else {
-                System.err.println("Erro: Tentativa de avaliar objetivo sem dados completos. Objetivo ID: " + objetivo.getId());
-                if (Util.class != null)
-                    Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Dados incompletos para avaliação.");
+                System.err.println("Erro: Tentativa de avaliar objetivo sem dados completos de PDI/Usuário. Objetivo ID: " + objetivo.getId());
+                Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Dados incompletos para avaliação.");
             }
         });
+        avaliarItem.setDisable(!"Em Progresso".equals(objetivo.getStatus()));
+
+        contextMenu.getItems().addAll(mudarStatusMenu, avaliarItem);
+
+        card.setOnContextMenuRequested(event -> {
+            String tipoUsuario = usuarioLogado.getTipo_usuario();
+            if ("RH".equals(tipoUsuario) || "Gestor Geral".equals(tipoUsuario) || "Gestor de Area".equals(tipoUsuario)) {
+                avaliarItem.setDisable(!"Em Progresso".equals(objetivo.getStatus()));
+                contextMenu.show(card, event.getScreenX(), event.getScreenY());
+            }
+        });
+
         card.getStyleClass().add("clickable-card");
     }
+
+    private void handleChangeStatus(Objetivo objetivo, String novoStatus) {
+        try {
+            objetivo.setStatus(novoStatus);
+            objetivoDAO.atualizar(objetivo);
+            configurarTela();
+        } catch (Exception e) {
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível alterar o status do objetivo.");
+        }
+    }
+
 
     /**
      * Abre o modal (janela pop-up) para o RH registrar uma nova avaliação.

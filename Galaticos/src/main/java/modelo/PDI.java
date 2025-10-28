@@ -20,6 +20,7 @@ public class PDI {
     private Date dataCriacao;
     private Date dataFechamento;
     private float pontuacaoGeral;
+    private int ano;
 
     // --- Relacionamentos ---
     // Um PDI tem uma lista de Objetivos e uma lista de Documentos.
@@ -47,8 +48,9 @@ public class PDI {
     /**
      * Construtor com todos os atributos para facilitar a criação de objetos já preenchidos.
      */
-    public PDI(String colaboradorId, String status, Date dataCriacao, Date dataFechamento) {
+    public PDI(String colaboradorId, int ano, String status, Date dataCriacao, Date dataFechamento) {
         this.colaboradorId = colaboradorId;
+        this.ano = ano;
         this.status = status;
         this.dataCriacao = dataCriacao;
         this.dataFechamento = dataFechamento;
@@ -97,6 +99,7 @@ public class PDI {
     public String getDataFechamento() {
         return formatter.format(this.dataFechamento);
     }
+
     public Date getDataFechamentoDate() {
         return this.dataFechamento;
     }
@@ -111,6 +114,14 @@ public class PDI {
 
     public void setPontuacaoGeral(float pontuacaoGeral) {
         this.pontuacaoGeral = pontuacaoGeral;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
     }
 
     public List<Objetivo> getObjetivos() {

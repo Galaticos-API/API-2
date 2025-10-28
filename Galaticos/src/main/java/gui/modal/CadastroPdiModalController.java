@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate; // Mantenha LocalDate para o DatePicker
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Calendar;
 
 public class CadastroPdiModalController implements Initializable {
 
@@ -109,9 +110,18 @@ public class CadastroPdiModalController implements Initializable {
         mensagemErro.setText(""); // Limpa erros
 
         try {
-            Date dataFechamentoSQL = Date.valueOf(dataFechamentoLocal);
+            // Define dataCriacaoSQL como a data atual
             Date dataCriacaoSQL = new Date(System.currentTimeMillis());
-            PDI novoPdi = new PDI(usuarioSelecionado.getId(), status, dataCriacaoSQL, dataFechamentoSQL);
+            Date dataFechamentoSQL = (dataFechamentoLocal != null) ? Date.valueOf(dataFechamentoLocal) : null;
+
+            // --- EXTRAIR O ANO DA DATA DE CRIAÇÃO ---
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dataCriacaoSQL);
+            int anoCriacao = cal.get(Calendar.YEAR);
+            // --- FIM DA EXTRAÇÃO ---
+
+            // Cria o objeto PDI incluindo o ano
+            PDI novoPdi = new PDI(usuarioSelecionado.getId(), anoCriacao, status, dataCriacaoSQL, dataFechamentoSQL);
 
             // 5. Salvar no banco de dados
             PDI pdiCriado = pdiDao.adicionar(novoPdi);

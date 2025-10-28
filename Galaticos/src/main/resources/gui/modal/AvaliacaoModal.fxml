@@ -40,9 +40,6 @@
             <Label styleClass="modal-label" text="Nota (0-10):" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
             <ComboBox fx:id="comboNota" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-            <Label styleClass="modal-label" text="Novo Status:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <ComboBox fx:id="comboStatus" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
             <Label styleClass="modal-label" text="Comentário:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
             <TextArea fx:id="txtComentario" prefRowCount="4" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
         </children>

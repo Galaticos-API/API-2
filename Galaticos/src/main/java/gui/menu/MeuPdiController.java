@@ -2,6 +2,7 @@ package gui.menu;
 
 import dao.ObjetivoDAO;
 import dao.PdiDAO;
+import dao.AvaliacaoDAO;
 import gui.modal.AvaliacaoObjetivoModalController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import modelo.Objetivo;
 import modelo.ObjetivoComPDI;
 import modelo.PDI; // Pode ser removido se 'popularDetalhesPDI' for removido
 import modelo.Usuario;
+import modelo.Avaliacao;
 import util.Util;
 
 import java.io.IOException;
@@ -30,6 +32,14 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import gui.modal.AvaliacoesObjetivoModalController;
+import java.io.IOException;
 
 public class MeuPdiController {
 
@@ -76,7 +86,9 @@ public class MeuPdiController {
     private Usuario usuarioLogado;
     private PdiDAO pdiDAO = new PdiDAO();
     private ObjetivoDAO objetivoDAO = new ObjetivoDAO();
+    private AvaliacaoDAO avaliacaoDAO = new AvaliacaoDAO();
     private final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter FORMATADOR_DATA_AVALIACAO = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
      * Chamado pelo MainController para passar o usuário logado.
@@ -112,20 +124,34 @@ public class MeuPdiController {
                 popularDetalhesPDI(pdiUsuario);
 
                 List<Objetivo> meusObjetivos = objetivoDAO.buscarPorPdiId(pdiUsuario.getId());
+                System.out.println("MeuPdiController: Objetivos encontrados: " + meusObjetivos.size());
+
                 for (Objetivo obj : meusObjetivos) {
                     Node cardObjetivo = criarCardObjetivoPadrao(obj);
-                    distribuirCard(cardObjetivo, obj.getStatus());
+                    distribuirCardMeuPDI(cardObjetivo, obj.getStatus());
                 }
                 adicionarPlaceholderSeVazio(colunaNaoIniciadoUser);
                 adicionarPlaceholderSeVazio(colunaEmProgressoUser);
                 adicionarPlaceholderSeVazio(colunaConcluidoUser);
             } else {
-                lblSemPdi.setVisible(true);
+//                lblSemPdi.setVisible(true);
+//                lblSemPdi.setManaged(true);
+//                pdiDetalhesContainer.lookup(".pdi-details-card").setVisible(false);
+//                pdiDetalhesContainer.lookup(".pdi-details-card").setManaged(false);
+//                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setVisible(false);
+//                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setManaged(false);
+
+                // Se não há PDI:
+                lblSemPdi.setVisible(true); // Mostra a mensagem "sem PDI"
                 lblSemPdi.setManaged(true);
-                pdiDetalhesContainer.lookup(".pdi-details-card").setVisible(false);
-                pdiDetalhesContainer.lookup(".pdi-details-card").setManaged(false);
-                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setVisible(false);
-                pdiDetalhesContainer.lookup(".kanbanObjetivosUsuario").getParent().setManaged(false);
+
+                // Esconde TODO o container de detalhes do PDI
+                pdiDetalhesContainer.setVisible(false);
+                pdiDetalhesContainer.setManaged(false);
+
+                // Garante que o container do Kanban geral (para gestores) permaneça escondido
+                kanbanContainer.setVisible(false);
+                kanbanContainer.setManaged(false);
             }
 
             // Adiciona placeholders no Kanban principal
@@ -184,6 +210,62 @@ public class MeuPdiController {
                 break;
         }
         targetColumn.getChildren().add(card);
+    }
+
+    private void distribuirCardMeuPDI(Node card, String status) {
+        VBox targetColumn;
+        if (status == null) status = "Não Iniciado";
+
+        switch (status) {
+            case "Em Progresso":
+                targetColumn = colunaEmProgressoUser;
+                break;
+            case "Concluído":
+                targetColumn = colunaConcluidoUser;
+                break;
+            case "Não Iniciado":
+            default:
+                targetColumn = colunaNaoIniciadoUser;
+                break;
+        }
+        if (targetColumn != null) {
+            targetColumn.getChildren().removeIf(node -> node.getStyleClass().contains("kanban-empty-placeholder"));
+            targetColumn.getChildren().add(card);
+            targetColumn.setAlignment(Pos.TOP_LEFT);
+        } else {
+            System.err.println("Erro: Coluna alvo para o status '" + status + "' não encontrada no FXML (coluna...User).");
+        }
+    }
+
+    private void handleMostrarAvaliacoes(Objetivo objetivo) {
+        if (objetivo == null) return;
+
+        try {
+            List<Avaliacao> avaliacoes = avaliacaoDAO.buscarPorObjetivoId(objetivo.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/modal/AvaliacoesObjetivoModal.fxml"));
+            Parent page = loader.load();
+
+            AvaliacoesObjetivoModalController controller = loader.getController();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Histórico de Avaliações");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(lblTituloPDI.getScene().getWindow());
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            controller.setDialogStage(dialogStage);
+            controller.setDados(objetivo, avaliacoes);
+
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro FXML", "Não foi possível carregar a tela de visualização de avaliações: " + e.getMessage());
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível buscar ou exibir as avaliações: " + e.getMessage());
+        }
     }
 
 
@@ -350,9 +432,8 @@ public class MeuPdiController {
         VBox.setMargin(descricaoLabel, new Insets(10, 10, 10, 10));
 
         Separator separator = new Separator();
-        separator.setPadding(new Insets(0, 10, 0, 10));
 
-        Label prazoLabel = new Label("Prazo: " + objetivo.getPrazo());
+        Label prazoLabel = new Label("Prazo: " + (objetivo.getPrazo() != null ? formatarData(objetivo.getPrazo()) : "N/A"));
         prazoLabel.getStyleClass().add("objetivo-card-detail");
 
         Label pesoLabel = null;
@@ -367,10 +448,18 @@ public class MeuPdiController {
             detailsBox.getChildren().add(pesoLabel);
         }
         VBox.setMargin(detailsBox, new Insets(8, 10, 10, 10));
+
         card.getChildren().addAll(descricaoLabel, separator, detailsBox);
 
-        // Esta versão do card (padrão) não é clicável para avaliação
-        // adicionarAcaoClique(card, objetivo);
+        card.setOnMouseClicked(event -> {
+            if (usuarioLogado != null) {
+                if ("Colaborador".equals(usuarioLogado.getTipo_usuario())) {
+                    handleMostrarAvaliacoes(objetivo);
+                }
+            }
+        });
+        card.getStyleClass().add("clickable-card");
+
         return card;
     }
 

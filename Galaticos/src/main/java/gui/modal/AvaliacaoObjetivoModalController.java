@@ -27,8 +27,8 @@ public class AvaliacaoObjetivoModalController {
     private TextArea txtObjetivo;
     @FXML
     private ComboBox<Double> comboNota;
-    @FXML
-    private ComboBox<String> comboStatus;
+    // @FXML
+    // private ComboBox<String> comboStatus;    Não é mais necessário
     @FXML
     private TextArea txtComentario;
     @FXML
@@ -50,7 +50,7 @@ public class AvaliacaoObjetivoModalController {
                         .collect(Collectors.toList())
         ));
 
-        comboStatus.getItems().addAll("Não Iniciado", "Em Progresso", "Concluído");
+        // comboStatus.getItems().addAll("Não Iniciado", "Em Progresso", "Concluído");
     }
 
 
@@ -62,7 +62,7 @@ public class AvaliacaoObjetivoModalController {
         lblColaborador.setText(objetivo.getNomeUsuario());
         lblPdiId.setText(String.valueOf(objetivo.getPdiIdOriginal()));
         txtObjetivo.setText(objetivo.getDescricao());
-        comboStatus.setValue(objetivo.getStatus());
+        // comboStatus.setValue(objetivo.getStatus());
     }
 
     @FXML
@@ -78,13 +78,13 @@ public class AvaliacaoObjetivoModalController {
             novaAvaliacao.setAvaliadorId(Integer.parseInt(avaliador.getId()));
             novaAvaliacao.setNota(comboNota.getValue());
             novaAvaliacao.setComentario(txtComentario.getText().trim());
-            novaAvaliacao.setStatus_objetivo(comboStatus.getValue());
+            novaAvaliacao.setStatus_objetivo("Concluído");
             novaAvaliacao.setDataAvaliacao(LocalDate.now());
 
             avaliacaoDAO.adicionar(novaAvaliacao);
 
 
-            objetivo.setStatus(comboStatus.getValue());
+            objetivo.setStatus("Concluído");
 
             objetivoDAO.atualizar(objetivo);
 
@@ -105,10 +105,10 @@ public class AvaliacaoObjetivoModalController {
             lblMensagemErro.setText("Por favor, selecione uma nota.");
             return false;
         }
-        if (comboStatus.getValue() == null) {
-            lblMensagemErro.setText("Por favor, selecione um novo status para o objetivo.");
-            return false;
-        }
+//        if (comboStatus.getValue() == null) {
+//            lblMensagemErro.setText("Por favor, selecione um novo status para o objetivo.");
+//            return false;
+//        }
         if (txtComentario.getText() == null || txtComentario.getText().trim().isEmpty()) {
             lblMensagemErro.setText("Por favor, adicione um comentário à avaliação.");
             return false;

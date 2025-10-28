@@ -20,31 +20,32 @@ public class PdiDAO {
             throw new PDIException("Esse colaborador já possui um PDI");
         }
 
-        String sql = "INSERT INTO pdi (usuario_id, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pdi (usuario_id, ano, status, data_criacao, data_fechamento, pontuacao_geral) VALUES (?, ?, ?, ?, ?, ?)";
 
         DateTimeFormatter formatterStringParaLocalDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, pdi.getColaboradorId());
-            pstmt.setString(2, pdi.getStatus());
+            pstmt.setInt(2, pdi.getAno());
+            pstmt.setString(3, pdi.getStatus());
 
             String dataCriacaoStr = pdi.getDataCriacao();
             if (dataCriacaoStr == null || dataCriacaoStr.trim().isEmpty()) {
-                pstmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
             } else {
                 LocalDate dataCriacaoLocal = LocalDate.parse(dataCriacaoStr, formatterStringParaLocalDate);
-                pstmt.setDate(3, java.sql.Date.valueOf(dataCriacaoLocal));
+                pstmt.setDate(4, java.sql.Date.valueOf(dataCriacaoLocal));
             }
 
             String dataFechamentoStr = pdi.getDataFechamento();
             if (dataFechamentoStr != null && !dataFechamentoStr.trim().isEmpty()) {
                 LocalDate dataFechamentoLocal = LocalDate.parse(dataFechamentoStr, formatterStringParaLocalDate);
-                pstmt.setDate(4, java.sql.Date.valueOf(dataFechamentoLocal));
+                pstmt.setDate(5, java.sql.Date.valueOf(dataFechamentoLocal));
             } else {
-                pstmt.setNull(4, Types.DATE);
+                pstmt.setNull(5, Types.DATE);
             }
 
-            pstmt.setFloat(5, 0);
+            pstmt.setFloat(6, 0);
 
             int affectedRows = pstmt.executeUpdate();
 

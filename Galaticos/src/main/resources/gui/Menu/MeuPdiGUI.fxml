@@ -127,9 +127,9 @@
                                 </VBox>
                             </HBox>
                         </VBox>
-                        <Label fx:id="lblSemPdi" managed="false" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-padding: 20px;" text="Você ainda não possui um Plano de Desenvolvimento Individual ativo." visible="false" />
                     </children>
                 </VBox>
+                <Label fx:id="lblSemPdi" managed="false" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-padding: 20px;" text="Você ainda não possui um Plano de Desenvolvimento Individual ativo." visible="false" />
 
             </children>
         </VBox>

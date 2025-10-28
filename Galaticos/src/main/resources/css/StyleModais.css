@@ -84,3 +84,74 @@
 .modal-button-cancel:hover {
     -fx-background-color: #d0d7db;
 }
+
+
+.modal-container {
+    -fx-pref-width: 480px; /* Largura similar a outros modais */
+    -fx-background-color: #ffffff;
+    /* Reutiliza estilos de .modal-container de StyleModais.css */
+}
+
+.modal-title {
+    /* Reutiliza estilos de .modal-title de StyleModais.css */
+    -fx-font-size: 16px; /* Pode ajustar o tamanho se necessário */
+}
+
+.modal-label {
+    /* Reutiliza estilos de .modal-label de StyleModais.css */
+    -fx-font-size: 13px;
+}
+
+/* Estilos específicos para o ListView de Avaliações */
+.avaliacoes-list-view {
+    -fx-border-color: #dee2e6; /* Borda sutil */
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-background-color: #f8f9fa; /* Fundo levemente cinza */
+}
+
+.avaliacoes-list-view .list-cell {
+    -fx-background-color: transparent; /* Célula transparente para ver o fundo do ListView */
+    -fx-padding: 10px 15px; /* Espaçamento interno da célula */
+    -fx-border-color: transparent transparent #e9ecef transparent; /* Linha separadora sutil */
+    -fx-border-width: 1px;
+}
+
+.avaliacoes-list-view .list-cell:filled:hover {
+    -fx-background-color: #e9ecef; /* Leve destaque no hover */
+}
+
+/* Layout interno de cada item da lista */
+.avaliacao-item-layout {
+    -fx-padding: 5px;
+}
+
+/* Estilos para os textos dentro de cada item */
+.avaliacao-item-header {
+    -fx-font-size: 12px;
+    -fx-fill: #6c757d; /* Cinza */
+    -fx-font-weight: bold;
+}
+
+.avaliacao-item-nota {
+    -fx-font-size: 13px;
+    -fx-fill: #343a40; /* Preto suave */
+    -fx-font-weight: bold;
+    -fx-padding: 2px 0;
+}
+
+.avaliacao-item-comentario {
+    -fx-font-size: 13px;
+    -fx-fill: #495057; /* Cinza escuro */
+}
+
+.secondary-button {
+    -fx-background-color: #dbe2e3; /* Cinza Claro */
+    -fx-text-fill: #2e4c6a;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6px 15px;
+}
+.secondary-button:hover {
+    -fx-background-color: #bdc3c7;
+}
