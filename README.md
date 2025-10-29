@@ -61,7 +61,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 <br>
  
 Tópicos utilizados para definir o DoR das Sprints:
-* Resumo - Empresa GSW;
+* Resumo - Empresa Youtan;
 * Desafio Proposto;
 * Requisitos do Projeto;
 * Possíveis Usuários;
