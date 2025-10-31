@@ -49,7 +49,7 @@ O principal objetivo desta sprint foi entregar as funcionalidades básicas de ad
 <span id="MVP">
 
 ## MVP
-[Vídeo de Apresentação do MVP da Sprint 1](https://youtu.be/JZE0d3_YgsM)
+[Vídeo de Apresentação do MVP da Sprint 2](https://youtu.be/eqKXYj3UYmQ)
 
 <br>
 
