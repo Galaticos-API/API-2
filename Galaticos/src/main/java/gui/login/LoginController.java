@@ -55,42 +55,47 @@ public class LoginController {
     @FXML
     void clickLogin(ActionEvent event) throws Exception {
         String email = emailUsuario.getText().trim();
-        String senhaPlana = senhaUsuario.getText().trim(); // <-- Variável renomeada
+        String senhaPlana = senhaUsuario.getText().trim();
 
-        if (email.isEmpty() || senhaPlana.isEmpty()) { // <-- Variável renomeada
+        if (email.isEmpty() || senhaPlana.isEmpty()) {
             mostrarAlerta("Campos Vazios", "Por favor, preencha o e-mail e a senha.");
             return;
         }
 
-        // --- ALTERAÇÃO AQUI ---
         try {
-            // Criptografa a senha digitada para comparar com a do banco
             String senhaCriptografada = CriptografiaUtil.encrypt(senhaPlana);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senhaCriptografada);
 
             if (usuarioAutenticado != null) {
-                Session.setUsuarioAtual(usuarioAutenticado);
+                // Verifica se está ativo o usuário
+                if ("Ativo".equals(usuarioAutenticado.getStatus())) {
 
-                String fxmlFile = "MainGUI.fxml";
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
-                Parent proximoRoot = loader.load();
+                    // Caso esteja, efetua o login
+                    Session.setUsuarioAtual(usuarioAutenticado);
 
-                passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+                    String fxmlFile = "MainGUI.fxml";
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
+                    Parent proximoRoot = loader.load();
 
-                Stage stage = StageManager.getStage();
-                stage.getScene().setRoot(proximoRoot);
+                    passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+
+                    Stage stage = StageManager.getStage();
+                    stage.getScene().setRoot(proximoRoot);
+
+                } else {
+                    // Se estiver inativo impede o login
+                    mostrarAlerta("Falha no Login", "Este usuário está inativo. Contate o administrador.");
+                }
 
             } else {
                 mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
             }
         } catch (Exception e) {
-            // Captura erros (ex: falha na criptografia ou no banco)
             Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro no Login", "Ocorreu um erro: " + e.getMessage());
             e.printStackTrace();
         }
-        // --- FIM DA ALTERAÇÃO ---
     }
 
     private void passarUsuarioParaController(Object controller, Usuario usuario) {
