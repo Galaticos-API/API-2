@@ -72,7 +72,7 @@ public class LoginController {
                 // Verifica se está ativo o usuário
                 if ("Ativo".equals(usuarioAutenticado.getStatus())) {
 
-                    // Caso esteja, efetua o login
+                    // Se ativo, efetua o login
                     Session.setUsuarioAtual(usuarioAutenticado);
 
                     String fxmlFile = "MainGUI.fxml";
