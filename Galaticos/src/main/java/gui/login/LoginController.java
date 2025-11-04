@@ -66,17 +66,25 @@ public class LoginController {
             Usuario usuarioAutenticado = usuarioDAO.autenticar(email, senhaCriptografada);
 
             if (usuarioAutenticado != null) {
-                Session.setUsuarioAtual(usuarioAutenticado);
+                // Verifica se está ativo o usuário
+                if ("Ativo".equals(usuarioAutenticado.getStatus())) {
 
-                String fxmlFile = "MainGUI.fxml";
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
-                Parent proximoRoot = loader.load();
+                    // Se ativo, efetua o login
+                    Session.setUsuarioAtual(usuarioAutenticado);
 
-                passarUsuarioParaController(loader.getController(), usuarioAutenticado);
+                    String fxmlFile = "MainGUI.fxml";
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlFile));
+                    Parent proximoRoot = loader.load();
 
-                Stage stage = StageManager.getStage();
-                stage.getScene().setRoot(proximoRoot);
+                    passarUsuarioParaController(loader.getController(), usuarioAutenticado);
 
+                    Stage stage = StageManager.getStage();
+                    stage.getScene().setRoot(proximoRoot);
+
+                } else {
+                    // Se estiver inativo impede o login
+                    mostrarAlerta("Falha no Login", "Este usuário está inativo. Contate o administrador.");
+                }
             } else {
                 mostrarModalErro("Usuário ou senha incorretos.");
             }

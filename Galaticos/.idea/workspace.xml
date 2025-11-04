@@ -5,35 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c895df76-9050-4f34-af53-ff5b82262bc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/gui/modal/EditarObjetivoModalController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/EditarObjetivoModal.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/1 Guia de Avaliação API 2025-2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/2 Guia de Artefatos de Requisitos - Métodos Ageis API 2025-2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/3 Guia do GitHub 2025-2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/4 Guia de Soft Skills API 2025-2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/Documentação das Sprints/DocSprint1.md" beforeDir="false" afterPath="$PROJECT_DIR$/../DOCS/Documentação das Sprints/DocSprint1.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/burn_sprint2.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/burndown_sprint.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/burndown_sprint1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/diagrama de BD.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/diagrama_classes.drawio" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/diagrama_classes.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../DOCS/pdi_youtan.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../DOCS/pdi_youtan.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/pdi_youtan2.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/pfp2 1440x1440.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOCS/pfp2 512x512.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/AvaliacaoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/AvaliacaoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ObjetivoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ObjetivoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/PdiDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/PdiDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/ObjetivosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/ObjetivosController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/PDIsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/PDIsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/AvaliacaoObjetivoModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/AvaliacaoObjetivoModalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/css/StyleEditarPDI.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/css/StyleEditarPDI.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/modal/AvaliacaoModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/AvaliacaoModal.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/factory/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/factory/ConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/login/LoginController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -81,7 +61,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "S0-Mudar-status-do-usuário-na-edição-do-usuário",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "R:/FATEC/sem2/API-2/Galaticos/src/main/java/gui/modal",
     "last_opened_file_path": "R:/FATEC/sem2/API-2/Galaticos"
@@ -128,6 +108,17 @@
       <updated>1760965628043</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
