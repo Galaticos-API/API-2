@@ -88,7 +88,6 @@ public class LoginController {
                     // Se estiver inativo impede o login
                     mostrarAlerta("Falha no Login", "Este usuário está inativo. Contate o administrador.");
                 }
-
             } else {
                 mostrarAlerta("Falha no Login", "Usuário ou senha incorretos.");
             }
