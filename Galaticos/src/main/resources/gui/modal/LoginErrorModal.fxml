@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<StackPane fx:controller="gui.modal.LoginErrorModalController"
+           xmlns:fx="http://javafx.com/fxml"
+           prefWidth="350" prefHeight="180"
+           stylesheets="@../../css/StyleLoginError.css"
+           styleClass="modal-root">
+
+    <VBox alignment="CENTER" spacing="15">
+        <Label text="⚠ Falha no Login" styleClass="modal-titulo"/>
+        <Label fx:id="lblMensagem" wrapText="true" alignment="CENTER" styleClass="modal-texto"/>
+        <Button fx:id="btnOk" text="OK" onAction="#fecharModal" styleClass="modal-botao"/>
+    </VBox>
+
+</StackPane>
