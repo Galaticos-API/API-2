@@ -1,0 +1,34 @@
+.modal-root {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 10, 0, 0, 5);
+}
+
+.modal-titulo {
+    -fx-text-fill: #e74c3c;        /* Vermelho de alerta */
+    -fx-font-size: 20px;           /* Aumenta o tamanho da fonte */
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 10 0 0 0;         /* Espaçamento superior */
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-wrap-text: true;
+    -fx-graphic-text-gap: 8;
+}
+
+.modal-texto {
+    -fx-text-fill: #555;
+    -fx-font-size: 13px;
+}
+
+.modal-botao {
+    -fx-background-color: #007b8f;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 5 20;
+}
+
+.modal-botao:hover {
+    -fx-background-color: #009fbf;
+}

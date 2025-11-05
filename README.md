@@ -61,7 +61,7 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 <br>
  
 Tópicos utilizados para definir o DoR das Sprints:
-* Resumo - Empresa GSW;
+* Resumo - Empresa Youtan;
 * Desafio Proposto;
 * Requisitos do Projeto;
 * Possíveis Usuários;
@@ -99,11 +99,7 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ## 6. Tecnologias Utilizadas
 
-- **Linguagem:** Java (Desktop com JavaFX)
-- **Banco de Dados:** MySQL
-- **Controle de Versão:** Git & GitHub
-- **Ferramentas de Documentação:** User Stories, Wireframes, Diagramas (Classe e Entidade-Relacionamento)
-
+![My Skills](https://go-skill-icons.vercel.app/api/icons?i=git,github,java,mysql,maven,css,,Trello)
 ---
 
 ## 7. Estrutura do Projeto
