@@ -308,6 +308,7 @@ public class ObjetivosController {
             objetivo.setStatus(novoStatus);
             objetivoDAO.atualizar(objetivo);
             configurarTela();
+            PdiDAO.atualizarPontuacaoGeral(objetivo.getPdiId());
         } catch (Exception e) {
             Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível alterar o status do objetivo.");
         }
