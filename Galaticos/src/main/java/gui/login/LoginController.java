@@ -26,6 +26,8 @@ import util.Util;
 
 import java.io.IOException;
 
+import static util.Util.mostrarAlerta;
+
 public class LoginController {
 
     public StackPane rootPane;
@@ -83,13 +85,13 @@ public class LoginController {
 
                 } else {
                     // Se estiver inativo impede o login
-                    mostrarAlerta("Falha no Login", "Este usuário está inativo. Contate o administrador.");
+                    mostrarModalErro("Este usuário está inativo. Contate o administrador.");
                 }
             } else {
                 mostrarModalErro("Usuário ou senha incorretos.");
             }
         } catch (Exception e) {
-            Util.mostrarAlerta(javafx.scene.control.Alert.AlertType.ERROR,
+            mostrarAlerta(javafx.scene.control.Alert.AlertType.ERROR,
                     "Erro no Login", "Ocorreu um erro: " + e.getMessage());
             e.printStackTrace();
         }
