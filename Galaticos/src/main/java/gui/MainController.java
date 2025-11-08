@@ -129,17 +129,27 @@ public class MainController {
                 break;
 
             case "Gestor Geral":
+                btnPDI.setText("Meu PDI");
+                btnDashboard.setVisible(true);
+                btnDashboard.setManaged(true);
+
+                btnUsuarios.setVisible(false);
+                btnUsuarios.setManaged(false);
+                rhSeparator.setVisible(false);
+                rhSeparator.setManaged(false);
+
                 btnObjetivos.setVisible(true);
                 btnObjetivos.setManaged(true);
                 btnObjetivos.setText("Objetivos (Geral)");
-                paginaInicial = this::handleMenuObjetivos; // Gestor começa em Objetivos
+
+                paginaInicial = this::handleMenuDashboard;
                 break;
 
             case "Gestor de Area":
                 btnObjetivos.setVisible(true);
                 btnObjetivos.setManaged(true);
                 btnObjetivos.setText("Objetivos (" + usuarioLogado.getSetorNome() + ")");
-                paginaInicial = this::handleMenuObjetivos; // Gestor começa em Objetivos
+                paginaInicial = this::handleMenuObjetivos;
                 break;
 
             case "Colaborador":

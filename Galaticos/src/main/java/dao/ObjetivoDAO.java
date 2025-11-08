@@ -102,7 +102,7 @@ public class ObjetivoDAO {
      *
      * @return Uma lista de todos os objetos Objetivo.
      */
-    public static List<Objetivo> lerTodos() {
+    public List<Objetivo> lerTodos() {
         List<Objetivo> objetivoList = new ArrayList<>();
         String sql = "SELECT * FROM objetivo";
 
@@ -335,5 +335,34 @@ public class ObjetivoDAO {
         }
 
         return listaCompleta;
+    }
+
+    public List<ObjetivoComPDI> buscarVencidos() {
+        List<ObjetivoComPDI> listaVencidos = new ArrayList<>();
+        String sql = "SELECT o.*, u.nome as nome_usuario " +
+                "FROM objetivo o " +
+                "JOIN pdi p ON o.pdi_id = p.id " +
+                "JOIN usuario u ON p.usuario_id = u.id " +
+                "WHERE o.prazo < CURDATE() " +
+                "  AND o.status != 'Concluído'";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                ObjetivoComPDI obj = new ObjetivoComPDI();
+                obj.setId(rs.getInt("id"));
+                obj.setPdiId(rs.getString("pdi_id"));
+                obj.setDescricao(rs.getString("descricao"));
+                obj.setPrazo(rs.getDate("prazo"));
+                obj.setStatus(rs.getString("status"));
+                obj.setNomeUsuario(rs.getString("nome_usuario"));
+                listaVencidos.add(obj);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar objetivos vencidos.", e);
+        }
+        return listaVencidos;
     }
 }
