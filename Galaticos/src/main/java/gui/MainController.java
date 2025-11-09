@@ -104,12 +104,14 @@ public class MainController {
         Runnable paginaInicial = this::handleMenuPDI; // Padrão: Colaborador começa em "Meu PDI"
 
         // --- 2. Aplica permissões adicionais ---
+        btnDashboard.setVisible(true);
+        btnDashboard.setManaged(true);
         switch (tipoUsuario) {
             case "RH":
                 // Mostrar tudo
                 btnPDI.setText("Gerenciar PDIs"); // Texto original do FXML
-                btnDashboard.setVisible(true);
-                btnDashboard.setManaged(true);
+                //btnDashboard.setVisible(true);
+                //btnDashboard.setManaged(true);
                 btnUsuarios.setVisible(true);
                 btnUsuarios.setManaged(true);
                 rhSeparator.setVisible(true);
@@ -130,8 +132,8 @@ public class MainController {
 
             case "Gestor Geral":
                 btnPDI.setText("Meu PDI");
-                btnDashboard.setVisible(true);
-                btnDashboard.setManaged(true);
+                //btnDashboard.setVisible(true);
+                //btnDashboard.setManaged(true);
 
                 btnUsuarios.setVisible(false);
                 btnUsuarios.setManaged(false);
