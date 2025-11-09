@@ -92,8 +92,8 @@ Tópicos utilizados para definir o DoD das Sprints:
 | -------------------- | ----------------------- | ------------ |
 | Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    |
 | Sprint #1            | 08/09/2025 - 28/09/2025 | Concluído    |
-| Sprint #2            | 06/10/2025 - 26/10/2025 | Em progresso |
-| Sprint #3            | 03/11/2025 - 23/11/2025 | A começar    |
+| Sprint #2            | 06/10/2025 - 26/10/2025 | Concluído    |
+| Sprint #3            | 03/11/2025 - 23/11/2025 | Em progresso |
 | Feira de Soluções    | 29/05/2025              | A começar    |
 ---
 
