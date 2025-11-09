@@ -93,7 +93,7 @@ Tópicos utilizados para definir o DoD das Sprints:
 | Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    | Concluído
 | Sprint #1            | 08/09/2025 - 28/09/2025 | Concluído    | [Sprint #1](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint1.md)
 | Sprint #2            | 06/10/2025 - 26/10/2025 | Concluído    | [Sprint #2](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint2.md)
-| Sprint #3            | 03/11/2025 - 23/11/2025 | Em progresso | Em progresso
+| Sprint #3            | 03/11/2025 - 23/11/2025 | Em progresso | [Sprint #3](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint3.md)
 | Feira de Soluções    | 29/05/2025              | A começar    | A começar
 ---
 
