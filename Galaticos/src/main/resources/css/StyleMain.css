@@ -116,22 +116,6 @@
     -fx-text-fill: #357ABD;
 }
 
-/* Ajustes nos gráficos para melhor visualização */
-.chart-pie-label-line {
-    -fx-stroke: #7f8c8d;
-    -fx-fill: #7f8c8d;
-}
-
-.chart-pie-label {
-    -fx-fill: #34495e;
-    -fx-font-size: 12px;
-}
-
-.chart-legend {
-   -fx-background-color:  transparent;
-}
-
-
 /* ==================================== */
 /* Botão Sair (Logout)                  */
 /* ==================================== */
@@ -157,4 +141,158 @@
     -fx-background-color: #ced4da; /* Ainda mais escuro ao pressionar */
 }
 
-/* (Make sure all other styles like .root, .navigation-bar, .status-bar etc. are present) */
+/* ==================================== */
+/* Estilos Dashboard (KPIs)             */
+/* ==================================== */
+.kpi-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+}
+
+.kpi-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-font-size: 32px;
+    -fx-text-fill: #2A8E9D; /* Azul Youtan */
+    -fx-font-weight: bold;
+}
+
+/* ==================================== */
+/* Estilos Dashboard (Filtros)          */
+/* ==================================== */
+.filter-bar {
+    -fx-alignment: center-right;
+}
+
+.filter-bar .combo-box {
+    -fx-pref-width: 150px;
+}
+
+.filter-bar .button {
+    -fx-background-color: #f4f4f4;
+    -fx-text-fill: #333;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 4;
+}
+.filter-bar .button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+/* ==================================== */
+/* Estilos Dashboard (Alertas)          */
+/* ==================================== */
+.content-card-alert {
+    -fx-background-color: #FFF9F3; /* Amarelo/Laranja muito claro */
+    -fx-background-radius: 8;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+    -fx-border-color: #F39C12; /* Borda Laranja */
+    -fx-border-width: 1px;
+}
+
+.widget-title-alert {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D35400; /* Laranja Escuro */
+}
+
+.alert-list-view {
+    -fx-background-color: transparent;
+}
+.alert-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D35400; /* Laranja escuro */
+    -fx-font-size: 13px;
+    -fx-padding: 6px;
+    -fx-wrap-text: true;
+}
+
+/* ================================================ */
+/* Estilos de Gráfico (Dashboard)                   */
+/* ================================================ */
+
+/* --- NOVA PALETA FIXA DE CORES --- */
+/* Cor 0: Azul Youtan (Principal) */
+.default-color0.chart-pie { -fx-pie-color: #2A8E9D; }
+.default-color0.chart-bar { -fx-bar-fill: #2A8E9D; }
+.default-color0.chart-series-line { -fx-stroke: #2A8E9D; }
+.default-color0.chart-line-symbol { -fx-background-color: #2A8E9D, white; }
+
+/* Cor 1: Laranja/Amarelo (Acento do Logo) */
+.default-color1.chart-pie { -fx-pie-color: #F39C12; }
+.default-color1.chart-bar { -fx-bar-fill: #F39C12; }
+.default-color1.chart-series-line { -fx-stroke: #F39C12; }
+.default-color1.chart-line-symbol { -fx-background-color: #F39C12, white; }
+
+/* Cor 2: Azul Escuro (Títulos) */
+.default-color2.chart-pie { -fx-pie-color: #34495E; }
+.default-color2.chart-bar { -fx-bar-fill: #34495E; }
+.default-color2.chart-series-line { -fx-stroke: #34495E; }
+.default-color2.chart-line-symbol { -fx-background-color: #34495E, white; }
+
+/* Cor 3: Verde Água (Análogo ao Azul) */
+.default-color3.chart-pie { -fx-pie-color: #1ABC9C; }
+.default-color3.chart-bar { -fx-bar-fill: #1ABC9C; }
+.default-color3.chart-series-line { -fx-stroke: #1ABC9C; }
+.default-color3.chart-line-symbol { -fx-background-color: #1ABC9C, white; }
+
+/* Cor 4: Cinza Neutro */
+.default-color4.chart-pie { -fx-pie-color: #7f8c8d; }
+.default-color4.chart-bar { -fx-bar-fill: #7f8c8d; }
+.default-color4.chart-series-line { -fx-stroke: #7f8c8d; }
+.default-color4.chart-line-symbol { -fx-background-color: #7f8c8d, white; }
+
+/* Cor 5: Verde (Sucesso) */
+.default-color5.chart-pie { -fx-pie-color: #2ECC71; }
+.default-color5.chart-bar { -fx-bar-fill: #2ECC71; }
+.default-color5.chart-series-line { -fx-stroke: #2ECC71; }
+.default-color5.chart-line-symbol { -fx-background-color: #2ECC71, white; }
+
+/* Cor 6: Vermelho (Alerta) */
+.default-color6.chart-pie { -fx-pie-color: #E74C3C; }
+.default-color6.chart-bar { -fx-bar-fill: #E74C3C; }
+.default-color6.chart-series-line { -fx-stroke: #E74C3C; }
+.default-color6.chart-line-symbol { -fx-background-color: #E74C3C, white; }
+
+/* Cor 7: Roxo (Distinção) */
+.default-color7.chart-pie { -fx-pie-color: #9B59B6; }
+.default-color7.chart-bar { -fx-bar-fill: #9B59B6; }
+.default-color7.chart-series-line { -fx-stroke: #9B59B6; }
+.default-color7.chart-line-symbol { -fx-background-color: #9B59B6, white; }
+
+/* --- FIM DA NOVA PALETA --- */
+
+
+/* Melhorar legibilidade das legendas */
+.chart-pie-label-line {
+    -fx-stroke: #7f8c8d;
+    -fx-fill: #7f8c8d;
+}
+.chart-pie-label {
+    -fx-fill: #34495e;
+    -fx-font-size: 11px;
+}
+.chart-legend {
+    -fx-background-color:  transparent;
+    -fx-padding: 10px;
+}
+.chart-legend-item {
+    -fx-text-fill: #34495e;
+    -fx-font-size: 12px;
+}
+
+/* ==================================== */
+/* Card de Conteúdo (Gráficos/Tabelas)  */
+/* ==================================== */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8; /* Mesmo radius dos KPIs */
+    -fx-padding: 20px; /* Padding interno */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+}
