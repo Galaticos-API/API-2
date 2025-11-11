@@ -11,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane; // IMPORT NECESSÁRIO
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox; // IMPORT NECESSÁRIO
 import modelo.Objetivo;
 import modelo.ObjetivoComPDI;
 import modelo.PDI;
@@ -85,6 +87,23 @@ public class DashboardController {
     @FXML
     private ListView<String> listAlertas;
 
+    @FXML
+    private GridPane chartsGrid1;
+    @FXML
+    private GridPane chartsGrid2;
+    @FXML
+    private VBox chartBoxPdisPorAno;
+    @FXML
+    private VBox chartBoxProgressoSetor;
+    @FXML
+    private VBox chartBoxUsuariosPorSetor;
+
+    @FXML
+    private VBox chartBoxAreasDeAtencao;
+    @FXML
+    private ListView<String> listAreasDeAtencao;
+
+
     private PdiDAO pdiDAO = new PdiDAO();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private ObjetivoDAO objetivoDAO = new ObjetivoDAO();
@@ -98,19 +117,55 @@ public class DashboardController {
 
     private Usuario usuarioLogado;
 
+    private ObservableList<RankingData> rankingDataList = FXCollections.observableArrayList();
+
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
+
         if ("Gestor Geral".equals(usuario.getTipo_usuario())) {
             lblTitulo.setText("Dashboard (Visão Gestor Geral)");
+
+            chartsGrid2.setVisible(false);
+            chartsGrid2.setManaged(false);
+
+            chartBoxPdisPorAno.setVisible(false);
+            chartBoxPdisPorAno.setManaged(false);
+            chartBoxUsuariosPorSetor.setVisible(false);
+            chartBoxUsuariosPorSetor.setManaged(false);
+
+            GridPane.setColumnIndex(chartBoxProgressoSetor, 0);
+
+            chartBoxProgressoSetor.setVisible(true);
+            chartBoxProgressoSetor.setManaged(true);
+            chartBoxAreasDeAtencao.setVisible(true);
+            chartBoxAreasDeAtencao.setManaged(true);
+
         } else {
             lblTitulo.setText("Dashboard (Visão RH)");
+
+            chartsGrid2.setVisible(true);
+            chartsGrid2.setManaged(true);
+            chartBoxPdisPorAno.setVisible(true);
+            chartBoxPdisPorAno.setManaged(true);
+            chartBoxUsuariosPorSetor.setVisible(true);
+            chartBoxUsuariosPorSetor.setManaged(true);
+            chartBoxProgressoSetor.setVisible(true);
+            chartBoxProgressoSetor.setManaged(true);
+
+            chartBoxAreasDeAtencao.setVisible(false);
+            chartBoxAreasDeAtencao.setManaged(false);
         }
+
 
         configurarTabelaRanking();
         carregarDadosIniciais();
         setupFiltroListeners();
         atualizarDashboard();
+
         carregarAlertas();
+        if ("Gestor Geral".equals(usuario.getTipo_usuario())) {
+            carregarAreasDeAtencao();
+        }
     }
 
     private void carregarDadosIniciais() {
@@ -178,28 +233,37 @@ public class DashboardController {
     }
 
     private void populateFilters() {
-        List<String> anos = cacheTodosOsPdis.stream()
-                .map(pdi -> pdi.getDataCriacao().substring(6, 10))
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
-        comboAno.setItems(FXCollections.observableArrayList(anos));
+        if (cacheTodosOsPdis != null) {
+            List<String> anos = cacheTodosOsPdis.stream()
+                    .map(pdi -> pdi.getDataCriacao().substring(6, 10))
+                    .distinct()
+                    .sorted(Comparator.reverseOrder())
+                    .collect(Collectors.toList());
+            comboAno.setItems(FXCollections.observableArrayList(anos));
+        }
 
-        comboSetor.setItems(FXCollections.observableArrayList(cacheTodosOsSetores));
-        comboSetor.setConverter(new javafx.util.StringConverter<Setor>() {
-            @Override public String toString(Setor s) { return s == null ? null : s.getNome(); }
-            @Override public Setor fromString(String s) { return null; }
-        });
+        if (cacheTodosOsSetores != null) {
+            comboSetor.setItems(FXCollections.observableArrayList(cacheTodosOsSetores));
+            comboSetor.setConverter(new javafx.util.StringConverter<Setor>() {
+                @Override public String toString(Setor s) { return s == null ? null : s.getNome(); }
+                @Override public Setor fromString(String s) { return null; }
+            });
+        }
 
-        comboGestor.setItems(FXCollections.observableArrayList(cacheGestores));
-        comboGestor.setConverter(new javafx.util.StringConverter<Usuario>() {
-            @Override public String toString(Usuario u) { return u == null ? null : u.getNome(); }
-            @Override public Usuario fromString(String s) { return null; }
-        });
+        if (cacheGestores != null) {
+            comboGestor.setItems(FXCollections.observableArrayList(cacheGestores));
+            comboGestor.setConverter(new javafx.util.StringConverter<Usuario>() {
+                @Override public String toString(Usuario u) { return u == null ? null : u.getNome(); }
+                @Override public Usuario fromString(String s) { return null; }
+            });
+        }
     }
 
     private void atualizarDashboard() {
-        if (cacheTodosOsPdis == null) return;
+        if (cacheTodosOsPdis == null) {
+            System.err.println("DashboardController: Caches estão nulos. Abortando atualização.");
+            return;
+        }
 
         String anoSelecionado = comboAno.getValue();
         Setor setorSelecionado = comboSetor.getValue();
@@ -232,6 +296,11 @@ public class DashboardController {
         // [GAPS] Atualiza os novos gráficos com dados filtrados
         atualizarGraficoPDIStatus(pdisFiltrados);
         atualizarGraficoUsuariosPorSetor(usuariosFiltrados);
+
+        // Atualiza o novo KPI do Gestor Geral se ele estiver logado
+        if ("Gestor Geral".equals(usuarioLogado.getTipo_usuario())) {
+            carregarAreasDeAtencao();
+        }
     }
 
     private void atualizarKPIs(List<PDI> pdis, List<Usuario> usuarios, List<Objetivo> objetivos) {
@@ -416,7 +485,7 @@ public class DashboardController {
                 .filter(pdi -> mapaUsuarioSetor.containsKey(pdi.getColaboradorId()))
                 .collect(Collectors.groupingBy(pdi -> mapaUsuarioSetor.get(pdi.getColaboradorId())));
 
-        ObservableList<RankingData> ranking = FXCollections.observableArrayList();
+        rankingDataList.clear(); // Limpa a lista antes de preencher
         for (Setor setor : cacheTodosOsSetores) {
             String setorId = setor.getId();
             String nomeSetor = setor.getNome();
@@ -434,12 +503,42 @@ public class DashboardController {
                     .average()
                     .orElse(0.0) * 100;
 
-            ranking.add(new RankingData(nomeSetor, (int)liderados, totalPDIs, progressoMedio));
+            rankingDataList.add(new RankingData(nomeSetor, (int)liderados, totalPDIs, progressoMedio));
         }
 
-        tableRanking.setItems(ranking);
+        tableRanking.setItems(rankingDataList);
         tableRanking.refresh();
     }
+
+    private void carregarAreasDeAtencao() {
+        final double LIMITE_DESEMPENHO = 50.0;
+
+        List<String> areasDeAtencao = rankingDataList.stream()
+                .filter(r -> r.getProgressoMedio() < LIMITE_DESEMPENHO)
+                .map(r -> String.format("%s (Progresso: %.1f%%)", r.getNome(), r.getProgressoMedio()))
+                .collect(Collectors.toList());
+
+        if (areasDeAtencao.isEmpty()) {
+            listAreasDeAtencao.setPlaceholder(new Label("Nenhuma área com baixo desempenho."));
+            listAreasDeAtencao.getItems().clear();
+        } else {
+            listAreasDeAtencao.setItems(FXCollections.observableArrayList(areasDeAtencao));
+            listAreasDeAtencao.setCellFactory(lv -> new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                        setStyle("-fx-text-fill: #D35400; -fx-font-weight: bold;");
+                    }
+                }
+            });
+        }
+    }
+
 
     private void carregarAlertas() {
         try {
