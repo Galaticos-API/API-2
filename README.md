@@ -9,7 +9,7 @@
 - [5. Sprints](#5-sprints)
 - [6. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
 - [7. Estrutura do Projeto](#6-estrutura-do-projeto)
-- [8. Como Executar o Projeto](#7-como-executar-o-projeto)
+- [8. Manual de Instalação](#8-manual-de-instalação)
 - [9. Documentação](#8-documentação)
 - [10. Equipe](#9-equipe)
 
@@ -117,7 +117,7 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ---
 
-## 8. Como Executar o Projeto
+## 8. Manual de Instalação
 
 ### Pré-requisitos
 
@@ -168,7 +168,7 @@ A pasta irá incluir (WIP):
 - **Detalhes de DoR e DoD por Sprint**
 - **Estratégia de Branch (GitFlow)**
 - **[Manual de Usuário](./docs/manual_usuario.md)**
-- **[Manual de Instalação](./docs/manual_instalacao.md)**
+- **[Manual de Instalação](#8-manual-de-instalação)**
 
 ---
 
