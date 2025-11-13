@@ -7,11 +7,11 @@
 - [3. Cronograma de Evolução do Projeto](#3-cronograma-de-evolução-do-projeto)
 - [4. Dor e Dod](#4-dor-definition-of-ready)
 - [5. Sprints](#5-sprints)
-- [6. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
-- [7. Estrutura do Projeto](#6-estrutura-do-projeto)
+- [6. Tecnologias Utilizadas](#6-tecnologias-utilizadas)
+- [7. Estrutura do Projeto](#7-estrutura-do-projeto)
 - [8. Manual de Instalação](#8-manual-de-instalação)
-- [9. Documentação](#8-documentação)
-- [10. Equipe](#9-equipe)
+- [9. Documentação](#9-documentação)
+- [10. Equipe](#10-equipe)
 
 ---
 
