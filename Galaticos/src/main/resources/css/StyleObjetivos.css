@@ -61,13 +61,13 @@
     -fx-border-width: 1px 0 0 0;
 }
 .kanban-scroll-pane > .viewport {
-    -fx-background-color: #ffffff; /* Fundo branco para a área de scroll */
+   -fx-background-color: #ffffff; /* Fundo branco para a área de scroll */
 }
 
 /* Área de Conteúdo dos Cards */
 .kanban-content-area {
-    -fx-padding: 15px; /* Espaçamento interno */
-    -fx-background-color: transparent; /* Usa fundo do scrollpane */
+     -fx-padding: 15px; /* Espaçamento interno */
+     -fx-background-color: transparent; /* Usa fundo do scrollpane */
 }
 
 /* Placeholder para Colunas Vazias */
@@ -119,10 +119,10 @@
 
 /* Descrição Principal do Objetivo (NOVO ou ajustar .objetivo-card-descricao) */
 .objetivo-card-descricao {
-    -fx-font-size: 14px;
-    -fx-text-fill: #343a40; /* Cor principal, igual ao título do PDI */
-    -fx-font-weight: normal;
-}
+     -fx-font-size: 14px;
+     -fx-text-fill: #343a40; /* Cor principal, igual ao título do PDI */
+     -fx-font-weight: normal;
+ }
 
 /* Data (Ex: Criado em / Prazo) */
 .pdi-card-date, .objetivo-card-prazo { /* Aplica a ambos */
@@ -132,8 +132,8 @@
 
 /* Detalhes menores (Ex: Peso do Objetivo) */
 .objetivo-card-detail {
-    -fx-font-size: 11px; /* Mesmo tamanho da data */
-    -fx-text-fill: #6c757d;
+     -fx-font-size: 11px; /* Mesmo tamanho da data */
+     -fx-text-fill: #6c757d;
 }
 
 /* Informação Extra no Card RH (Objetivos) */
@@ -146,6 +146,7 @@
     -fx-padding-bottom: 5px;
     -fx-margin-bottom: 5px;
 }
+
 
 /* Barra de Progresso (PDI) */
 .pdi-card .progress-bar { /* ... manter como antes ... */ }
@@ -162,22 +163,4 @@
     -fx-padding: 5 0 5 0; /* Adiciona um pouco de espaço vertical ao redor da linha */
 }
 
-/* ==================================== */
-/* NOVO: Estilos para o Botão de Exportação no Rodapé */
-/* ==================================== */
-.export-button-footer {
-    /* Cor do Header/Primária: Usando #007bff, o mesmo azul de .objetivo-card-info-rh */
-    -fx-background-color: #2A8E9D;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 6px;
-    -fx-cursor: hand;
-    /* Sombra para destacar o botão flutuante */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.0, 0, 0);
-}
-
-.export-button-footer:hover {
-    -fx-background-color: #0056b3; /* Um tom ligeiramente mais escuro para o hover */
-}
+/* (Manter os estilos de Status/Badges .status-andamento, etc.) */
