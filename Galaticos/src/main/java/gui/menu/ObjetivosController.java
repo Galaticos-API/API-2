@@ -1,5 +1,17 @@
 package gui.menu;
 
+import javafx.stage.FileChooser;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import dao.ObjetivoDAO;
 import dao.PdiDAO;
 import gui.modal.AvaliacaoObjetivoModalController;
@@ -470,7 +482,68 @@ public class ObjetivosController {
     private Node criarCardObjetivoPadrao(Objetivo objetivo) { /* ... */ return null; } // Adicionado 'return null'
 
     /**
+<<<<<<< Updated upstream
      * [CORRIGIDO]
+=======
+     * [NÃO UTILIZADO]
+     * Popula os Labels e ProgressBar com os detalhes do PDI.
+     * Esta lógica agora pertence a 'MeuPdiGUIController'.
+     */
+    private void popularDetalhesPDI(PDI pdi) {
+        String dataCriacaoStr = pdi.getDataCriacao();
+        String dataFechamentoStr = pdi.getDataFechamento();
+
+        lblPdiStatus.setText(pdi.getStatus() != null ? pdi.getStatus() : "-");
+        lblPdiDataCriacao.setText(dataCriacaoStr != null ? dataCriacaoStr : "N/A");
+        lblPdiDataFechamento.setText(dataFechamentoStr != null ? dataFechamentoStr : "N/A");
+
+        float pontuacao = pdi.getPontuacaoGeral();
+        progressBarGeral.setProgress(pontuacao);
+        textPontuacaoGeral.setText(String.format("%.1f%%", pontuacao * 100));
+    }
+
+    /**
+     * [NÃO UTILIZADO]
+     * Cria um card visual para um objetivo padrão (visão do colaborador).
+     * Esta lógica agora pertence a 'MeuPdiGUIController'.
+     */
+    private Node criarCardObjetivoPadrao(Objetivo objetivo) {
+        VBox card = new VBox();
+        card.getStyleClass().add("objetivo-mini-card");
+
+        Label descricaoLabel = new Label(objetivo.getDescricao());
+        descricaoLabel.setWrapText(true);
+        descricaoLabel.getStyleClass().add("objetivo-card-descricao");
+        VBox.setMargin(descricaoLabel, new Insets(10, 10, 10, 10));
+
+        Separator separator = new Separator();
+        separator.setPadding(new Insets(0, 10, 0, 10));
+
+        Label prazoLabel = new Label("Prazo: " + objetivo.getPrazo());
+        prazoLabel.getStyleClass().add("objetivo-card-detail");
+
+        Label pesoLabel = null;
+        if (objetivo.getPeso() > 0) {
+            pesoLabel = new Label("Peso: " + String.format("%.1f", objetivo.getPeso()));
+            pesoLabel.getStyleClass().add("objetivo-card-detail");
+        }
+
+        VBox detailsBox = new VBox(3);
+        detailsBox.getChildren().add(prazoLabel);
+        if (pesoLabel != null) {
+            detailsBox.getChildren().add(pesoLabel);
+        }
+        VBox.setMargin(detailsBox, new Insets(8, 10, 10, 10));
+        card.getChildren().addAll(descricaoLabel, separator, detailsBox);
+
+        // Esta versão do card (padrão) não é clicável para avaliação
+        // adicionarAcaoClique(card, objetivo);
+        return card;
+    }
+
+    /**
+     * [FUNCIONANDO PARA EXCEL]
+>>>>>>> Stashed changes
      * Formata um objeto java.util.Date para String dd/MM/yyyy.
      */
     private String formatarData(Date data) {
@@ -494,6 +567,122 @@ public class ObjetivosController {
         } catch (Exception e) {
             System.err.println("Erro ao formatar data (" + data.getClass().getName() + "): " + e.getMessage());
             return "Inválida"; // Garante o retorno em caso de exceção
+        }
+    }
+
+    // --- MÉTODOS DE EXPORTAÇÃO EXCEL ---
+
+    private Optional<List<ObjetivoComPDI>> getObjetivosParaExportar() {
+        if (usuarioLogado == null) return Optional.empty();
+
+        String tipoUsuario = usuarioLogado.getTipo_usuario();
+        try {
+            // Lógica idêntica à do configurarTela, garantindo as permissões de visualização
+            switch (tipoUsuario) {
+                case "RH":
+                case "Gestor Geral":
+                    return Optional.of(objetivoDAO.listarTodosComPDI(usuarioLogado.getId()));
+                case "Gestor de Area":
+                    String setorDoGestor = usuarioLogado.getSetor_id();
+                    if (setorDoGestor != null && !setorDoGestor.isEmpty()) {
+                        return Optional.of(objetivoDAO.listarPorSetor(setorDoGestor, usuarioLogado.getId()));
+                    } else {
+                        return Optional.empty();
+                    }
+                default:
+                    return Optional.empty();
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+
+    /**
+     * Manipulador do botão de exportação.
+     * Vinculado ao FXML através do onAction="#handleExportarExcel".
+     */
+    @FXML
+    private void handleExportarExcel() {
+        List<ObjetivoComPDI> objetivos = getObjetivosParaExportar().orElse(Collections.emptyList());
+
+        if (objetivos.isEmpty()) {
+            Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Nenhum objetivo encontrado para exportar.");
+            return;
+        }
+
+        // 1. Configurar o FileChooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar Relatório de Objetivos");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx"));
+        fileChooser.setInitialFileName("Objetivos_Relatorio_" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx");
+
+        // Abre a janela de diálogo
+        File arquivo = fileChooser.showSaveDialog(lblTituloPDI.getScene().getWindow());
+
+        if (arquivo != null) {
+            if (exportarParaExcel(objetivos, arquivo)) {
+                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Dados exportados com sucesso para:\n" + arquivo.getAbsolutePath());
+            } else {
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível salvar o arquivo Excel.");
+            }
+        }
+    }
+
+    /**
+     * Cria e salva o arquivo Excel usando Apache POI.
+     */
+    private boolean exportarParaExcel(List<ObjetivoComPDI> objetivos, File arquivo) {
+        // Usa XSSFWorkbook para o formato .xlsx
+        try (Workbook workbook = new XSSFWorkbook();
+             FileOutputStream fileOut = new FileOutputStream(arquivo)) {
+
+            Sheet sheet = workbook.createSheet("Relatório de Objetivos");
+
+            // 1. Criar o Cabeçalho
+            String[] colunas = {"ID", "PDI ID", "Status", "Descrição", "Prazo", "Peso (f)", "Colaborador"};
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < colunas.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(colunas[i]);
+            }
+
+            // 2. Preencher as Linhas de Dados
+            int rowNum = 1;
+            for (ObjetivoComPDI obj : objetivos) {
+                Row row = sheet.createRow(rowNum++);
+
+                row.createCell(0).setCellValue(obj.getId());
+                row.createCell(1).setCellValue(obj.getPdiId());
+                row.createCell(2).setCellValue(obj.getStatus());
+                row.createCell(3).setCellValue(obj.getDescricao());
+
+                // CORREÇÃO: Usa o método formatarData(Date data) para converter o prazo
+                // para String no formato "dd/MM/yyyy", impedindo a conversão para número serial.
+                row.createCell(4).setCellValue(formatarData((Date) obj.getPrazo()));
+
+                row.createCell(5).setCellValue(obj.getPeso());
+                row.createCell(6).setCellValue(obj.getNomeUsuario());
+            }
+
+            // 3. Auto-ajustar colunas
+            for (int i = 0; i < colunas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // 4. Escrever o arquivo
+            workbook.write(fileOut);
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassCastException e) {
+            // Adicionado tratamento de erro caso o getPrazo() não retorne java.sql.Date
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Dados", "O campo 'Prazo' não pôde ser formatado. Certifique-se de que getPrazo() retorna java.sql.Date.");
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -16,6 +16,7 @@
             <StackPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
             </StackPane.margin>
+<<<<<<< Updated upstream
 
             <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="content-card" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <padding>
@@ -24,6 +25,73 @@
 
                 <children>
                     <Label fx:id="lblTituloPDI" styleClass="page-title" text="Carregando..." />
+=======
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label fx:id="lblTituloPDI" styleClass="page-title" text="Carregando..." />
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button onAction="#handleExportarExcel" styleClass="action-button" text="Exportar para Excel" />
+                </HBox>
+
+                <Separator /> <HBox fx:id="kanbanContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
+                <children>
+                    <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label styleClass="kanban-column-title" text="Não Iniciado" />
+                            <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                <content>
+                                    <VBox fx:id="colunaNaoIniciado" spacing="15.0" styleClass="kanban-content-area" />
+                                </content>
+                            </ScrollPane>
+                        </children>
+                    </VBox>
+                    <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label styleClass="kanban-column-title" text="Em Progresso" />
+                            <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                <content>
+                                    <VBox fx:id="colunaEmProgresso" spacing="15.0" styleClass="kanban-content-area" />
+                                </content>
+                            </ScrollPane>
+                        </children>
+                    </VBox>
+                    <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label styleClass="kanban-column-title" text="Concluído" />
+                            <ScrollPane fitToWidth="true" styleClass="kanban-scroll-pane" VBox.vgrow="ALWAYS">
+                                <content>
+                                    <VBox fx:id="colunaConcluido" spacing="15.0" styleClass="kanban-content-area" />
+                                </content>
+                            </ScrollPane>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+
+                <VBox fx:id="pdiDetalhesContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox spacing="10.0" styleClass="pdi-details-card">
+                            <Label styleClass="widget-title" text="Detalhes do PDI" />
+                            <GridPane hgap="10.0" vgap="8.0">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                    <ColumnConstraints prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                </rowConstraints>
+                                <children>
+                                    <Label styleClass="form-label" text="Status:" />
+                                    <Label fx:id="lblPdiStatus" styleClass="pdi-detail-value" text="-" GridPane.columnIndex="1" />
+>>>>>>> Stashed changes
 
                     <HBox fx:id="kanbanContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
                     </HBox>

@@ -25,6 +25,31 @@
     -fx-padding: 0 0 10px 0;
 }
 
+/* --- ESTILO DO BOTÃO DE EXPORTAÇÃO (Cor do Header: #39848c) --- */
+.action-button {
+    -fx-background-color: #39848c; /* Cor de fundo igual à cor principal do cabeçalho */
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 12px;
+
+    /* MODIFICAÇÕES PARA BORDA BRANCA E ARREDONDAMENTO (8px) */
+    -fx-background-radius: 8px;      /* Arredondamento da cor de fundo */
+    -fx-border-color: #ffffff;       /* Cor da borda: Branco */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;          /* Arredondamento da borda */
+}
+
+.action-button:hover {
+    -fx-background-color: #32757d; /* Um pouco mais escuro no hover */
+    -fx-cursor: hand;
+}
+
+.action-button:pressed {
+    -fx-background-color: #4da9b3; /* Um pouco mais claro no clique */
+}
+/* ------------------------------------- */
+
 /* Barra de Filtro (HBox) */
 .filter-bar {
     -fx-padding: 5px 0 5px 0;

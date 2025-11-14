@@ -32,6 +32,7 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
         </dependency>
+<<<<<<< Updated upstream
 
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -44,6 +45,17 @@
             <version>${apache.poi.version}</version>
         </dependency>
 
+=======
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.3</version> </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version> </dependency>
+>>>>>>> Stashed changes
     </dependencies>
 
     <build>
