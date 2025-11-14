@@ -7,11 +7,11 @@
 - [3. Cronograma de Evolução do Projeto](#3-cronograma-de-evolução-do-projeto)
 - [4. Dor e Dod](#4-dor-definition-of-ready)
 - [5. Sprints](#5-sprints)
-- [6. Tecnologias Utilizadas](#5-tecnologias-utilizadas)
-- [7. Estrutura do Projeto](#6-estrutura-do-projeto)
-- [8. Como Executar o Projeto](#7-como-executar-o-projeto)
-- [9. Documentação](#8-documentação)
-- [10. Equipe](#9-equipe)
+- [6. Tecnologias Utilizadas](#6-tecnologias-utilizadas)
+- [7. Estrutura do Projeto](#7-estrutura-do-projeto)
+- [8. Manual de Instalação](#8-manual-de-instalação)
+- [9. Documentação](#9-documentação)
+- [10. Equipe](#10-equipe)
 
 ---
 
@@ -88,13 +88,13 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ## 5. Sprints
 
-| Fase                 | Previsão                | Status       |
-| -------------------- | ----------------------- | ------------ |
-| Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    |
-| Sprint #1            | 08/09/2025 - 28/09/2025 | Concluído    |
-| Sprint #2            | 06/10/2025 - 26/10/2025 | Em progresso |
-| Sprint #3            | 03/11/2025 - 23/11/2025 | A começar    |
-| Feira de Soluções    | 29/05/2025              | A começar    |
+| Fase                 | Previsão                | Status       | Documentação
+| -------------------- | ----------------------- | ------------ | ------------
+| Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    | Concluído
+| Sprint #1            | 08/09/2025 - 28/09/2025 | Concluído    | [Sprint #1](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint1.md)
+| Sprint #2            | 06/10/2025 - 26/10/2025 | Concluído    | [Sprint #2](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint2.md)
+| Sprint #3            | 03/11/2025 - 23/11/2025 | Em progresso | [Sprint #3](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint3.md)
+| Feira de Soluções    | 05/12/2025              | A começar    | A começar
 ---
 
 ## 6. Tecnologias Utilizadas
@@ -117,7 +117,7 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ---
 
-## 8. Como Executar o Projeto
+## 8. Manual de Instalação
 
 ### Pré-requisitos
 
@@ -134,11 +134,27 @@ Tópicos utilizados para definir o DoD das Sprints:
     git clone https://github.com/Galaticos-API/API-2.git
     ```
 2.  **Configure o banco de dados:**
-    - Execute o script `DOCS/script.sql` para criar o banco de dados e as tabelas.
+    - Localize e edite o arquivo de configuração do seu banco de dados.
+      
+    ```bash
+    # Exemplo: Arquivo application.properties
+    database.url=jdbc:mysql://localhost:3306/pdi_youtan
+    database.username="root"
+    database.password="senha"
 
-3.  **Compile e execute o projeto**
+3.  **Instalação de Dependências**
+    - No diretório principal do projeto, execute o Maven para baixar as dependências do JavaFX e compilar o código.
+      ```bash
+      # Navegue para a pasta principal do projeto
+      cd API-2
 
----
+      # Instale as dependências e compile o projeto
+      mvn clean install
+4.  **Inicie o Programa**
+    ```bash
+    # Inicie a aplicação JavaFX
+    mvn clean javafx:run
+--- 
 
 ## 9. Documentação
 
@@ -152,7 +168,7 @@ A pasta irá incluir (WIP):
 - **Detalhes de DoR e DoD por Sprint**
 - **Estratégia de Branch (GitFlow)**
 - **[Manual de Usuário](./docs/manual_usuario.md)**
-- **[Manual de Instalação](./docs/manual_instalacao.md)**
+- **[Manual de Instalação](#8-manual-de-instalação)**
 
 ---
 

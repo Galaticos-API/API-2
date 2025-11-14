@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableView?>
-
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
@@ -15,6 +13,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -24,97 +23,77 @@
 
 <ScrollPane fitToWidth="true" styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.DashboardController">
     <stylesheets>
-        <URL value="@/css/StyleMain.css" />
-    </stylesheets>
+        <URL value="@/css/StyleMain.css" /> </stylesheets>
     <content>
         <VBox alignment="TOP_CENTER" spacing="20.0">
             <padding>
                 <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-
             </padding>
             <children>
-                <BorderPane>
+
+                <BorderPane fx:id="filterContainer">
                     <left>
                         <Label fx:id="lblTitulo" styleClass="page-title" text="Dashboard de Desempenho" />
-
                     </left>
                     <right>
                         <HBox fx:id="filterBar" alignment="CENTER_RIGHT" spacing="10.0" styleClass="filter-bar">
                             <children>
-
                                 <ComboBox fx:id="comboAno" prefWidth="120.0" promptText="Filtrar por Ano" />
                                 <ComboBox fx:id="comboSetor" prefWidth="160.0" promptText="Filtrar por Setor" />
                                 <ComboBox fx:id="comboGestor" prefWidth="160.0" promptText="Filtrar por Gestor" />
-
                                 <Button fx:id="btnLimparFiltros" mnemonicParsing="false" text="Limpar" />
                             </children>
                         </HBox>
-
                     </right>
                 </BorderPane>
 
-                <GridPane hgap="25.0" vgap="25.0">
+                <GridPane fx:id="kpiGrid" hgap="25.0" vgap="25.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
-
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <VBox alignment="CENTER_LEFT"
-                              styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <VBox fx:id="kpiBox1" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <children>
-                                <Label styleClass="kpi-title" text="PDIs Ativos" />
-                                <Label fx:id="lblTotalPdisAtivos" styleClass="kpi-value"
-                                       text="0" />
+                                <Label fx:id="kpiTitle1" styleClass="kpi-title" text="PDIs Ativos" />
+                                <Label fx:id="lblTotalPdisAtivos" styleClass="kpi-value" text="0" />
                             </children>
                         </VBox>
-
-                        <VBox alignment="CENTER_LEFT" styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <VBox fx:id="kpiBox2" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <children>
-
-                                <Label styleClass="kpi-title" text="Usuários Ativos" />
+                                <Label fx:id="kpiTitle2" styleClass="kpi-title" text="Usuários Ativos" />
                                 <Label fx:id="lblUsuariosAtivos" styleClass="kpi-value" text="0" />
                             </children>
-
                         </VBox>
-
-                        <VBox alignment="CENTER_LEFT" styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                        <VBox fx:id="kpiBox3" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
                             <children>
-
-                                <Label styleClass="kpi-title" text="Objetivos Pendentes" />
+                                <Label fx:id="kpiTitle3" styleClass="kpi-title" text="Objetivos Pendentes" />
                                 <Label fx:id="lblObjetivosPendentes" styleClass="kpi-value" text="0" />
                             </children>
                         </VBox>
-
-                        <VBox alignment="CENTER_LEFT" styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-
+                        <VBox fx:id="kpiBox4" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
                             <children>
-                                <Label styleClass="kpi-title" text="Média de Conclusão (Geral)" />
+                                <Label fx:id="kpiTitle4" styleClass="kpi-title" text="Média de Conclusão (Geral)" />
                                 <Label fx:id="lblMediaConclusao" styleClass="kpi-value" text="0%" />
-
                             </children>
                         </VBox>
-
-                        <VBox alignment="CENTER_LEFT" styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <VBox fx:id="kpiBox5" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <Label styleClass="kpi-title" text="Média de Objetivos/PDI" />
+                                <Label fx:id="kpiTitle5" styleClass="kpi-title" text="Média de Objetivos/PDI" />
                                 <Label fx:id="lblMediaObjetivosPDI" styleClass="kpi-value" text="0.0" />
                             </children>
                         </VBox>
-
-                        <VBox alignment="CENTER_LEFT" styleClass="kpi-card" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <VBox fx:id="kpiBox6" alignment="CENTER_LEFT" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <children>
-                                <Label styleClass="kpi-title" text="Taxa de Conclusão (Objetivos)" />
+                                <Label fx:id="kpiTitle6" styleClass="kpi-title" text="Taxa de Conclusão (Objetivos)" />
                                 <Label fx:id="lblTaxaConclusaoObjetivos" styleClass="kpi-value" text="0%" />
                             </children>
                         </VBox>
-
                     </children>
                 </GridPane>
 
@@ -161,16 +140,18 @@
                         <VBox fx:id="chartBoxUsuariosPorSetor" styleClass="content-card" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
                             <children>
                                 <Label styleClass="widget-title" text="Usuários por Setor" />
-                                <BarChart fx:id="barChartUsuariosPorSetor" VBox.vgrow="ALWAYS" legendVisible="false">
+                                <BarChart fx:id="barChartUsuariosPorSetor" legendVisible="false" VBox.vgrow="ALWAYS">
                                     <xAxis>
-                                        <CategoryAxis side="BOTTOM" label="Setor" />
+                                        <CategoryAxis label="Setor" side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT" label="Nº de Usuários" />
+                                        <NumberAxis label="Nº de Usuários" side="LEFT" />
                                     </yAxis>
                                 </BarChart>
                             </children>
                         </VBox>
+                    </children>
+                </GridPane>
 
                         <VBox fx:id="chartBoxAreasDeAtencao" styleClass="content-card-alert" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.columnSpan="2" visible="false" managed="false">
                             <children>
@@ -201,20 +182,20 @@
                         <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
                             <children>
                                 <Label styleClass="widget-title" text="Objetivos por Status" />
-                                <PieChart fx:id="pieChartObjetivoStatus" VBox.vgrow="ALWAYS" legendVisible="true" />
+                                <PieChart fx:id="pieChartObjetivoStatus" legendVisible="true" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
 
                         <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="2">
                             <children>
                                 <Label styleClass="widget-title" text="PDIs por Status" />
-                                <PieChart fx:id="pieChartPDIStatus" VBox.vgrow="ALWAYS" legendVisible="true" />
+                                <PieChart fx:id="pieChartPDIStatus" legendVisible="true" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                     </children>
                 </GridPane>
 
-                <GridPane hgap="25.0" vgap="25.0">
+                <GridPane fx:id="bottomGrid" hgap="25.0" vgap="25.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" percentWidth="60.0"/>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" percentWidth="40.0"/>
@@ -229,8 +210,7 @@
                                 <TableView fx:id="tableRanking" VBox.vgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="colRankNome" prefWidth="250.0" text="Setor" />
-                                        <TableColumn
-                                                fx:id="colRankLiderados" prefWidth="120.0" text="Nº Colaboradores" />
+                                        <TableColumn fx:id="colRankLiderados" prefWidth="120.0" text="Nº Colaboradores" />
                                         <TableColumn fx:id="colRankPDIs" prefWidth="100.0" text="Nº PDIs" />
                                         <TableColumn fx:id="colRankProgresso" prefWidth="150.0" text=" Metas Atingidas" />
                                     </columns>
@@ -240,11 +220,10 @@
                                 </TableView>
                             </children>
                         </VBox>
-
                         <VBox styleClass="content-card-alert" spacing="10.0" GridPane.columnIndex="1">
                             <children>
                                 <Label styleClass="widget-title-alert" text="⚠️ Alertas (Metas Vencidas)" />
-                                <ListView fx:id="listAlertas" styleClass="alert-list-view" VBox.vgrow="ALWAYS"/>
+                                <ListView fx:id="listAlertas" styleClass="alert-list-view" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                     </children>
