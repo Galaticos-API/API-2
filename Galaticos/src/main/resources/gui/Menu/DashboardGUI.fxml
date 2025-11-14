@@ -107,32 +107,36 @@
                         <RowConstraints minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
+
                         <VBox fx:id="chartBoxPdisPorAno" styleClass="content-card" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <children>
                                 <Label styleClass="widget-title" text="Histórico de PDIs Criados por Ano" />
-                                <LineChart fx:id="lineChartPdisPorAno" legendVisible="false" VBox.vgrow="ALWAYS">
+                                <LineChart fx:id="lineChartPdisPorAno" VBox.vgrow="ALWAYS" legendVisible="false">
                                     <xAxis>
-                                        <CategoryAxis label="Ano" side="BOTTOM" />
+                                        <CategoryAxis side="BOTTOM" label="Ano" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="Quantidade" side="LEFT" />
+                                        <NumberAxis side="LEFT" label="Quantidade" />
                                     </yAxis>
                                 </LineChart>
                             </children>
                         </VBox>
+
                         <VBox fx:id="chartBoxProgressoSetor" styleClass="content-card" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <children>
                                 <Label styleClass="widget-title" text="Progresso Médio por Setor" />
-                                <BarChart fx:id="barChartProgressoSetor" legendVisible="false" VBox.vgrow="ALWAYS">
+                                <BarChart fx:id="barChartProgressoSetor" VBox.vgrow="ALWAYS"
+                                          legendVisible="false">
                                     <xAxis>
-                                        <CategoryAxis label="Setor" side="BOTTOM" />
+                                        <CategoryAxis side="BOTTOM" label="Setor" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="Progresso Médio (%)" side="LEFT" />
+                                        <NumberAxis side="LEFT" label="Progresso Médio (%)" />
                                     </yAxis>
                                 </BarChart>
                             </children>
                         </VBox>
+
                         <VBox fx:id="chartBoxUsuariosPorSetor" styleClass="content-card" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
                             <children>
                                 <Label styleClass="widget-title" text="Usuários por Setor" />
@@ -149,6 +153,15 @@
                     </children>
                 </GridPane>
 
+                        <VBox fx:id="chartBoxAreasDeAtencao" styleClass="content-card-alert" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.columnSpan="2" visible="false" managed="false">
+                            <children>
+                                <Label styleClass="widget-title-alert" text="⚠️ Áreas de Atenção (Progresso &lt; 50%)" />
+                                <ListView fx:id="listAreasDeAtencao" styleClass="alert-list-view" VBox.vgrow="ALWAYS"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+
                 <GridPane fx:id="chartsGrid2" hgap="25.0" vgap="25.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -159,19 +172,21 @@
                         <RowConstraints minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <VBox fx:id="chartBoxObjetivoTipo" styleClass="content-card" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="0">
                             <children>
                                 <Label styleClass="widget-title" text="Foco dos Objetivos (Hard vs Soft)" />
-                                <PieChart fx:id="pieChartObjetivoTipo" legendVisible="true" VBox.vgrow="ALWAYS" />
+                                <PieChart fx:id="pieChartObjetivoTipo" VBox.vgrow="ALWAYS" legendVisible="true" />
                             </children>
                         </VBox>
-                        <VBox fx:id="chartBoxObjetivoStatus" styleClass="content-card" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+                        <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
                             <children>
                                 <Label styleClass="widget-title" text="Objetivos por Status" />
                                 <PieChart fx:id="pieChartObjetivoStatus" legendVisible="true" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
-                        <VBox fx:id="chartBoxPDIStatus" styleClass="content-card" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+
+                        <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="2">
                             <children>
                                 <Label styleClass="widget-title" text="PDIs por Status" />
                                 <PieChart fx:id="pieChartPDIStatus" legendVisible="true" VBox.vgrow="ALWAYS" />
@@ -182,11 +197,11 @@
 
                 <GridPane fx:id="bottomGrid" hgap="25.0" vgap="25.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" percentWidth="60.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" percentWidth="40.0"/>
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
                     <children>
                         <VBox styleClass="content-card" spacing="10.0" GridPane.columnIndex="0">
@@ -213,7 +228,6 @@
                         </VBox>
                     </children>
                 </GridPane>
-
             </children>
         </VBox>
     </content>
