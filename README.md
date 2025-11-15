@@ -86,6 +86,16 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ---
 
+<span id="manual-usuario">
+
+## 📜 Manual do Usuário
+**:link: Clique no link abaixo para visualizar o Manual do Usuário:**
+> [Manual do Usuário](https://docs.google.com/document/d/1LdOXG7TXHtEoyGheWn9J4pO0AUEJYLoVHNaBGOxyOOE/edit?usp=sharing)
+
+<br>
+
+---
+
 ## 5. Sprints
 
 | Fase                 | Previsão                | Status       | Documentação
