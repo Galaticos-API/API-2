@@ -16,11 +16,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.PDI;
 import modelo.Usuario;
+import util.ExcelExporter;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -207,6 +210,26 @@ public class PDIsController implements Initializable {
 
         return card;
     }
+
+    @FXML
+    private void handleExportarExcel() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Salvar lista de PDIs");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx"));
+
+        File destino = chooser.showSaveDialog(cadastrarPdiButton.getScene().getWindow());
+        if (destino == null) return;
+
+        try {
+            List<PDI> lista = pdiDAO.lerTodos();
+            ExcelExporter.exportarPdis(lista, destino);
+            exibirAlerta("Sucesso", "Arquivo salvo com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            exibirAlerta("Erro", "Falha ao exportar Excel.");
+        }
+    }
+
 
     /**
      * Ação do botão Buscar.
