@@ -25,9 +25,44 @@
     -fx-padding: 0 0 10px 0;
 }
 
+/* --- ESTILO DO BOTÃO DE EXPORTAÇÃO (Cor do Header: #39848c) --- */
+.action-button {
+    -fx-background-color: #39848c; /* Cor de fundo igual à cor principal do cabeçalho */
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 12px;
+
+    /* Borda branca e arredondamento (8px) */
+    -fx-background-radius: 8px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+}
+
+.action-button:hover {
+    -fx-background-color: #32757d; /* Um pouco mais escuro no hover */
+    -fx-cursor: hand;
+}
+
+.action-button:pressed {
+    -fx-background-color: #4da9b3; /* Um pouco mais claro no clique */
+}
+/* ------------------------------------- */
+
 /* Barra de Filtro (HBox) */
 .filter-bar {
     -fx-padding: 5px 0 5px 0;
+}
+
+/* NOVO: Estilo para o HBox que contém todas as colunas do Kanban */
+.kanban-board {
+    -fx-background-color: white; /* Fundo opcional */
+    -fx-background-radius: 8px;
+    -fx-border-color: #dee2e6; /* Borda externa do quadro */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 0;
 }
 
 /* Coluna Kanban */
@@ -61,13 +96,13 @@
     -fx-border-width: 1px 0 0 0;
 }
 .kanban-scroll-pane > .viewport {
-   -fx-background-color: #ffffff; /* Fundo branco para a área de scroll */
+    -fx-background-color: #ffffff; /* Fundo branco para a área de scroll */
 }
 
 /* Área de Conteúdo dos Cards */
 .kanban-content-area {
-     -fx-padding: 15px; /* Espaçamento interno */
-     -fx-background-color: transparent; /* Usa fundo do scrollpane */
+    -fx-padding: 15px; /* Espaçamento interno */
+    -fx-background-color: transparent; /* Usa fundo do scrollpane */
 }
 
 /* Placeholder para Colunas Vazias */
@@ -119,10 +154,10 @@
 
 /* Descrição Principal do Objetivo (NOVO ou ajustar .objetivo-card-descricao) */
 .objetivo-card-descricao {
-     -fx-font-size: 14px;
-     -fx-text-fill: #343a40; /* Cor principal, igual ao título do PDI */
-     -fx-font-weight: normal;
- }
+    -fx-font-size: 14px;
+    -fx-text-fill: #343a40; /* Cor principal, igual ao título do PDI */
+    -fx-font-weight: normal;
+}
 
 /* Data (Ex: Criado em / Prazo) */
 .pdi-card-date, .objetivo-card-prazo { /* Aplica a ambos */
@@ -132,8 +167,8 @@
 
 /* Detalhes menores (Ex: Peso do Objetivo) */
 .objetivo-card-detail {
-     -fx-font-size: 11px; /* Mesmo tamanho da data */
-     -fx-text-fill: #6c757d;
+    -fx-font-size: 11px; /* Mesmo tamanho da data */
+    -fx-text-fill: #6c757d;
 }
 
 /* Informação Extra no Card RH (Objetivos) */
