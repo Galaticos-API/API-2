@@ -68,6 +68,13 @@
 
                 <HBox alignment="CENTER_RIGHT">
                     <children>
+                        <Button onAction="#handleExportarExcel" styleClass="primary-button" text="Exportar Excel">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></Button>
                         <Button fx:id="cadastrarPdiButton" mnemonicParsing="false" onAction="#handleAbrirModalCadastro" styleClass="primary-button" text="Registrar novo" />
                     </children>
                 </HBox>

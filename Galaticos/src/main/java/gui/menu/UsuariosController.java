@@ -14,12 +14,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Setor; // <<< 3. IMPORTAR Setor
 import modelo.Usuario;
+import util.ExcelExporter;
 import util.Util;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -232,6 +235,26 @@ public class UsuariosController {
             }
         } else {
             System.out.println("Exclusão cancelada.");
+        }
+    }
+
+    @FXML
+    private void handleExportarExcel() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Salvar lista de usuários");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel (*.xlsx)", "*.xlsx"));
+
+        File destino = chooser.showSaveDialog(btnAddUsuario.getScene().getWindow());
+
+        if (destino == null) return;
+
+        try {
+            List<Usuario> lista = usuarioDAO.lerTodos();
+            ExcelExporter.exportarUsuarios(lista, destino);
+            Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Exportado", "Arquivo salvo com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Falha ao exportar Excel.");
         }
     }
 }
