@@ -3,6 +3,9 @@ package gui.menu;
 import dao.ObjetivoDAO;
 import dao.PdiDAO;
 import gui.modal.AvaliacaoObjetivoModalController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -11,26 +14,37 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Objetivo;
 import modelo.ObjetivoComPDI;
-import modelo.PDI; // Pode ser removido se 'popularDetalhesPDI' for removido
+import modelo.PDI;
 import modelo.Usuario;
 import util.Util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
-// import java.text.SimpleDateFormat; // Não utilizado
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+// IMPORTS APACHE POI
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+// FIM IMPORTS APACHE POI
+
 
 public class ObjetivosController {
 
@@ -38,7 +52,7 @@ public class ObjetivosController {
     @FXML
     private Label lblTituloPDI;
 
-    // Container Kanban (AGORA USADO POR TODOS: RH, Gestor Geral, Gestor de Area)
+    // Container Kanban
     @FXML
     private HBox kanbanContainer;
     @FXML
@@ -48,37 +62,32 @@ public class ObjetivosController {
     @FXML
     private VBox colunaConcluido;
 
-    // Container Detalhes PDI (NÃO MAIS USADO NESTA TELA)
-    // Esta lógica agora pertence ao 'MeuPdiGUIController'
+    // NOVO: Botão de exportar (Adicionado no FXML)
     @FXML
-    private VBox pdiDetalhesContainer;
-    @FXML
-    private Label lblPdiStatus;
-    @FXML
-    private Label lblPdiId;
-    @FXML
-    private Label lblPdiDataCriacao;
-    @FXML
-    private Label lblPdiDataFechamento;
-    @FXML
-    private ProgressBar progressBarGeral;
-    @FXML
-    private Text textPontuacaoGeral;
-    @FXML
-    private Label lblSemPdi;
-    @FXML
-    private VBox colunaNaoIniciadoUser;
-    @FXML
-    private VBox colunaEmProgressoUser;
-    @FXML
-    private VBox colunaConcluidoUser;
+    private Button btnExportarExcel;
+
+    // Container Detalhes PDI
+    @FXML private VBox pdiDetalhesContainer;
+    @FXML private Label lblPdiStatus;
+    @FXML private Label lblPdiId;
+    @FXML private Label lblPdiDataCriacao;
+    @FXML private Label lblPdiDataFechamento;
+    @FXML private ProgressBar progressBarGeral;
+    @FXML private Text textPontuacaoGeral;
+    @FXML private Label lblSemPdi;
+    @FXML private VBox colunaNaoIniciadoUser;
+    @FXML private VBox colunaEmProgressoUser;
+    @FXML private VBox colunaConcluidoUser;
 
 
     // --- DAOs e Variáveis ---
     private Usuario usuarioLogado;
-    // private PdiDAO pdiDAO = new PdiDAO(); // Não é mais necessário aqui
     private ObjetivoDAO objetivoDAO = new ObjetivoDAO();
     private final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // NOVO: Variável para armazenar a lista completa de objetivos carregada
+    private ObservableList<ObjetivoComPDI> listaCompletaDeObjetivos = FXCollections.observableArrayList();
+
 
     /**
      * Chamado pelo MainController para passar o usuário logado.
@@ -89,19 +98,15 @@ public class ObjetivosController {
     }
 
     /**
-     * Configura a tela. Agora, SEMPRE mostrará o Kanban,
-     * filtrando os dados com base no tipo de usuário.
+     * Configura a tela.
      */
     private void configurarTela() {
         if (usuarioLogado == null) return;
 
-        limparConteudos(); // Limpa todas as colunas (Kanban RH e User)
+        limparConteudos();
 
-        // --- LÓGICA DE VISIBILIDADE CORRIGIDA ---
-        // Esta tela agora é SOMENTE para a visão gerencial (Kanban).
         kanbanContainer.setVisible(true);
         kanbanContainer.setManaged(true);
-        // A visão "Meu PDI" (pdiDetalhesContainer) é tratada por 'MeuPdiGUI.fxml'
         pdiDetalhesContainer.setVisible(false);
         pdiDetalhesContainer.setManaged(false);
 
@@ -109,50 +114,46 @@ public class ObjetivosController {
             String tipoUsuario = usuarioLogado.getTipo_usuario();
             List<ObjetivoComPDI> objetivosParaMostrar;
 
-            // --- LÓGICA DE PERMISSÃO CORRIGIDA ---
             switch (tipoUsuario) {
                 case "RH":
                     lblTituloPDI.setText("Gerenciar Objetivos (Visão RH)");
-                    // RH vê todos os objetivos
                     objetivosParaMostrar = objetivoDAO.listarTodosComPDI(usuarioLogado.getId());
                     break;
 
                 case "Gestor Geral":
                     lblTituloPDI.setText("Objetivos (Visão Geral de Setores)");
-                    // Gestor Geral também vê todos
                     objetivosParaMostrar = objetivoDAO.listarTodosComPDI(usuarioLogado.getId());
                     break;
 
                 case "Gestor de Area":
                     lblTituloPDI.setText("Objetivos (Colaboradores da sua Área)");
-
-                    // --- Bloco Atualizado ---
                     String setorDoGestor = usuarioLogado.getSetor_id();
                     if (setorDoGestor != null && !setorDoGestor.isEmpty()) {
                         objetivosParaMostrar = objetivoDAO.listarPorSetor(setorDoGestor, usuarioLogado.getId());
                     } else {
-                        // Caso o gestor não tenha um setor definido, não mostra nada
                         System.err.println("AVISO: Gestor de Área (ID: " + usuarioLogado.getId() + ") não possui um setor_id definido.");
                         objetivosParaMostrar = Collections.emptyList();
                     }
-                    // --- Fim do Bloco Atualizado ---
                     break;
 
                 default:
-                    // Caso o MainController falhe e mande um Colaborador para cá
                     lblTituloPDI.setText("Acesso não autorizado");
                     objetivosParaMostrar = Collections.emptyList();
                     Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Permissão", "Você não tem acesso a esta tela.");
                     break;
             }
 
-            // Popula o Kanban (o único visível)
-            for (ObjetivoComPDI obj : objetivosParaMostrar) {
-                Node cardObjetivo = criarCardObjetivoRH(obj); // O card de RH serve para todos os gestores
-                distribuirCard(cardObjetivo, obj.getStatus()); // Chama o método simplificado
+            // ATUALIZA A LISTA COMPLETA
+            listaCompletaDeObjetivos.clear();
+            listaCompletaDeObjetivos.addAll(objetivosParaMostrar);
+
+            // Popula o Kanban
+            for (ObjetivoComPDI obj : listaCompletaDeObjetivos) {
+                Node cardObjetivo = criarCardObjetivoRH(obj);
+                distribuirCard(cardObjetivo, obj.getStatus());
             }
 
-            // Adiciona placeholders no Kanban principal
+            // Adiciona placeholders
             adicionarPlaceholderSeVazio(colunaNaoIniciado);
             adicionarPlaceholderSeVazio(colunaEmProgresso);
             adicionarPlaceholderSeVazio(colunaConcluido);
@@ -161,9 +162,113 @@ public class ObjetivosController {
             e.printStackTrace();
             lblTituloPDI.setText("Erro ao carregar dados");
             Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar os dados: " + e.getMessage());
-            limparConteudos(); // Limpa tudo em caso de erro
+            limparConteudos();
         }
     }
+
+    // --- MÉTODOS DE EXPORTAÇÃO EXCEL ---
+
+    /**
+     * Retorna a lista de Objetivos que está sendo exibida na tela.
+     */
+    private Optional<List<ObjetivoComPDI>> getObjetivosParaExportar() {
+        // Usa a lista já carregada
+        if (listaCompletaDeObjetivos.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(listaCompletaDeObjetivos);
+    }
+
+    /**
+     * Manipulador do botão de exportação. Vinculado ao FXML.
+     */
+    @FXML
+    private void handleExportarExcel() {
+        List<ObjetivoComPDI> objetivos = getObjetivosParaExportar().orElse(Collections.emptyList());
+
+        if (objetivos.isEmpty()) {
+            Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Nenhum objetivo encontrado para exportar.");
+            return;
+        }
+
+        // 1. Configurar o FileChooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar Relatório de Objetivos");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx"));
+        fileChooser.setInitialFileName("Objetivos_Relatorio_" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx");
+
+        // Abre a janela de diálogo
+        File arquivo = fileChooser.showSaveDialog(lblTituloPDI.getScene().getWindow());
+
+        if (arquivo != null) {
+            if (exportarParaExcel(objetivos, arquivo)) {
+                Util.mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Dados exportados com sucesso para:\n" + arquivo.getAbsolutePath());
+            } else {
+                // O erro específico é tratado dentro de exportarParaExcel,
+                // mas a mensagem genérica aqui cobre falhas de IO.
+                Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Não foi possível salvar o arquivo Excel.");
+            }
+        }
+    }
+
+    /**
+     * Cria e salva o arquivo Excel usando Apache POI.
+     */
+    private boolean exportarParaExcel(List<ObjetivoComPDI> objetivos, File arquivo) {
+        // Usa XSSFWorkbook para o formato .xlsx
+        try (Workbook workbook = new XSSFWorkbook();
+             FileOutputStream fileOut = new FileOutputStream(arquivo)) {
+
+            Sheet sheet = workbook.createSheet("Relatório de Objetivos");
+
+            // 1. Criar o Cabeçalho
+            String[] colunas = {"ID", "PDI ID", "Status", "Descrição", "Prazo", "Peso (f)", "Colaborador"};
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < colunas.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(colunas[i]);
+            }
+
+            // 2. Preencher as Linhas de Dados
+            int rowNum = 1;
+            for (ObjetivoComPDI obj : objetivos) {
+                Row row = sheet.createRow(rowNum++);
+
+                row.createCell(0).setCellValue(obj.getId());
+                row.createCell(1).setCellValue(obj.getPdiId());
+                row.createCell(2).setCellValue(obj.getStatus());
+                row.createCell(3).setCellValue(obj.getDescricao());
+
+                // CORREÇÃO: Usa o método formatarData(Date data) para converter o prazo
+                // para String no formato "dd/MM/yyyy", impedindo a conversão para número serial.
+                // Assumindo que obj.getPrazo() retorna java.sql.Date ou java.util.Date
+                row.createCell(4).setCellValue(formatarData((Date) obj.getPrazo()));
+
+                row.createCell(5).setCellValue(obj.getPeso());
+                row.createCell(6).setCellValue(obj.getNomeUsuario());
+            }
+
+            // 3. Auto-ajustar colunas
+            for (int i = 0; i < colunas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // 4. Escrever o arquivo
+            workbook.write(fileOut);
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassCastException e) {
+            Util.mostrarAlerta(Alert.AlertType.ERROR, "Erro de Dados", "O campo 'Prazo' não pôde ser formatado. Certifique-se de que getPrazo() retorna um tipo de Data válido (java.util.Date ou java.sql.Date).");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // --- FIM DOS MÉTODOS DE EXPORTAÇÃO ---
+
 
     /**
      * Limpa o conteúdo de ambos os containers (Kanban RH e Detalhes User).
@@ -260,16 +365,6 @@ public class ObjetivosController {
     }
 
     private void adicionarAcaoClique(Node card, Objetivo objetivo) {
-//        card.setOnMouseClicked(event -> {
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//                if ("RH".equals(usuarioLogado.getTipo_usuario()) && objetivo instanceof ObjetivoComPDI) {
-//                    handleAbrirModalAvaliacao((ObjetivoComPDI) objetivo);
-//                } else {
-//                    // Gestores podem clicar, mas nada acontece no clique primário
-//                }
-//            }
-//        });
-
         ContextMenu contextMenu = new ContextMenu();
         Menu mudarStatusMenu = new Menu("Mudar status");
         MenuItem naoIniciadoItem = new MenuItem("Não Iniciado");
@@ -371,13 +466,11 @@ public class ObjetivosController {
         }
     }
 
-    // --- MÉTODOS NÃO MAIS UTILIZADOS NESTA TELA ---
-    // (Podem ser removidos se você tiver certeza)
+    // --- MÉTODOS NÃO MAIS UTILIZADOS (DEIXADO PARA REFERÊNCIA) ---
 
     /**
-     * [NÃO UTILIZADO]
+     * [NÃO UTILIZADO NESTA TELA]
      * Popula os Labels e ProgressBar com os detalhes do PDI.
-     * Esta lógica agora pertence a 'MeuPdiGUIController'.
      */
     private void popularDetalhesPDI(PDI pdi) {
         String dataCriacaoStr = pdi.getDataCriacao();
@@ -392,10 +485,10 @@ public class ObjetivosController {
         textPontuacaoGeral.setText(String.format("%.1f%%", pontuacao * 100));
     }
 
+
     /**
-     * [NÃO UTILIZADO]
+     * [NÃO UTILIZADO NESTA TELA]
      * Cria um card visual para um objetivo padrão (visão do colaborador).
-     * Esta lógica agora pertence a 'MeuPdiGUIController'.
      */
     private Node criarCardObjetivoPadrao(Objetivo objetivo) {
         VBox card = new VBox();
@@ -426,13 +519,11 @@ public class ObjetivosController {
         VBox.setMargin(detailsBox, new Insets(8, 10, 10, 10));
         card.getChildren().addAll(descricaoLabel, separator, detailsBox);
 
-        // Esta versão do card (padrão) não é clicável para avaliação
-        // adicionarAcaoClique(card, objetivo);
         return card;
     }
 
+
     /**
-     * [NÃO UTILIZADO]
      * Formata um objeto java.util.Date para String dd/MM/yyyy.
      */
     private String formatarData(Date data) {

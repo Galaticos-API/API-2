@@ -19,9 +19,17 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
             <children>
-                <Label fx:id="lblTituloPDI" styleClass="page-title" text="Carregando..." />
 
-                <HBox fx:id="kanbanContainer" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label fx:id="lblTituloPDI" styleClass="page-title" text="Carregando..." />
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button fx:id="btnExportarExcel" onAction="#handleExportarExcel" styleClass="action-button" text="Exportar para Excel" />
+                </HBox>
+
+                <Separator />
+                <HBox fx:id="kanbanContainer" styleClass="kanban-board" managed="false" spacing="20.0" visible="false" VBox.vgrow="ALWAYS">
                     <children>
                         <VBox styleClass="kanban-column" HBox.hgrow="ALWAYS">
                             <children>
