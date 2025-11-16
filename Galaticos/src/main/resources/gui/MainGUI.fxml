@@ -22,13 +22,14 @@
             <children>
                 <Button fx:id="btnObjetivos" mnemonicParsing="false" onAction="#handleMenuObjetivos"
                         styleClass="navigation-button" text="Meu PDI"/>
+                <Button fx:id="btnEquipe" mnemonicParsing="false" onAction="#handleMenuEquipe"
+                        styleClass="navigation-button" text="Minha Equipe"/>
                 <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#handleMenuPerfil"
                         styleClass="navigation-button" text="Meu Perfil"/>
 
                 <Separator fx:id="rhSeparator" orientation="VERTICAL" styleClass="nav-separator"/>
                 <Button fx:id="btnDashboard" mnemonicParsing="false" onAction="#handleMenuDashboard"
                         styleClass="navigation-button" text="Dashboard PDIs"/>
-
                 <Button fx:id="btnPDI" mnemonicParsing="false" onAction="#handleMenuPDI" styleClass="navigation-button"
                         text="Gerenciar PDIs"/>
                 <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#handleMenuUsuarios"
