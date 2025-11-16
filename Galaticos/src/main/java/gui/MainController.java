@@ -43,6 +43,8 @@ public class MainController {
     @FXML
     private Button btnDashboard;
     @FXML
+    private Button btnEquipe;
+    @FXML
     private Separator rhSeparator;
     private List<Button> navigationButtons;
 
@@ -65,7 +67,7 @@ public class MainController {
     @FXML
     public void initialize() {
         // Apenas mapeia a lista de botões para o método updateActiveButton()
-        navigationButtons = Arrays.asList(btnObjetivos, btnPerfil, btnPDI, btnUsuarios, btnDashboard);
+        navigationButtons = Arrays.asList(btnObjetivos, btnPerfil, btnPDI, btnUsuarios, btnDashboard, btnEquipe);
 
         // A lógica de permissões foi movida para configurarPermissoes()
         // para garantir que 'usuarioLogado' não seja nulo.
@@ -97,6 +99,8 @@ public class MainController {
         btnDashboard.setManaged(false);
         btnUsuarios.setVisible(false);
         btnUsuarios.setManaged(false);
+        btnEquipe.setVisible(false);
+        btnEquipe.setManaged(false);
         rhSeparator.setVisible(false);
         rhSeparator.setManaged(false);
 
@@ -151,7 +155,9 @@ public class MainController {
                 btnObjetivos.setVisible(true);
                 btnObjetivos.setManaged(true);
                 btnObjetivos.setText("Objetivos (" + usuarioLogado.getSetorNome() + ")");
-                paginaInicial = this::handleMenuObjetivos;
+                btnEquipe.setVisible(true);
+                btnEquipe.setManaged(true);
+                paginaInicial = this::handleMenuEquipe;
                 break;
 
             case "Colaborador":
@@ -200,6 +206,11 @@ public class MainController {
     @FXML
     void handleMenuObjetivos() {
         loadPage("ObjetivosGUI", btnObjetivos);
+    }
+
+    @FXML
+    void handleMenuEquipe() {
+        loadPage("EquipeGUI", btnEquipe);
     }
 
     @FXML

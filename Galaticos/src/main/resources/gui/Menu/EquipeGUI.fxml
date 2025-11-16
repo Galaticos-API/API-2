@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.menu.EquipeController">
+    <stylesheets>
+        <URL value="@/css/StyleListaUsuario.css" />
+    </stylesheets>
+
+    <children>
+        <VBox alignment="TOP_CENTER" maxHeight="650.0" maxWidth="1000.0" spacing="20.0" styleClass="content-card">
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <children>
+                <Label fx:id="tituloPagina" styleClass="page-title" text="Gerenciamento da Equipe" />
+
+                <TableView fx:id="tabelaEquipe" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNome" prefWidth="250.0" text="Nome do Colaborador" />
+                        <TableColumn fx:id="colTipo" prefWidth="150.0" text="Cargo" />
+                        <TableColumn fx:id="colPDIStatus" prefWidth="120.0" text="Status PDI" />
+                        <TableColumn fx:id="colProgresso" prefWidth="280.0" text="Progresso" />
+                        <TableColumn fx:id="colAcoes" prefWidth="150.0" text="Ações" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+
+            </children>
+        </VBox>
+    </children>
+</StackPane>
