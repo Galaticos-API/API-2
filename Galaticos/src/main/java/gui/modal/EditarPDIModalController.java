@@ -68,10 +68,6 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableColumn<Objetivo, Date> prazoColumn;    // Keep type from Model
     @FXML
-    private TableColumn<Objetivo, Float> pesoColumn;     // Changed type back to Float
-    @FXML
-    private TableColumn<Objetivo, Float> pontuacaoColumn;
-    @FXML
     private TableColumn<Objetivo, String> statusColumn;
     @FXML
     private TableColumn<Objetivo, Void> acoesColumn;    // Correct type for action column
@@ -83,7 +79,7 @@ public class EditarPDIModalController implements Initializable {
     @FXML
     private TableColumn<Documento, String> docTipoCol;
     @FXML
-    private TableColumn<Documento, Date> docDataUploadCol; // Keep type from Model
+    private TableColumn<Documento, java.util.Date> docDataUploadCol; // Keep type from Model
     @FXML
     private TableColumn<Documento, Void> docAcoesCol;    // Correct type for action column
 
@@ -181,8 +177,6 @@ public class EditarPDIModalController implements Initializable {
 
     private void configurarTabelaObjetivos() {
         descricaoColumn.setCellValueFactory(new PropertyValueFactory<>("descricao"));
-        pesoColumn.setCellValueFactory(new PropertyValueFactory<>("peso"));
-        pontuacaoColumn.setCellValueFactory(new PropertyValueFactory<>("pontuacao"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
 
@@ -229,9 +223,9 @@ public class EditarPDIModalController implements Initializable {
         docDataUploadCol.setCellValueFactory(new PropertyValueFactory<>("dataUpload"));
 
         // Format Data Upload Column
-        docDataUploadCol.setCellFactory(column -> new TableCell<Documento, Date>() {
+        docDataUploadCol.setCellFactory(column -> new TableCell<Documento, java.util.Date>() {
             @Override
-            protected void updateItem(Date item, boolean empty) {
+            protected void updateItem(java.util.Date item, boolean empty) {
                 super.updateItem(item, empty);
                 // Use SimpleDateFormat for Timestamp/java.util.Date
                 if (empty || item == null) {
@@ -436,49 +430,6 @@ public class EditarPDIModalController implements Initializable {
             }
         }
     }
-
-
-    @FXML
-    private void handleCalculateGeneralScore() {
-        if (pdiAtual == null) return;
-        try {
-            List<Objetivo> objetivos = objetivoDAO.buscarPorPdiId(pdiAtual.getId());
-            if (objetivos.isEmpty()) {
-                pdiAtual.setPontuacaoGeral(0.0f);
-            } else {
-                float pontuacaoTotalPonderada = 0;
-                float pesoTotal = 0;
-                for (Objetivo obj : objetivos) {
-                    if (obj.getPeso() > 0) { // Consider only objectives with weight
-                        pontuacaoTotalPonderada += obj.getPontuacao() * obj.getPeso();
-                        pesoTotal += obj.getPeso();
-                    }
-                }
-                // Avoid division by zero
-                float novaPontuacaoGeral = (pesoTotal > 0) ? (pontuacaoTotalPonderada / pesoTotal) : 0;
-                // Clamp between 0 and 1 (or 0 and 100 if your scale is different)
-                novaPontuacaoGeral = Math.max(0.0f, Math.min(1.0f, novaPontuacaoGeral)); // Assuming score is 0.0 to 1.0
-                pdiAtual.setPontuacaoGeral(novaPontuacaoGeral);
-            }
-
-            // Save the updated PDI score
-            boolean sucesso = pdiDAO.atualizar(pdiAtual); // Assumes atualizar saves score
-
-            if (sucesso) {
-                // Update UI
-                progressBarGeral.setProgress(pdiAtual.getPontuacaoGeral());
-                textPontuacaoGeral.setText(String.format("%.1f%% Concluído", pdiAtual.getPontuacaoGeral() * 100));
-                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Pontuação geral recalculada e salva!");
-                salvo = true; // Mark as saved so the calling screen might refresh
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível salvar a nova pontuação geral.");
-            }
-
-        } catch (RuntimeException e) {
-            showAlert(Alert.AlertType.ERROR, "Erro no Cálculo", "Não foi possível calcular a pontuação: " + e.getMessage());
-        }
-    }
-
 
     @FXML
     private void handleUploadDocument() {

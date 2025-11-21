@@ -205,7 +205,7 @@
                             </children>
                         </VBox>
 
-                        <VBox styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="2">
+                        <VBox fx:id="chartBoxPDIsPorStatus" styleClass="content-card" spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="2">
                             <children>
                                 <Label styleClass="widget-title" text="PDIs por Status" />
                                 <PieChart fx:id="pieChartPDIStatus" VBox.vgrow="ALWAYS" legendVisible="true" />

@@ -23,10 +23,6 @@
         <ComboBox fx:id="statusComboBox" promptText="Selecione o Status" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <ComboBox fx:id="comentariosField" prefHeight="30.0" prefWidth="388.0" promptText="Selecione..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <Label text="Peso:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="pesoField" promptText="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <Label text="Pontuação:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <TextField fx:id="pontuacaoField" promptText="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <rowConstraints>
          <RowConstraints />
          <RowConstraints />

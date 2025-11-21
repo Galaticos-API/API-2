@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c895df76-9050-4f34-af53-ff5b82262bc5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../DOCS/Documentação das Sprints/burn3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../DOCS/Documentação das Sprints/burn3.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/DashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/menu/ObjetivosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/menu/ObjetivosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/AvaliacaoObjetivoModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/AvaliacaoObjetivoModalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/CadastroObjetivoModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/CadastroObjetivoModalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/gui/modal/EditarPDIModalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/Menu/DashboardGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/Menu/DashboardGUI.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/modal/AvaliacaoModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/AvaliacaoModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/modal/CadastroObjetivoModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/CadastroObjetivoModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/gui/modal/EditarPDIModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/gui/modal/EditarPDIModal.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,10 +67,13 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;S9;S10---Dashboard-gestor-de-area-e-colaborador&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;R:/FATEC/sem2/API-2/Galaticos/src/main/java/gui/modal&quot;,
-    &quot;last_opened_file_path&quot;: &quot;R:/FATEC/sem2/API-2/Galaticos&quot;
+    &quot;last_opened_file_path&quot;: &quot;R:/FATEC/sem2/API-2/Galaticos&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15332031&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.43879908&quot;
   }
 }</component>
   <component name="RunManager">

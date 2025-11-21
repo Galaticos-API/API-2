@@ -374,12 +374,12 @@ public class ObjetivosController {
 
         mudarStatusMenu.getItems().addAll(naoIniciadoItem, emProgressoItem);
 
-        MenuItem avaliarItem = new MenuItem("Avaliar");
+        MenuItem avaliarItem = new MenuItem("Finalizar");
         avaliarItem.setOnAction(e -> {
             if (objetivo instanceof ObjetivoComPDI) {
                 handleAbrirModalAvaliacao((ObjetivoComPDI) objetivo);
             } else {
-                System.err.println("Erro: Tentativa de avaliar objetivo sem dados completos de PDI/Usuário. Objetivo ID: " + objetivo.getId());
+                System.err.println("Erro: Tentativa de finalizar objetivo sem dados completos de PDI/Usuário. Objetivo ID: " + objetivo.getId());
                 Util.mostrarAlerta(Alert.AlertType.WARNING, "Atenção", "Dados incompletos para avaliação.");
             }
         });

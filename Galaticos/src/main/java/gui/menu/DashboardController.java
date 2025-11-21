@@ -72,6 +72,8 @@ public class DashboardController {
     private BarChart<String, Number> barChartUsuariosPorSetor; // [GAP 5]
     @FXML
     private PieChart pieChartPDIStatus; // [GAP 4]
+    @FXML
+    public VBox chartBoxPDIsPorStatus;
 
     // --- Tabela e Alertas ---
     @FXML
@@ -122,8 +124,8 @@ public class DashboardController {
     public void setUsuario(Usuario usuario) {
         this.usuarioLogado = usuario;
 
-        if ("Gestor Geral".equals(usuario.getTipo_usuario())) {
-            lblTitulo.setText("Dashboard (Visão Gestor Geral)");
+        if ("Gestor Geral".equals(usuario.getTipo_usuario()) || "Gestor de Area".equals(usuario.getTipo_usuario())) {
+            lblTitulo.setText("Dashboard (Visão de Gestores)");
 
             chartsGrid2.setVisible(false);
             chartsGrid2.setManaged(false);
@@ -140,8 +142,8 @@ public class DashboardController {
             chartBoxAreasDeAtencao.setVisible(true);
             chartBoxAreasDeAtencao.setManaged(true);
 
-        } else {
-            lblTitulo.setText("Dashboard (Visão RH)");
+        } else if ("RH".equals(usuario.getTipo_usuario())) {
+            lblTitulo.setText("Dashboard (Visão de RH)");
 
             chartsGrid2.setVisible(true);
             chartsGrid2.setManaged(true);
@@ -154,6 +156,24 @@ public class DashboardController {
 
             chartBoxAreasDeAtencao.setVisible(false);
             chartBoxAreasDeAtencao.setManaged(false);
+        } else if ("Colaborador".equals(usuario.getTipo_usuario())) {
+            lblTitulo.setText("Dashboard (Visão de colaborador)");
+
+            chartsGrid2.setVisible(true);
+            chartsGrid2.setManaged(true);
+            chartBoxPdisPorAno.setVisible(true);
+            chartBoxPdisPorAno.setManaged(true);
+            chartBoxUsuariosPorSetor.setVisible(true);
+            chartBoxUsuariosPorSetor.setManaged(true);
+            chartBoxProgressoSetor.setVisible(true);
+            chartBoxProgressoSetor.setManaged(true);
+
+            chartBoxAreasDeAtencao.setVisible(false);
+            chartBoxAreasDeAtencao.setManaged(false);
+            //chartBoxPdisPorAno.setVisible(false);
+            //chartBoxPdisPorAno.setManaged(false);
+            //chartBoxPDIsPorStatus.setVisible(false);
+            //chartBoxPDIsPorStatus.setManaged(false);
         }
 
 
@@ -245,16 +265,30 @@ public class DashboardController {
         if (cacheTodosOsSetores != null) {
             comboSetor.setItems(FXCollections.observableArrayList(cacheTodosOsSetores));
             comboSetor.setConverter(new javafx.util.StringConverter<Setor>() {
-                @Override public String toString(Setor s) { return s == null ? null : s.getNome(); }
-                @Override public Setor fromString(String s) { return null; }
+                @Override
+                public String toString(Setor s) {
+                    return s == null ? null : s.getNome();
+                }
+
+                @Override
+                public Setor fromString(String s) {
+                    return null;
+                }
             });
         }
 
         if (cacheGestores != null) {
             comboGestor.setItems(FXCollections.observableArrayList(cacheGestores));
             comboGestor.setConverter(new javafx.util.StringConverter<Usuario>() {
-                @Override public String toString(Usuario u) { return u == null ? null : u.getNome(); }
-                @Override public Usuario fromString(String s) { return null; }
+                @Override
+                public String toString(Usuario u) {
+                    return u == null ? null : u.getNome();
+                }
+
+                @Override
+                public Usuario fromString(String s) {
+                    return null;
+                }
             });
         }
     }
@@ -503,7 +537,7 @@ public class DashboardController {
                     .average()
                     .orElse(0.0) * 100;
 
-            rankingDataList.add(new RankingData(nomeSetor, (int)liderados, totalPDIs, progressoMedio));
+            rankingDataList.add(new RankingData(nomeSetor, (int) liderados, totalPDIs, progressoMedio));
         }
 
         tableRanking.setItems(rankingDataList);
@@ -591,9 +625,20 @@ public class DashboardController {
             this.progressoMedio = progressoMedio;
         }
 
-        public String getNome() { return nome.get(); }
-        public int getLiderados() { return liderados; }
-        public int getTotalPDIs() { return totalPDIs; }
-        public double getProgressoMedio() { return progressoMedio; }
+        public String getNome() {
+            return nome.get();
+        }
+
+        public int getLiderados() {
+            return liderados;
+        }
+
+        public int getTotalPDIs() {
+            return totalPDIs;
+        }
+
+        public double getProgressoMedio() {
+            return progressoMedio;
+        }
     }
 }

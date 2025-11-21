@@ -23,7 +23,7 @@
         <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
     </padding>
 
-    <Text styleClass="modal-title" text="Avaliar Objetivo" />
+    <Text styleClass="modal-title" text="Finalizar Objetivo" />
 
     <GridPane hgap="10.0" vgap="12.0">
         <columnConstraints> <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="120.0" /> <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" /> </columnConstraints>
@@ -41,8 +41,6 @@
             <Label styleClass="modal-label" text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
             <TextField fx:id="txtTipo" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-            <Label styleClass="modal-label" text="Nota (0-10):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <ComboBox fx:id="comboNota" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </children>
     </GridPane>
 
@@ -51,7 +49,7 @@
     <HBox alignment="CENTER_RIGHT" spacing="10.0">
         <children>
             <Button onAction="#handleCancelar" styleClass="modal-button-cancel" text="Cancelar" />
-            <Button onAction="#handleSalvar" styleClass="modal-button-save" text="Salvar Avaliação" />
+            <Button onAction="#handleSalvar" styleClass="modal-button-save" text="Finalizar" />
         </children>
         <VBox.margin> <Insets top="10.0" /> </VBox.margin>
     </HBox>

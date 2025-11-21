@@ -20,10 +20,6 @@ public class CadastroObjetivoModalController {
     @FXML
     private ComboBox<String> comentariosField;
     @FXML
-    private TextField pesoField;
-    @FXML
-    private TextField pontuacaoField;
-    @FXML
     private Label mensagemErro;
 
     private String pdiId;
@@ -55,8 +51,6 @@ public class CadastroObjetivoModalController {
             LocalDate prazo = prazoField.getValue();
             String status = statusComboBox.getValue();
             String comentarios = comentariosField.getValue();
-            float peso = pesoField.getText().isEmpty() ? 0 : Float.parseFloat(pesoField.getText());
-            float pontuacao = pontuacaoField.getText().isEmpty() ? 0 : Float.parseFloat(pontuacaoField.getText());
 
             if (descricao == null || descricao.trim().isEmpty()) {
                 mensagemErro.setText("Descrição é obrigatória.");
@@ -77,8 +71,8 @@ public class CadastroObjetivoModalController {
             objetivo.setPrazo(Date.valueOf(prazo));
             objetivo.setStatus(status);
             objetivo.setComentarios(comentarios != null ? comentarios.trim() : "");
-            objetivo.setPeso(peso);
-            objetivo.setPontuacao(pontuacao);
+            objetivo.setPeso(0);
+            objetivo.setPontuacao(0);
 
             ObjetivoDAO dao = new ObjetivoDAO();
             dao.adicionar(objetivo);

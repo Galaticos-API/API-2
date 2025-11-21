@@ -79,8 +79,6 @@
                             <columns>
                                 <TableColumn fx:id="descricaoColumn" prefWidth="250.0" text="Descrição"/>
                                 <TableColumn fx:id="prazoColumn" prefWidth="100.0" text="Prazo"/>
-                                <TableColumn fx:id="pesoColumn" prefWidth="60.0" text="Peso"/>
-                                <TableColumn fx:id="pontuacaoColumn" prefWidth="80.0" text="Pontuação"/>
                                 <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status"/>
                                 <TableColumn fx:id="acoesColumn" prefWidth="100.0" text="Ações"/>
                             </columns>
@@ -90,8 +88,6 @@
                         </TableView>
                         <HBox alignment="CENTER_RIGHT" spacing="10.0">
                             <children>
-                                <Button onAction="#handleCalculateGeneralScore" styleClass="secondary-button"
-                                        text="Recalcular Pontuação"/>
                                 <Button onAction="#handleAddObjective" styleClass="primary-button"
                                         text="Adicionar Objetivo"/>
                             </children>

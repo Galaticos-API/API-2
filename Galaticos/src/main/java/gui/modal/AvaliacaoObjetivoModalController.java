@@ -30,8 +30,6 @@ public class AvaliacaoObjetivoModalController {
     @FXML
     public TextField txtTipo;
     @FXML
-    private ComboBox<Double> comboNota;
-    @FXML
     private Label lblMensagemErro;
 
     private Stage dialogStage;
@@ -44,12 +42,6 @@ public class AvaliacaoObjetivoModalController {
 
     @FXML
     public void initialize() {
-        comboNota.setItems(FXCollections.observableArrayList(
-                DoubleStream.iterate(0.0, n -> n <= 10.0, n -> n + 0.5)
-                        .boxed()
-                        .collect(Collectors.toList())
-        ));
-
         // comboStatus.getItems().addAll("Não Iniciado", "Em Progresso", "Concluído");
     }
 
@@ -76,7 +68,7 @@ public class AvaliacaoObjetivoModalController {
             Avaliacao novaAvaliacao = new Avaliacao();
             novaAvaliacao.setObjetivoId(objetivo.getId());
             novaAvaliacao.setAvaliadorId(Integer.parseInt(avaliador.getId()));
-            novaAvaliacao.setNota(comboNota.getValue());
+            novaAvaliacao.setNota(0);
             novaAvaliacao.setComentario(txtTipo.getText().trim());
             novaAvaliacao.setStatus_objetivo("Concluído");
             novaAvaliacao.setDataAvaliacao(LocalDate.now());
@@ -102,10 +94,6 @@ public class AvaliacaoObjetivoModalController {
     }
 
     private boolean validarCampos() {
-        if (comboNota.getValue() == null) {
-            lblMensagemErro.setText("Por favor, selecione uma nota.");
-            return false;
-        }
         lblMensagemErro.setText("");
         return true;
     }
