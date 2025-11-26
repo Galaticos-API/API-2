@@ -49,7 +49,7 @@ Nessa sprint, o foco está em disponibilizar painéis gerenciais e relatórios q
 <span id="MVP">
 
 ## MVP
-[Vídeo de Apresentação do MVP da Sprint 3](https://youtu.be/eqKXYj3UYmQ)
+[Vídeo de Apresentação do MVP da Sprint 3](https://youtu.be/meaiycU6ehY)
 
 <br>
 
