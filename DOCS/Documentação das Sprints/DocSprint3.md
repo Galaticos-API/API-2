@@ -49,13 +49,19 @@ Nessa sprint, o foco está em disponibilizar painéis gerenciais e relatórios q
 <span id="MVP">
 
 ## MVP
-Em desenvolvimento.
+[Vídeo de Apresentação do MVP da Sprint 3](https://youtu.be/eqKXYj3UYmQ)
 
 <br>
 
 <span id="metricas">
 
 ## Métricas da Equipe
-Em desenvolvimento.
+*A equipe conseguiu entregar todas as funcionalidades previstas para a projeto.*
+
+<div align="center">
+
+![Burndown Chart Sprint 3](burndown_sprint3.png) </div>
+
+<br>
 
 → [Voltar ao topo](#topo)

@@ -5,13 +5,15 @@
 - [1. Descrição do Desafio](#1-descrição-do-desafio)
 - [2. Backlog do Produto](#2-backlog-do-produto)
 - [3. Cronograma de Evolução do Projeto](#3-cronograma-de-evolução-do-projeto)
-- [4. Dor e Dod](#4-dor-definition-of-ready)
+- [4. D.O.R e D.O.D](#4-dor-definition-of-ready)
 - [5. Sprints](#5-sprints)
 - [6. Tecnologias Utilizadas](#6-tecnologias-utilizadas)
 - [7. Estrutura do Projeto](#7-estrutura-do-projeto)
 - [8. Manual de Instalação](#8-manual-de-instalação)
-- [9. Documentação](#9-documentação)
-- [10. Equipe](#10-equipe)
+- [9. Manual de Usuário](#9-manual-de-usuário)
+- [10. Documentação](#10-documentação)
+- [11. Equipe](#11-equipe)
+
 
 ---
 
@@ -37,12 +39,12 @@ O objetivo deste projeto é desenvolver uma aplicação **Java Desktop com Banco
 | 1 | Alta | **US-01:** Como RH, quero cadastrar, consultar, editar e inativar usuários no sistema, para gerenciar quem tem acesso à plataforma. | 35 | Sprint 1 |
 | 2 | Alta | **US-02:** Como RH, quero criar um novo PDI para um colaborador, associando-o a um ano específico, para iniciar o registro histórico dos planos. | 17 | Sprint 1 |
 | 3 | Alta | **US-03:** Como RH ou Gestor de Área, quero definir objetivos e metas dentro de um PDI existente, para detalhar o que se espera do colaborador. | 16 | Sprint 1 |
-| 4 | Média | **US-04:** Como RH ou Gestor de Área, quero avaliar as Hard Skills e Soft Skills de um colaborador dentro do seu PDI, para registrar suas competências. | 26 | Sprint 2 |
-| 5 | Média | **US-05:** Como RH ou Gestor de Área, quero atualizar o status de atingimento das metas de um PDI, para acompanhar o progresso do colaborador. | 8 | Sprint 2 |
+| 4 | Média | **US-04:** Como RH ou Gestor de Área, quero avaliar as Hard Skills e Soft Skills de um colaborador dentro do seu PDI, para registrar suas competências. | 8 | Sprint 2 |
+| 5 | Média | **US-05:** Como RH ou Gestor de Área, quero atualizar o status de atingimento das metas de um PDI, para acompanhar o progresso do colaborador. | 34 | Sprint 2 |
 | 6 | Média | **US-06:** Como RH ou Gestor de Área, quero poder fazer o upload de documentos em um PDI específico, para centralizar as evidências de desenvolvimento. | 8 | Sprint 2 |
-| 7 | Baixa | **US-07:** Como Gestor Geral, quero visualizar um painel com o cálculo de atingimento de metas coletivo, para ter uma visão macro do desenvolvimento. | A ser estimado | Sprint 3 |
-| 8 | Baixa | **US-08:** Como RH, quero poder exportar as informações de um PDI para uma planilha, para análises externas. | A ser estimado | Sprint 3 |
-| 9 | Baixa | **US-09:** Como Gestor de Área, quero ter uma visualização consolidada do progresso dos PDIs de todos os meus liderados, para gerenciar minha equipe. | A ser estimado | Sprint 3 |
+| 7 | Baixa | **US-07:** Como Gestor Geral, quero visualizar um painel com o cálculo de atingimento de metas coletivo, para ter uma visão macro do desenvolvimento. | 16 | Sprint 3 |
+| 8 | Baixa | **US-08:** Como RH, quero poder exportar as informações de um PDI para uma planilha, para análises externas. | 6 | Sprint 3 |
+| 9 | Baixa | **US-09:** Como Gestor de Área, quero ter uma visualização consolidada do progresso dos PDIs de todos os meus liderados, para gerenciar minha equipe. | 3 | Sprint 3 |
 
 
 ---
@@ -86,15 +88,6 @@ Tópicos utilizados para definir o DoD das Sprints:
 
 ---
 
-<span id="manual-usuario">
-
-## 📜 Manual do Usuário
-**:link: Clique no link abaixo para visualizar o Manual do Usuário:**
-> [Manual do Usuário](https://docs.google.com/document/d/1LdOXG7TXHtEoyGheWn9J4pO0AUEJYLoVHNaBGOxyOOE/edit?usp=sharing)
-
-<br>
-
----
 
 ## 5. Sprints
 
@@ -103,13 +96,14 @@ Tópicos utilizados para definir o DoD das Sprints:
 | Kick Off Geral       | 25/08/2025 - 29/08/2025 | Concluído    | Concluído
 | Sprint #1            | 08/09/2025 - 28/09/2025 | Concluído    | [Sprint #1](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint1.md)
 | Sprint #2            | 06/10/2025 - 26/10/2025 | Concluído    | [Sprint #2](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint2.md)
-| Sprint #3            | 03/11/2025 - 23/11/2025 | Em progresso | [Sprint #3](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint3.md)
+| Sprint #3            | 03/11/2025 - 23/11/2025 | Concluído | [Sprint #3](https://github.com/Galaticos-API/API-2/blob/main/DOCS/Documenta%C3%A7%C3%A3o%20das%20Sprints/DocSprint3.md)
 | Feira de Soluções    | 05/12/2025              | A começar    | A começar
 ---
 
 ## 6. Tecnologias Utilizadas
 
 ![My Skills](https://go-skill-icons.vercel.app/api/icons?i=git,github,java,mysql,maven,css,,Trello)
+
 ---
 
 ## 7. Estrutura do Projeto
@@ -166,7 +160,17 @@ Tópicos utilizados para definir o DoD das Sprints:
     mvn clean javafx:run
 --- 
 
-## 9. Documentação
+## 9. Manual de Usuário
+
+### 📜 Documento
+**:link: Clique no link abaixo para visualizar o Manual do Usuário:**
+> [Manual do Usuário](https://docs.google.com/document/d/1LdOXG7TXHtEoyGheWn9J4pO0AUEJYLoVHNaBGOxyOOE/edit?usp=sharing)
+
+<br>
+
+---
+
+## 10. Documentação
 
 A documentação completa do projeto pode ser encontrada na pasta `/docs` do repositório ou através do link abaixo.
 
@@ -177,12 +181,10 @@ A pasta irá incluir (WIP):
 - **Checklist de DoR (Definition of Ready) e DoD (Definition of Done)**
 - **Detalhes de DoR e DoD por Sprint**
 - **Estratégia de Branch (GitFlow)**
-- **[Manual de Usuário](./docs/manual_usuario.md)**
-- **[Manual de Instalação](#8-manual-de-instalação)**
 
 ---
 
-## 10. Equipe
+## 11. Equipe
 
 |           Nome            |     Função     |                                                                            GitHub                                                                             |                                                                                               Linkedin                                                                                                 |
 | :-----------------------: | :------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
